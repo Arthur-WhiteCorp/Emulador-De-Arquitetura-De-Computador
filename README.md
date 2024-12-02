@@ -29,7 +29,7 @@ O emulador funciona em conjunto com o **Compilador MiniC**, cujo repositório po
 
 Para instruções detalhadas sobre como utilizar o compilador MiniC, consulte o repositório correspondente.
 
-## Instalação
+## Execução
 
 Para utilizar o Emulador de Arquitetura RISC, siga os passos abaixo:
 
