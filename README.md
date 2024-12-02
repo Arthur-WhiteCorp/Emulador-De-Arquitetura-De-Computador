@@ -36,3 +36,9 @@ Para utilizar o Emulador de Arquitetura RISC, siga os passos abaixo:
 1. **Clone este repositório:**
    ```bash
    git clone https://github.com/Arthur-WhiteCorp/Emulador-Arquitetura-RISC.git
+2. **Compile o programa:**
+   ```bash
+   ./compile
+2. **Execute**
+    ```bash
+   ./main <arquivo_teste>
