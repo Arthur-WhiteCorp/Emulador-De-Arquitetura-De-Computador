@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+#Diretório de build
+build
+
+#Diretório de .o
+objects
