@@ -14,7 +14,7 @@ Emulador para a arquitetura **RISC** (Reduced Instruction Set Computing), desenv
 
 ## Descrição
 
-O **Emulador de Arquitetura RISC** é uma ferramenta criada para emular uma arquitetura RISC (Computação com Conjunto de Instruções Reduzido). Seu objetivo é ajudar a testar o código gerado pelo **Compilador MiniC**, executando-o em um ambiente controlado que simula o funcionamento de uma máquina baseada em RISC. O emulador foi projetado para verificar a correção e o desempenho do código gerado.
+O **Emulador de Arquitetura RISC** é uma ferramenta criada para emular uma arquitetura RISC (Computação com Conjunto de Instruções Reduzido). Seu objetivo é ajudar a testar o código compilado pelo **Compilador MiniC** e montado pelo **Assembler**  executando-o em um ambiente controlado que simula o funcionamento de uma máquina baseada em RISC. O emulador foi projetado para verificar a correção e o desempenho do código gerado.
 
 ### Principais Funcionalidades:
 - **Simulação do Conjunto de Instruções RISC**: Emula uma arquitetura RISC simplificada com um conjunto reduzido de instruções.
@@ -28,6 +28,15 @@ O emulador funciona em conjunto com o **Compilador MiniC**, cujo repositório po
 [Repositório do Compilador MiniC](https://github.com/Arthur-WhiteCorp/Compilador-MiniC)
 
 Para instruções detalhadas sobre como utilizar o compilador MiniC, consulte o repositório correspondente.
+
+## Repositório do Compilador MiniC
+
+O emulador recebe código montado pelo  **Assembler**, cujo repositório pode ser acessado no link abaixo:
+
+[Repositório do Compilador MiniC](https://github.com/Arthur-WhiteCorp/Assembler)
+
+Para instruções detalhadas sobre como utilizar o Assembler, consulte o repositório correspondente.
+
 
 ## Execução
 
@@ -43,5 +52,5 @@ Para utilizar o Emulador de Arquitetura RISC, siga os passos abaixo:
    ```
 3. **Execute**
    ```bash
-   ./build/main <arquivo_teste>
+   ./build/main <arquivo_teste.bin>
    ```
