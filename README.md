@@ -40,8 +40,8 @@ Para utilizar o Emulador de Arquitetura RISC, siga os passos abaixo:
 2. **Compile o programa:**
    ```bash
    ./compile
-  ```
+   ```
 3. **Execute**
-    ```bash
+   ```bash
    ./build/main <arquivo_teste>
-    ```
+   ```
