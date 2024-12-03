@@ -29,11 +29,11 @@ O emulador funciona em conjunto com o **Compilador MiniC**, cujo repositório po
 
 Para instruções detalhadas sobre como utilizar o compilador MiniC, consulte o repositório correspondente.
 
-## Repositório do Compilador MiniC
+## Repositório do Assembler
 
 O emulador recebe código montado pelo  **Assembler**, cujo repositório pode ser acessado no link abaixo:
 
-[Repositório do Compilador MiniC](https://github.com/Arthur-WhiteCorp/Assembler)
+[Repositório do Assembler MiniC](https://github.com/Arthur-WhiteCorp/Assembler)
 
 Para instruções detalhadas sobre como utilizar o Assembler, consulte o repositório correspondente.
 
