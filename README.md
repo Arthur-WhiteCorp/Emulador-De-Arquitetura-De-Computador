@@ -2,15 +2,15 @@
 
 ## Visão Geral
 
-Este projeto implementa um emulador para a arquitetura **RISC** (Reduced Instruction Set Computing), desenvolvido para testar e validar o **Compilador MiniC**. O emulador executa o código assembly gerado pelo compilador MiniC, proporcionando um ambiente para verificar e depurar a saída do compilador em um ambiente simulado de arquitetura RISC.
+Emulador para a arquitetura **RISC** (Reduced Instruction Set Computing), desenvolvido para testar e validar o **Compilador MiniC**. O emulador executa o código assembly gerado pelo compilador MiniC, proporcionando um ambiente para verificar e depurar a saída do compilador em um ambiente simulado de arquitetura RISC.
 
 ## Autor
 
 **Arthur Silva Matias**
 
-## Linguagens Utilizadas
+## Linguagens e Ferramentas Utilizadas:
+- **Linguagem de Programação**: C++
 
-- **C++**
 
 ## Descrição
 
@@ -36,9 +36,12 @@ Para utilizar o Emulador de Arquitetura RISC, siga os passos abaixo:
 1. **Clone este repositório:**
    ```bash
    git clone https://github.com/Arthur-WhiteCorp/Emulador-Arquitetura-RISC.git
+   ```
 2. **Compile o programa:**
    ```bash
    ./compile
-2. **Execute**
+  ```
+3. **Execute**
     ```bash
-   ./main <arquivo_teste>
+   ./build/main <arquivo_teste>
+    ```
