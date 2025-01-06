@@ -1,7 +1,15 @@
 #include <iostream>
+#include <fstream>
+
+#include <nlohmann/json.hpp>
 
 int main() {
-    // Print "Hello, World!" to the console
-    std::cout << "Hello, World!" << std::endl;
+    std::ifstream f("../testes/example.json");
+     if (!f.is_open()) {
+        std::cerr << "Failed to open file!" << std::endl;
+        return 1;
+    }
+    nlohmann::json data = nlohmann::json::parse(f);
+    std::cout << data["name"] << std::endl;
     return 0;
 }
