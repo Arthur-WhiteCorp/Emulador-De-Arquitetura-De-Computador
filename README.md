@@ -60,6 +60,4 @@ Para utilizar o Emulador de Arquitetura RISC, siga os passos abaixo:
 
 Para mais informações sobre as regras de nomenclatura e documentação utilizadas no desenvolvimento do Compilador, Assembler e Emulador, consulte o [documento oficial](https://docs.google.com/document/d/1hE3b5ahCoHgBG6bB5ovoNWnj8OHwIiMHWzO9YPLtPmA/edit?usp=sharing).
 
-A descrição está clara, mas pode ser aprimorada para dar mais contexto sobre o conteúdo do link e sua relevância. Aqui está uma versão ligeiramente melhorada:
-
 ---
