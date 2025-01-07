@@ -10,7 +10,7 @@ Emulador para a arquitetura **RISC** (Reduced Instruction Set Computing), desenv
 
 ## Linguagens e Ferramentas Utilizadas:
 - **Linguagem de Programação**: C++
-
+- **Sistema de Build**: CMake
 
 ## Descrição
 
