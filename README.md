@@ -50,6 +50,7 @@ Para utilizar o Emulador de Arquitetura RISC, siga os passos abaixo:
    ```bash
    mkdir build
    cd build
+   cmake ..
    make
    ```
 3. **Execute**
