@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-
 #include <nlohmann/json.hpp>
+#include <Machine.hpp>
 
 int main() {
     std::ifstream f("../testes/example.json");
