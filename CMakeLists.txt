@@ -20,6 +20,8 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/nlohmann-json)
 
 set(project_SRC 
   ${PROJECT_SOURCE_DIR}/src/main.cpp
+  ${PROJECT_SOURCE_DIR}/src/Machine.cpp
+  ${PROJECT_SOURCE_DIR}/src/MachineDescriptionParser.cpp
 )
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
