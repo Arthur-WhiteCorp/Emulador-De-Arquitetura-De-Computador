@@ -4,5 +4,4 @@
     "email": "johndoe@example.com",
     "is_active": true,
     "skills": ["C++", "Python", "JavaScript"]
-  }
-  
+}
