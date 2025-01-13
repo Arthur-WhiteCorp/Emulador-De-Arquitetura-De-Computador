@@ -3,5 +3,6 @@
     "age": 30,
     "email": "johndoe@example.com",
     "is_active": true,
-    "skills": ["C++", "Python", "JavaScript"]
+    "skills": ["C++", "Python", "JavaScript"],
+    "woRD_size": 8
 }
