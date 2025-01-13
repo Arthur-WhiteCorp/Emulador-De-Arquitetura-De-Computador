@@ -59,6 +59,8 @@ bool MachineDescriptionParser::parseMachineDescription(bool success) {
         return false;
     }
 
+ 
+
 
 
 
@@ -67,4 +69,18 @@ bool MachineDescriptionParser::parseMachineDescription(bool success) {
 
 MachineDescription MachineDescriptionParser::getMachineDescription() {
     // Implementation here
+}
+
+void MachineDescriptionParser::fillMachineDescriptionFields() {
+   expected_machine_description_fields.insert("word_size");
+   expected_machine_description_fields.insert("register_address_size");
+   expected_machine_description_fields.insert("instruction_size");
+   expected_machine_description_fields.insert("memory_size");
+   expected_machine_description_fields.insert("program_counter");   
+   expected_machine_description_fields.insert("flags_register");
+   expected_machine_description_fields.insert("general_registers");  
+}
+
+bool MachineDescriptionParser::checkField(std::string field) {
+    
 }
