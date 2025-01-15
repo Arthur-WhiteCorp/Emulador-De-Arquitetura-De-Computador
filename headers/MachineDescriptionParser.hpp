@@ -27,6 +27,7 @@ private:
     std::ifstream machine_description_file; // Arquivo de descricao da maquina
     nlohmann::json machine_description; // JSON de descricao da maquina
     std::set<std::string> expected_machine_description_fields; // Campos do JSON de descricao da maquina
+    std::set<std::string> recognized_fields; // Campos do JSON de descricao da maquina reconhecidos
 
     void openMachineDescriptionFile(std::string machine_description_file_path); // Abre o arquivo de descricao da maquina
     void turnMachineDescriptionFileToJson(); // Transforma o arquivo de descricao da maquina em um JSON
@@ -34,7 +35,9 @@ private:
 
     void fillMachineDescriptionFields(); // Preenche o array de campos do JSON
     std::string lowerFieldName(const std::string& field); // Transforma um campo em minusculo
-    bool checkField(const std::string& field); // Verifica se um campo do JSON existe
+    void checkFieldValidity(const std::string& field); // Verifica se um campo do JSON e valido
+    void checkRequiredFields(); // Verifica se o JSON tem todos os campos necessarios
+    void checkRequiredFieldSintax(); // Verifica a sintaxe dos campos do JSON
     void parseMachineDescription(); // Realiza a leitura do json de descricao da maquina
 
 };

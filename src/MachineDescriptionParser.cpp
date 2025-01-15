@@ -86,25 +86,51 @@ std::string MachineDescriptionParser::lowerFieldName(const std::string& field) {
     
 
 
-bool MachineDescriptionParser::checkField(const std::string& field) {
+void MachineDescriptionParser::checkFieldValidity(const std::string& field) {
     std::string field_lower = lowerFieldName(field);
 
     if (expected_machine_description_fields.find(field_lower) == expected_machine_description_fields.end()) {
         std::cerr << "Field: " << field_lower << ", not recognized!" << std::endl;
-        return false;
+        success_parsing = false;
+    }else {
+        recognized_fields.insert(field_lower);
     }
+}
 
-    std::cout << "Field: " << field_lower << ", found." << std::endl;
+void MachineDescriptionParser::checkRequiredFields() {
+    int size;
+    size = recognized_fields.size();
 
-    return true;
+    if (size != expected_machine_description_fields.size()){
+        std::cerr << "Required fields not found!" << std::endl;
+        success_parsing = false;
+
+        for (auto field: expected_machine_description_fields){
+            if (recognized_fields.find(field) == recognized_fields.end()){
+                std::cerr << "Required field: " << field << ", not found!" << std::endl;
+                success_parsing = false;
+            }
+        }
+    }
+}
+
+void MachineDescriptionParser::checkRequiredFieldSintax() {
+
 }
 
 void MachineDescriptionParser::parseMachineDescription() {
     if (!success_opening){ // checa se a abertura ou conversao foi bem sucedida
         return;
     }
+    success_parsing = true;
+
     for (auto field = machine_description.begin(); field != machine_description.end(); field++) {
-        success_parsing = checkField(lowerFieldName(field.key()));
+        checkFieldValidity(lowerFieldName(field.key()));
     }
-    return;
+    
+    checkRequiredFields();
+
+    for (auto recognized_field:recognized_fields) {
+
+    }    
 }

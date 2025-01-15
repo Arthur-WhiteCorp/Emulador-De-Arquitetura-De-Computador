@@ -8,22 +8,27 @@
 
 class Machine{
 
-using Binary = std::vector<bool>;
+using Binary = std::vector<uint8_t>;
 
 struct Instruction{
     Binary code; // código da instrução em binario
 
 };
 
-struct Word{
-    Binary data;
-};
+using InstructionSet = std::vector<Instruction>;
 
 struct Register{
     std::string identifier; // identificador do registro 
     uint16_t size; // tamanho do registro em bits
     Binary data; // dados do registro
 };
+
+struct Memory
+{   
+    uint64_t size; // tamanho da memoria em bytes
+    std::vector<Binary> data; // dados da memoria tem que ser um multiplo da palavra
+};
+
 
 public:
     MachineDescription description; // descricao da maquina
@@ -37,8 +42,8 @@ private:
     Register program_counter; // registro que guarda o endereço da próxima instrução
     Register flags_register; // registro que guarda as flags
     std::vector<Register> general_registers; // registros gerais que o programa utiliza
-    std::vector<Instruction> instruction_set; // lista de instruções
-    std::vector<Word> memory; // memória
+    InstructionSet instruction_set; // lista de instruções
+    Memory memory; // memória
 
 };
 
