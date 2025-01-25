@@ -1,10 +1,20 @@
 {
     "word_size": 8,
-    "register_address_size": 2,
+    "register_address_size": 2, 
     "instruction_size": 4,
     "memory_size": 512,
-    "program_counter": {},
-    "flags_register": {},
-    "general_registers": {}
+    "program_counter": {
+        "id":"PC",
+        "size":8
+    },
+    "flags_register": {
+        "id":"FLAG",
+        "size":8
+    },
+    "general_registers": {
+        "size": 8, 
+        "number_of_registers": 4, 
+        "id_pattern": "R" 
+    }
 }
   

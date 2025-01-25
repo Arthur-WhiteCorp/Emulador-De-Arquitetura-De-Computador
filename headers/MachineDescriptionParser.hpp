@@ -11,7 +11,6 @@
 
 class  MachineDescriptionParser{
 
-
 public:
     MachineDescriptionParser(std::string machine_description_file_path);
     ~MachineDescriptionParser();
@@ -37,7 +36,8 @@ private:
     std::string lowerFieldName(const std::string& field); // Transforma um campo em minusculo
     void checkFieldValidity(const std::string& field); // Verifica se um campo do JSON e valido
     void checkRequiredFields(); // Verifica se o JSON tem todos os campos necessarios
-    void checkRequiredFieldSintax(); // Verifica a sintaxe dos campos do JSON
+    void checkRequiredFieldSintax(const nlohmann::json& field, const std::string& field_name); // Verifica a sintaxe dos campos do JSON
+    void checkWordSizeSintax(const nlohmann::json& word_size); // Verifica a sintaxe do campo word_size
     void parseMachineDescription(); // Realiza a leitura do json de descricao da maquina
 
 };

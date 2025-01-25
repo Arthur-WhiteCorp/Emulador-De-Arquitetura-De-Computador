@@ -3,6 +3,7 @@
 #include <cstdlib> 
 #include <nlohmann/json.hpp>
 #include <cctype>
+#include <typeinfo>
 
 
 MachineDescriptionParser::MachineDescriptionParser(std::string machine_description_file_path) {
@@ -93,6 +94,13 @@ void MachineDescriptionParser::checkFieldValidity(const std::string& field) {
         std::cerr << "Field: " << field_lower << ", not recognized!" << std::endl;
         success_parsing = false;
     }else {
+        if (recognized_fields.find(field_lower) != recognized_fields.end()) {
+            std::cerr << "Field: " << field_lower << ", already recognized!" << "\n";
+            std::cerr << "Please, delete the duplicate field." << std::endl;
+            success_parsing = false;
+            return;
+        }
+
         recognized_fields.insert(field_lower);
     }
 }
@@ -114,8 +122,27 @@ void MachineDescriptionParser::checkRequiredFields() {
     }
 }
 
-void MachineDescriptionParser::checkRequiredFieldSintax() {
+void MachineDescriptionParser::checkRequiredFieldSintax(const nlohmann::json& field, const std::string& field_name) {
+    if (field_name == "word_size") { checkWordSizeSintax(field); return; }
+    //if (field == "register_address_size") { checkRegisterAddressSizeSintax(field); return; }
+}
 
+void MachineDescriptionParser::checkWordSizeSintax(const nlohmann::json& word_size_field) {
+    auto word_size = word_size_field.get<uint16_t>();
+    if (!word_size_field.is_number_unsigned()){
+        success_parsing = false;
+        std::cerr << "'word_size' must be an unsigned integer!" << std::endl;
+    }
+
+    if (word_size < 8 || word_size > 256 ) { // checa se word_size e menor que 8 ou maior que 256
+        success_parsing = false;
+        std::cerr << "'word_size' must be at least 8 and less than 257!" << std::endl;
+    }
+
+    if (!(word_size > 0 && (word_size & (word_size - 1)) == 0)){ // checa se word_size nao e potencia de 2
+        success_parsing = false;
+        std::cerr << "'word_size' must be a power of 2!" << std::endl;
+    } 
 }
 
 void MachineDescriptionParser::parseMachineDescription() {
@@ -131,6 +158,6 @@ void MachineDescriptionParser::parseMachineDescription() {
     checkRequiredFields();
 
     for (auto recognized_field:recognized_fields) {
-
+        checkRequiredFieldSintax(machine_description[recognized_field], recognized_field);
     }    
 }

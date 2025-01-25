@@ -23,7 +23,7 @@ struct GeneralRegistersDescription {
 
 struct MachineDescription
 {
-    uint8_t word_size; // tamanho de uma palavra em bits, minimo 8 bits, sempre multiplo de 8
+    uint16_t word_size; // tamanho de uma palavra em bits, minimo 8 bits, sempre multiplo de 8
     uint8_t register_address_size; // tamanho do endereço de um registro em bits
     uint8_t instruction_size; // tamanho da instrução em bits
     uint64_t  memory_size; // tamanho da memoria em bytes
