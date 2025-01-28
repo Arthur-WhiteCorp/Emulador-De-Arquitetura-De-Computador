@@ -44,6 +44,8 @@ private:
     void checkInstructionSizeSyntax(const nlohmann::json& instruction_size); // Verifica a Sintaxe do campo instruction_size
     void checkMemorySizeSyntax(const nlohmann::json& memory_size); // Verifica a Sintaxe do campo memory_size
     void checkProgramCounterSyntax(const nlohmann::json& program_counter); // Verifica a Sintaxe do campo program_counter
+    void checkFlagsRegisterSyntax(const nlohmann::json& flags_register); // Verifica a Sintaxe do campo flags_register
+    void checkGeneralRegistersSyntax(const nlohmann::json& general_registers); // Verifica a Sintaxe do campo general_registers
     void parseMachineDescription(); // Realiza a leitura do json de descricao da maquina
 
 };

@@ -149,6 +149,8 @@ void MachineDescriptionParser::checkRequiredFieldSyntax(const nlohmann::json& fi
     if (field_name == "instruction_size") { checkInstructionSizeSyntax(field); return; }
     if (field_name == "memory_size") { checkMemorySizeSyntax(field); return; }
     if (field_name == "program_counter") { checkProgramCounterSyntax(field); return; }   
+    if (field_name == "flags_register") { checkFlagsRegisterSyntax(field); return; }
+    if (field_name == "general_registers") { checkGeneralRegistersSyntax(field); return; }
 }
 
 void MachineDescriptionParser::checkWordSizeSyntax(const nlohmann::json& word_size_field) {
@@ -202,15 +204,6 @@ void MachineDescriptionParser::checkMemorySizeSyntax(const nlohmann::json& memor
 }
 
 void MachineDescriptionParser::checkProgramCounterSyntax(const nlohmann::json& program_counter_field) {
-    if (checkSubField(program_counter_field, "size")) {
-        if (!program_counter_field["size"].is_number_unsigned()){
-            success_parsing = false;
-            std::cerr << "'program_counter.size' must be an unsigned integer!" << std::endl;
-        }else{
-            auto program_counter_size = program_counter_field["size"].get<uint8_t>();
-        }
-    }
-
     if (checkSubField(program_counter_field, "id")){
         if (!program_counter_field["id"].is_string()){
             success_parsing = false;
@@ -218,13 +211,96 @@ void MachineDescriptionParser::checkProgramCounterSyntax(const nlohmann::json& p
         }else{
             auto program_counter_id = program_counter_field["id"].get<std::string>();
         }
+    }else{
+        std::cerr << "'program_counter.id' field is missing!" << std::endl;
+    }
+
+    if (checkSubField(program_counter_field, "size")) {
+        if (!program_counter_field["size"].is_number_unsigned()){
+            success_parsing = false;
+            std::cerr << "'program_counter.size' must be an unsigned integer!" << std::endl;
+        }else{
+            auto program_counter_size = program_counter_field["size"].get<uint16_t>();
+        }
+    }else{
+        std::cerr << "'program_counter.size' field is missing!" << std::endl;
     }
 
     if (!checkNumberOfExpectedSubFields(program_counter_field, 2)) {
-        std::cout << "Program counter has wrong number of subfields!" << std::endl;
+        std::cerr << "Program counter has wrong number of subfields!" << std::endl;
         
     }
          
+}
+
+void MachineDescriptionParser::checkFlagsRegisterSyntax(const nlohmann::json& flags_register_field) {
+    if (checkSubField(flags_register_field, "id")){
+        if (!flags_register_field["id"].is_string()){
+            success_parsing = false;
+            std::cerr << "'flags_register.id' must be a string!" << std::endl;
+        }else{
+            auto program_counter_id = flags_register_field["id"].get<std::string>();
+        }
+    }else{
+        std::cerr << "'flags_register.id' field is missing!" << std::endl;
+    }
+
+    if (checkSubField(flags_register_field, "size")) {
+        if (!flags_register_field["size"].is_number_unsigned()){
+            success_parsing = false;
+            std::cerr << "'program_counter.size' must be an unsigned integer!" << std::endl;
+        }else{
+            auto program_counter_size = flags_register_field["size"].get<uint16_t>();
+        }
+    }else{
+        std::cerr << "'flags_register.size' field is missing!" << std::endl;
+    }
+
+    if (!checkNumberOfExpectedSubFields(flags_register_field, 2)) {
+        std::cout << "Flags register has wrong number of subfields!" << std::endl;
+    }
+        
+}
+
+void MachineDescriptionParser::checkGeneralRegistersSyntax(const nlohmann::json& general_registers_field) {
+    if (checkSubField(general_registers_field, "size")) {
+        if (!general_registers_field["size"].is_number_unsigned()){
+            success_parsing = false;
+            std::cerr << "'general_registers.size' must be an unsigned integer!" << std::endl;
+        }else{
+            auto general_registers_size = general_registers_field["size"].get<uint16_t>();
+        }
+    }else{
+        std::cerr << "'general_registers.size' field is missing!" << std::endl;
+    }
+
+
+    if (checkSubField(general_registers_field, "number_of_registers")) {
+        if (!general_registers_field["number_of_registers"].is_number_unsigned()){
+            success_parsing = false;
+            std::cerr << "'geberal_registers.number_of_registers' must be an unsigned integer!" << std::endl;
+        }else{
+            auto program_counter_size = general_registers_field["number_of_registers"].get<uint8_t>();
+        }
+    }else{
+        std::cerr << "'flags_register.size' field is missing!" << std::endl;
+    }
+
+    if (checkSubField(general_registers_field, "id_pattern")) {
+        if (!general_registers_field["id_pattern"].is_string()){
+            success_parsing = false;
+            std::cerr << "'general_registers.id_pattern' must be a string!" << std::endl;
+        }else{
+            auto program_counter_size = general_registers_field["id_pattern"].get<std::string>();
+        }
+    }else{
+        std::cerr << "'general_registers.id_pattern' field is missing!" << std::endl;
+    }
+
+
+    if (!checkNumberOfExpectedSubFields(general_registers_field, 3)) {
+        std::cout << "General registers has wrong number of subfields!" << std::endl;
+    }
 }
 
 void MachineDescriptionParser::parseMachineDescription() {
