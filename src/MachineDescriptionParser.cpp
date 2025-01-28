@@ -122,27 +122,109 @@ void MachineDescriptionParser::checkRequiredFields() {
     }
 }
 
-void MachineDescriptionParser::checkRequiredFieldSintax(const nlohmann::json& field, const std::string& field_name) {
-    if (field_name == "word_size") { checkWordSizeSintax(field); return; }
-    //if (field == "register_address_size") { checkRegisterAddressSizeSintax(field); return; }
+bool MachineDescriptionParser::checkSubField(const nlohmann::json& field, std::string sub_field_name) {
+    if (!field.contains(sub_field_name)) {
+        std::cerr << "Required sub field: " << sub_field_name << ", not found!" << std::endl;
+        success_parsing = false;
+        return false;
+    }else{
+        return true;
+    }
 }
 
-void MachineDescriptionParser::checkWordSizeSintax(const nlohmann::json& word_size_field) {
-    auto word_size = word_size_field.get<uint16_t>();
+bool MachineDescriptionParser::checkNumberOfExpectedSubFields(const nlohmann::json& field,  unsigned int number_of_expected_sub_fields) {
+    if (field.size() != number_of_expected_sub_fields) {
+        std::cerr << "Number of expected sub fields: " << number_of_expected_sub_fields << std::endl;
+        std::cerr << "Number of found sub fields: " << field.size() << std::endl;
+        success_parsing = false;
+        return false;
+    }else{
+        return true;
+    }
+}
+
+void MachineDescriptionParser::checkRequiredFieldSyntax(const nlohmann::json& field, const std::string& field_name) {
+    if (field_name == "word_size") { checkWordSizeSyntax(field); return; }
+    if (field_name == "register_address_size") { checkRegisterAddressSizeSyntax(field); return; }
+    if (field_name == "instruction_size") { checkInstructionSizeSyntax(field); return; }
+    if (field_name == "memory_size") { checkMemorySizeSyntax(field); return; }
+    if (field_name == "program_counter") { checkProgramCounterSyntax(field); return; }   
+}
+
+void MachineDescriptionParser::checkWordSizeSyntax(const nlohmann::json& word_size_field) {
+    uint16_t word_size;
     if (!word_size_field.is_number_unsigned()){
         success_parsing = false;
         std::cerr << "'word_size' must be an unsigned integer!" << std::endl;
+    }else{
+        word_size = word_size_field.get<uint16_t>();
+        
+
+        if (word_size < 8 || word_size > 256 ) { // checa se word_size e menor que 8 ou maior que 256
+            success_parsing = false;
+            std::cerr << "'word_size' must be at least 8 and less than 257!" << std::endl;
+        }
+
+        if (!(word_size > 0 && (word_size & (word_size - 1)) == 0)){ // checa se word_size nao e potencia de 2
+            success_parsing = false;
+            std::cerr << "'word_size' must be a power of 2!" << std::endl;
+        } 
+    }
+}
+
+void MachineDescriptionParser::checkRegisterAddressSizeSyntax(const nlohmann::json& register_address_size_field) {
+    if (!register_address_size_field.is_number_unsigned()){
+        success_parsing = false;
+        std::cerr << "'register_address_size' must be an unsigned integer!" << std::endl;
+    }else{
+        auto register_address_size = register_address_size_field.get<uint8_t>();
     }
 
-    if (word_size < 8 || word_size > 256 ) { // checa se word_size e menor que 8 ou maior que 256
+}
+
+void MachineDescriptionParser::checkInstructionSizeSyntax(const nlohmann::json& instruction_size_field) {
+    if (!instruction_size_field.is_number_unsigned()){
         success_parsing = false;
-        std::cerr << "'word_size' must be at least 8 and less than 257!" << std::endl;
+        std::cerr << "'instruction_size' must be an unsigned integer!" << std::endl;
+    }else{
+        auto instruction_size = instruction_size_field.get<uint8_t>();
+    }
+}
+
+void MachineDescriptionParser::checkMemorySizeSyntax(const nlohmann::json& memory_size_field) {
+
+    if (!memory_size_field.is_number_unsigned()){
+        success_parsing = false;
+        std::cerr << "'memory_size' must be an unsigned integer!" << std::endl;
+    }else{
+        auto memory_size = memory_size_field.get<uint64_t>();
+    }
+}
+
+void MachineDescriptionParser::checkProgramCounterSyntax(const nlohmann::json& program_counter_field) {
+    if (checkSubField(program_counter_field, "size")) {
+        if (!program_counter_field["size"].is_number_unsigned()){
+            success_parsing = false;
+            std::cerr << "'program_counter.size' must be an unsigned integer!" << std::endl;
+        }else{
+            auto program_counter_size = program_counter_field["size"].get<uint8_t>();
+        }
     }
 
-    if (!(word_size > 0 && (word_size & (word_size - 1)) == 0)){ // checa se word_size nao e potencia de 2
-        success_parsing = false;
-        std::cerr << "'word_size' must be a power of 2!" << std::endl;
-    } 
+    if (checkSubField(program_counter_field, "id")){
+        if (!program_counter_field["id"].is_string()){
+            success_parsing = false;
+            std::cerr << "'program_counter.id' must be a string!" << std::endl;
+        }else{
+            auto program_counter_id = program_counter_field["id"].get<std::string>();
+        }
+    }
+
+    if (!checkNumberOfExpectedSubFields(program_counter_field, 2)) {
+        std::cout << "Program counter has wrong number of subfields!" << std::endl;
+        
+    }
+         
 }
 
 void MachineDescriptionParser::parseMachineDescription() {
@@ -152,12 +234,12 @@ void MachineDescriptionParser::parseMachineDescription() {
     success_parsing = true;
 
     for (auto field = machine_description.begin(); field != machine_description.end(); field++) {
-        checkFieldValidity(lowerFieldName(field.key()));
+        checkFieldValidity(field.key());
     }
     
     checkRequiredFields();
 
     for (auto recognized_field:recognized_fields) {
-        checkRequiredFieldSintax(machine_description[recognized_field], recognized_field);
+        checkRequiredFieldSyntax(machine_description[recognized_field], recognized_field);
     }    
 }
