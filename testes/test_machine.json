@@ -1,17 +1,19 @@
 { "word_size": 8,
-"register_address_size": 2,
-"instruction_size": 4,
-"memory_size": 512,
-"program_counter": { 
-"id": "PC", 
-"size": 8 
-}, 
-"flags_register": { 
-  "id": "FLAG",
-  "size": 4 
-},
-"general_registers": {
-    "size": 8, 
-    "number_of_registers": 8, 
-    "id_pattern": "R" 
-}}
+ "flags_register": {
+    "id": "FLAG",
+    "size": 4 
+ }, 
+ "general_registers": {
+    "size": 8,
+    "number_of_registers": 8,
+    "id_pattern": "R"
+ },
+ "memory_size": 512,
+ "instruction_size": 4,
+ "program_counter": {
+    "id": "PC",
+    "size": 8
+ },
+ "register_address_size": 2
+
+}

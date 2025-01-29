@@ -24,15 +24,19 @@ private:
     
     std::string machine_description_file_path; // Caminho do arquivo de descricao da maquina
     std::ifstream machine_description_file; // Arquivo de descricao da maquina
-    nlohmann::json machine_description; // JSON de descricao da maquina
+    nlohmann::json machine_description_json; // JSON de descricao da maquina
+    MachineDescription machine_description; // struct de descricao da maquina
+
     std::set<std::string> expected_machine_description_fields; // Campos do JSON de descricao da maquina
     std::set<std::string> recognized_fields; // Campos do JSON de descricao da maquina reconhecidos
+    std::unordered_map<std::string, std::function<void(const nlohmann::json& field)>> field_fillers; // Funcoes que peenchem os campos da struct
 
     void openMachineDescriptionFile(std::string machine_description_file_path); // Abre o arquivo de descricao da maquina
     void turnMachineDescriptionFileToJson(); // Transforma o arquivo de descricao da maquina em um JSON
     void closeMachineDescriptionFile(); // Fecha o arquivo de descricao da maquina
 
-    void fillMachineDescriptionFields(); // Preenche o array de campos do JSON
+    void fillExpectedMachineDescriptionFields(); // Preenche o array de campos do JSON
+    void fillFieldFillers(); // Preenche o array de funcoes que preenchem os campos da struct
     std::string lowerFieldName(const std::string& field); // Transforma um campo em minusculo
     void checkFieldValidity(const std::string& field); // Verifica se um campo do JSON e valido
     void checkRequiredFields(); // Verifica se o JSON tem todos os campos necessarios
@@ -46,6 +50,8 @@ private:
     void checkProgramCounterSyntax(const nlohmann::json& program_counter); // Verifica a Sintaxe do campo program_counter
     void checkFlagsRegisterSyntax(const nlohmann::json& flags_register); // Verifica a Sintaxe do campo flags_register
     void checkGeneralRegistersSyntax(const nlohmann::json& general_registers); // Verifica a Sintaxe do campo general_registers
+    void fillMachineDescriptionField(std::string field_name); //Prrenche um campo da struct de descricao da maquina
+    void fillMachineDescription(); // Preenche a struct de descricao da maquina
     void parseMachineDescription(); // Realiza a leitura do json de descricao da maquina
 
 };

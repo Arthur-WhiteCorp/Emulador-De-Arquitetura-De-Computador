@@ -1,8 +1,8 @@
-{
-    "name": "John Doe",
+{       
+    "word_size": 8,
+    "name": "Jane Doe",
     "age": 30,
-    "email": "johndoe@example.com",
+    "email": "janedoe@example.com",
     "is_active": true,
-    "skills": ["C++", "Python", "JavaScript"],
-    "woRD_size": 8
+    "skills": ["C++", "Python", "JavaScript"]
 }

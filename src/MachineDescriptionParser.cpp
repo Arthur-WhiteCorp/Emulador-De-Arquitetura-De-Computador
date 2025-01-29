@@ -9,7 +9,8 @@
 MachineDescriptionParser::MachineDescriptionParser(std::string machine_description_file_path) {
     openMachineDescriptionFile(machine_description_file_path);
     turnMachineDescriptionFileToJson();
-    fillMachineDescriptionFields();
+    fillExpectedMachineDescriptionFields();
+    fillFieldFillers(); // nome engraçado
     parseMachineDescription();
 }
 
@@ -40,7 +41,7 @@ void MachineDescriptionParser::turnMachineDescriptionFileToJson() {
     }
     
     try {
-        machine_description = nlohmann::json::parse(machine_description_file);
+        machine_description_json = nlohmann::json::parse(machine_description_file);
         std::cout << "Conversion to JSON was successful!" << std::endl;
         return;
     } catch (const nlohmann::json::parse_error& e) {
@@ -67,7 +68,7 @@ void MachineDescriptionParser::closeMachineDescriptionFile() {
     }
 }
 
-void MachineDescriptionParser::fillMachineDescriptionFields() {
+void MachineDescriptionParser::fillExpectedMachineDescriptionFields() {
     expected_machine_description_fields.insert("word_size");
     expected_machine_description_fields.insert("register_address_size");
     expected_machine_description_fields.insert("instruction_size");
@@ -75,6 +76,12 @@ void MachineDescriptionParser::fillMachineDescriptionFields() {
     expected_machine_description_fields.insert("program_counter");   
     expected_machine_description_fields.insert("flags_register");
     expected_machine_description_fields.insert("general_registers");  
+}
+
+void MachineDescriptionParser::fillFieldFillers() {
+    field_fillers["new_field"] = [&](const nlohmann::json& field) {
+        // code to handle new_field
+    };
 }
 
 std::string MachineDescriptionParser::lowerFieldName(const std::string& field) {
@@ -93,30 +100,39 @@ void MachineDescriptionParser::checkFieldValidity(const std::string& field) {
     if (expected_machine_description_fields.find(field_lower) == expected_machine_description_fields.end()) {
         std::cerr << "Field: " << field_lower << ", not recognized!" << std::endl;
         success_parsing = false;
-    }else {
-        if (recognized_fields.find(field_lower) != recognized_fields.end()) {
-            std::cerr << "Field: " << field_lower << ", already recognized!" << "\n";
-            std::cerr << "Please, delete the duplicate field." << std::endl;
-            success_parsing = false;
-            return;
+    }else {      
+        for (auto recognized_field:recognized_fields){
+            if (lowerFieldName(recognized_field) == field_lower){
+                std::cerr << "Field: " << field_lower << ", already recognized!" << "\n";
+                std::cerr << "Please, delete the duplicate field: ";
+                std::cerr << "'" << field << "'" << std::endl;
+                success_parsing = false;
+                return;
+            }
         }
-
-        recognized_fields.insert(field_lower);
+        recognized_fields.insert(field);
     }
 }
 
 void MachineDescriptionParser::checkRequiredFields() {
     int size;
+    bool is_found = false;
     size = recognized_fields.size();
 
-    if (size != expected_machine_description_fields.size()){
+    if (size < expected_machine_description_fields.size()){
         std::cerr << "Required fields not found!" << std::endl;
         success_parsing = false;
 
         for (auto field: expected_machine_description_fields){
-            if (recognized_fields.find(field) == recognized_fields.end()){
+            for (auto recognized_field: recognized_fields){
+                if (lowerFieldName(recognized_field) == field){
+                    is_found = true;
+                    break;
+                }
+            }
+            if (is_found == false){
                 std::cerr << "Required field: " << field << ", not found!" << std::endl;
-                success_parsing = false;
+                is_found = false;
             }
         }
     }
@@ -144,13 +160,14 @@ bool MachineDescriptionParser::checkNumberOfExpectedSubFields(const nlohmann::js
 }
 
 void MachineDescriptionParser::checkRequiredFieldSyntax(const nlohmann::json& field, const std::string& field_name) {
-    if (field_name == "word_size") { checkWordSizeSyntax(field); return; }
-    if (field_name == "register_address_size") { checkRegisterAddressSizeSyntax(field); return; }
-    if (field_name == "instruction_size") { checkInstructionSizeSyntax(field); return; }
-    if (field_name == "memory_size") { checkMemorySizeSyntax(field); return; }
-    if (field_name == "program_counter") { checkProgramCounterSyntax(field); return; }   
-    if (field_name == "flags_register") { checkFlagsRegisterSyntax(field); return; }
-    if (field_name == "general_registers") { checkGeneralRegistersSyntax(field); return; }
+    std::string field_name_lower = lowerFieldName(field_name);
+    if (field_name_lower == "word_size") { checkWordSizeSyntax(field); return; }
+    if (field_name_lower == "register_address_size") { checkRegisterAddressSizeSyntax(field); return; }
+    if (field_name_lower == "instruction_size") { checkInstructionSizeSyntax(field); return; }
+    if (field_name_lower == "memory_size") { checkMemorySizeSyntax(field); return; }
+    if (field_name_lower == "program_counter") { checkProgramCounterSyntax(field); return; }   
+    if (field_name_lower == "flags_register") { checkFlagsRegisterSyntax(field); return; }
+    if (field_name_lower == "general_registers") { checkGeneralRegistersSyntax(field); return; }
 }
 
 void MachineDescriptionParser::checkWordSizeSyntax(const nlohmann::json& word_size_field) {
@@ -158,6 +175,7 @@ void MachineDescriptionParser::checkWordSizeSyntax(const nlohmann::json& word_si
     if (!word_size_field.is_number_unsigned()){
         success_parsing = false;
         std::cerr << "'word_size' must be an unsigned integer!" << std::endl;
+        std::cout << word_size_field << std::endl;
     }else{
         word_size = word_size_field.get<uint16_t>();
         
@@ -303,19 +321,40 @@ void MachineDescriptionParser::checkGeneralRegistersSyntax(const nlohmann::json&
     }
 }
 
+void MachineDescriptionParser::fillMachineDescriptionField(std::string field_name) {
+    std::string field_name_lower = lowerFieldName(field_name);
+
+    if (field_name_lower == "program_counter"){
+        auto program_counter_field = machine_description_json[field_name].get<nlohmann::json>();
+        machine_description.program_counter.identifier = program_counter_field["id"].get<std::string>();
+        machine_description.program_counter.size = program_counter_field["size"].get<uint16_t>();
+    }
+}
+
+void MachineDescriptionParser::fillMachineDescription() {
+    for (auto field:recognized_fields){
+        fillMachineDescriptionField(field);
+    }
+}
+
 void MachineDescriptionParser::parseMachineDescription() {
     if (!success_opening){ // checa se a abertura ou conversao foi bem sucedida
         return;
     }
     success_parsing = true;
 
-    for (auto field = machine_description.begin(); field != machine_description.end(); field++) {
+    for (auto field = machine_description_json.begin(); field != machine_description_json.end(); field++) {
         checkFieldValidity(field.key());
     }
     
     checkRequiredFields();
 
     for (auto recognized_field:recognized_fields) {
-        checkRequiredFieldSyntax(machine_description[recognized_field], recognized_field);
+        checkRequiredFieldSyntax(machine_description_json[recognized_field], recognized_field);
+    }
+
+    if (success_parsing){
+        std::cout << "Machine description parsed successfully!" << std::endl;
+        //fillMachineDescription();
     }    
 }
