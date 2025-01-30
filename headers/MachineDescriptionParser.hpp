@@ -15,8 +15,8 @@ public:
     MachineDescriptionParser(std::string machine_description_file_path);
     ~MachineDescriptionParser();
     MachineDescription getMachineDescription(); // Retorna a descricao da maquina
+    bool isSuccessful();
 
-    
 private:
 
     bool success_opening; // Checa se o arquivo de descricao da maquina foi aberto ou convertido para JSON
@@ -33,12 +33,14 @@ private:
     std::set<std::string> recognized_fields; // Campos do JSON de descricao da maquina reconhecidos
     std::unordered_map<std::string, std::function<void(const nlohmann::json& field)>> field_fillers; // Funcoes que peenchem os campos da struct
 
+    void initializeErrorFlags(); // inicializa as flags de erro
+
     void openMachineDescriptionFile(std::string machine_description_file_path); // Abre o arquivo de descricao da maquina
     void turnMachineDescriptionFileToJson(); // Transforma o arquivo de descricao da maquina em um JSON
     void closeMachineDescriptionFile(); // Fecha o arquivo de descricao da maquina
 
     void fillExpectedMachineDescriptionFields(); // Preenche o array de campos do JSON
-    void fillFieldFillers(); // Preenche o array de funcoes que preenchem os campos da struct
+    void fillFieldFillers(); // Preenche o map de funcoes que preenchem os campos da struct
     std::string lowerFieldName(const std::string& field); // Transforma um campo em minusculo
     void checkFieldValidity(const std::string& field); // Verifica se um campo do JSON e valido
     void checkRequiredFields(); // Verifica se o JSON tem todos os campos necessarios

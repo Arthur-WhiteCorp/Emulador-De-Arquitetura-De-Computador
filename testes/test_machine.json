@@ -5,7 +5,7 @@
  }, 
  "general_registers": {
     "size": 8,
-    "number_of_registers": 8,
+    "number_of_registers": 4,
     "id_pattern": "R"
  },
  "memory_size": 512,

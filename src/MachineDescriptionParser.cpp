@@ -7,6 +7,7 @@
 
 
 MachineDescriptionParser::MachineDescriptionParser(std::string machine_description_file_path) {
+    initializeErrorFlags();
     openMachineDescriptionFile(machine_description_file_path);
     turnMachineDescriptionFileToJson();
     fillExpectedMachineDescriptionFields();
@@ -20,7 +21,19 @@ MachineDescriptionParser::~MachineDescriptionParser() {
 
 
 MachineDescription MachineDescriptionParser::getMachineDescription() {
+    std::cout << MachineDescriptionParser::machine_description.general_registers.registers[0].identifier << std::endl;
     return machine_description;
+}
+
+bool MachineDescriptionParser::isSuccessful() {
+    return success_opening && success_converting;
+}
+
+void MachineDescriptionParser::initializeErrorFlags() {
+    success_opening = true;
+    success_converting = true;
+    success_parsing = true;
+    success_closing = true;
 }
 
 void MachineDescriptionParser::openMachineDescriptionFile(std::string machine_description_file_path) {
@@ -113,6 +126,7 @@ void MachineDescriptionParser::fillFieldFillers() {
 
     field_fillers["instruction_size"] = [&](const nlohmann::json& field) {
         machine_description.instruction_size = field.get<uint8_t>();
+        std::cout << "Instruction size: " << machine_description.instruction_size << std::endl;
     };
 
     field_fillers["register_address_size"] = [&](const nlohmann::json& field) {
@@ -384,7 +398,6 @@ void MachineDescriptionParser::parseMachineDescription() {
     if (!success_opening){ // checa se a abertura ou conversao foi bem sucedida
         return;
     }
-    success_parsing = true;
 
     for (auto field = machine_description_json.begin(); field != machine_description_json.end(); field++) {
         checkFieldValidity(field.key());
