@@ -20,7 +20,7 @@ MachineDescriptionParser::~MachineDescriptionParser() {
 
 
 MachineDescription MachineDescriptionParser::getMachineDescription() {
-    // Implementation here
+    return machine_description;
 }
 
 void MachineDescriptionParser::openMachineDescriptionFile(std::string machine_description_file_path) {
@@ -78,9 +78,49 @@ void MachineDescriptionParser::fillExpectedMachineDescriptionFields() {
     expected_machine_description_fields.insert("general_registers");  
 }
 
+void MachineDescriptionParser::handleIdPatternConstruction(const std::string& id_pattern, uint16_t number_of_general_registers) {
+
+    GeneralRegisterDescription general_register_description;
+
+    for (int i = 0; i < number_of_general_registers; i++) {
+        general_register_description.identifier = id_pattern + std::to_string(i);
+        machine_description.general_registers.registers[i] = general_register_description;        
+    }
+}
+
 void MachineDescriptionParser::fillFieldFillers() {
-    field_fillers["new_field"] = [&](const nlohmann::json& field) {
-        // code to handle new_field
+    field_fillers["program_counter"] = [&](const nlohmann::json& field) {
+        machine_description.program_counter.identifier = field["id"].get<std::string>();
+        machine_description.program_counter.size = field["size"].get<uint16_t>();
+    };
+
+    field_fillers["flags_register"] = [&](const nlohmann::json& field) {
+        machine_description.flags_register.identifier = field["id"].get<std::string>();
+        machine_description.flags_register.size = field["size"].get<uint16_t>();
+    };
+
+    field_fillers["general_registers"] = [&](const nlohmann::json& field) {
+        machine_description.general_registers.number_of_general_registers = field["number_of_registers"].get<uint16_t>();
+        machine_description.general_registers.size_of_general_registers = field["size"].get<uint16_t>();
+        machine_description.general_registers.id_pattern = field["id_pattern"].get<std::string>();
+        machine_description.general_registers.registers.reserve(machine_description.general_registers.number_of_general_registers);
+        handleIdPatternConstruction(machine_description.general_registers.id_pattern, machine_description.general_registers.number_of_general_registers);
+    };
+
+    field_fillers["memory_size"] = [&](const nlohmann::json& field) {
+        machine_description.memory_size = field.get<uint64_t>();
+    };
+
+    field_fillers["instruction_size"] = [&](const nlohmann::json& field) {
+        machine_description.instruction_size = field.get<uint8_t>();
+    };
+
+    field_fillers["register_address_size"] = [&](const nlohmann::json& field) {
+        machine_description.register_address_size = field.get<uint8_t>();
+    };
+
+    field_fillers["word_size"] = [&](const nlohmann::json& field) {
+        machine_description.word_size = field.get<uint16_t>();
     };
 }
 
@@ -324,10 +364,13 @@ void MachineDescriptionParser::checkGeneralRegistersSyntax(const nlohmann::json&
 void MachineDescriptionParser::fillMachineDescriptionField(std::string field_name) {
     std::string field_name_lower = lowerFieldName(field_name);
 
-    if (field_name_lower == "program_counter"){
-        auto program_counter_field = machine_description_json[field_name].get<nlohmann::json>();
-        machine_description.program_counter.identifier = program_counter_field["id"].get<std::string>();
-        machine_description.program_counter.size = program_counter_field["size"].get<uint16_t>();
+    auto filler = field_fillers[field_name_lower]; // mapeia a funcao com o nome do campo
+
+    if (filler == nullptr) {
+        std::cerr << "Filler for field " << field_name_lower << " not found!" << std::endl;
+        return;
+    }else{
+        filler(machine_description_json[field_name]); // chama a funcao para preencher o campo
     }
 }
 
@@ -355,6 +398,6 @@ void MachineDescriptionParser::parseMachineDescription() {
 
     if (success_parsing){
         std::cout << "Machine description parsed successfully!" << std::endl;
-        //fillMachineDescription();
+        fillMachineDescription();
     }    
 }

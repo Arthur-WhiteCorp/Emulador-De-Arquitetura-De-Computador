@@ -17,7 +17,8 @@ struct GeneralRegisterDescription{
 
 struct GeneralRegistersDescription {
     uint16_t number_of_general_registers; // máximo de 2^16 ou o limite de register_address_size
-    uint8_t size_of_general_registers; // máximo de 2^8 ou o limite de word_size
+    uint16_t size_of_general_registers; // máximo de 2^16 ou o limite de word_size
+    std::string id_pattern;
     std::vector<GeneralRegisterDescription> registers;
 };
 

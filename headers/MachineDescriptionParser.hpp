@@ -15,6 +15,8 @@ public:
     MachineDescriptionParser(std::string machine_description_file_path);
     ~MachineDescriptionParser();
     MachineDescription getMachineDescription(); // Retorna a descricao da maquina
+
+    
 private:
 
     bool success_opening; // Checa se o arquivo de descricao da maquina foi aberto ou convertido para JSON
@@ -51,6 +53,7 @@ private:
     void checkFlagsRegisterSyntax(const nlohmann::json& flags_register); // Verifica a Sintaxe do campo flags_register
     void checkGeneralRegistersSyntax(const nlohmann::json& general_registers); // Verifica a Sintaxe do campo general_registers
     void fillMachineDescriptionField(std::string field_name); //Prrenche um campo da struct de descricao da maquina
+    void handleIdPatternConstruction(const std::string& id_pattern , uint16_t number_of_general_registers); // Cria os ids dos registradores gerais com base no id_pattern
     void fillMachineDescription(); // Preenche a struct de descricao da maquina
     void parseMachineDescription(); // Realiza a leitura do json de descricao da maquina
 
