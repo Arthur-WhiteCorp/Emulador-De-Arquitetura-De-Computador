@@ -22,6 +22,7 @@ set(project_SRC
   ${PROJECT_SOURCE_DIR}/src/main.cpp
   ${PROJECT_SOURCE_DIR}/src/Machine.cpp
   ${PROJECT_SOURCE_DIR}/src/MachineDescriptionParser.cpp
+  ${PROJECT_SOURCE_DIR}/src/MachineDescription.cpp
 )
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")

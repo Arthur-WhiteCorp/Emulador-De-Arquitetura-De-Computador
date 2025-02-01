@@ -31,6 +31,9 @@ struct MachineDescription
     RegisterDescription program_counter; // registro que guarda o endereço da próxima instrução
     RegisterDescription flags_register; // registro que guarda as flags
     GeneralRegistersDescription general_registers; // descricao dos registros gerais
+    MachineDescription() {} // construtor padrão
+    MachineDescription(const MachineDescription& other);
+    MachineDescription& operator=(const MachineDescription& other);
 };
 
 

@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
         std::cout << machine_description.flags_register.size << "\n";
         std::cout << machine_description.flags_register.identifier << "\n";
         std::cout << machine_description.general_registers.number_of_general_registers << "\n";
-        std::cout << machine_description.general_registers.size_of_general_registers << "\n";
+        std::cout << (unsigned int)machine_description.general_registers.size_of_general_registers << "\n";
 
         for (unsigned int i = 0; i < machine_description.general_registers.number_of_general_registers; i++){
-            std::cout << machine_description.general_registers.registers[0].identifier << "\n";
+            std::cout << machine_description.general_registers.registers[i].identifier << std::endl;
         }
     }
 

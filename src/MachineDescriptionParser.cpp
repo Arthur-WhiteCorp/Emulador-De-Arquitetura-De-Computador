@@ -21,7 +21,6 @@ MachineDescriptionParser::~MachineDescriptionParser() {
 
 
 MachineDescription MachineDescriptionParser::getMachineDescription() {
-    std::cout << MachineDescriptionParser::machine_description.general_registers.registers[0].identifier << std::endl;
     return machine_description;
 }
 
@@ -126,7 +125,6 @@ void MachineDescriptionParser::fillFieldFillers() {
 
     field_fillers["instruction_size"] = [&](const nlohmann::json& field) {
         machine_description.instruction_size = field.get<uint8_t>();
-        std::cout << "Instruction size: " << machine_description.instruction_size << std::endl;
     };
 
     field_fillers["register_address_size"] = [&](const nlohmann::json& field) {
