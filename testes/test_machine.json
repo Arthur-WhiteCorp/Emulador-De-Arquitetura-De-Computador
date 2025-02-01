@@ -1,10 +1,10 @@
 { "word_size": 8,
  "flags_register": {
     "id": "FLAG",
-    "size": 4 
+    "size": 9 
  }, 
  "general_registers": {
-    "size": 8,
+    "size": 12,
     "number_of_registers": 4,
     "id_pattern": "R"
  },
@@ -12,7 +12,7 @@
  "instruction_size": 4,
  "program_counter": {
     "id": "PC",
-    "size": 8
+    "size": 88
  },
  "register_address_size": 2
 
