@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 #include <MachineDescription.h>
+#include <MachineDescriptionValidator.hpp>
+#include <memory>
+
 
 class Machine{
 
@@ -29,18 +32,12 @@ struct Memory
     std::vector<Binary> data; // dados da memoria tem que ser um multiplo da palavra
 };
 
-
 public:
-    MachineDescription machine_description; // descricao da maquina
-
-
-
     Machine(MachineDescription machine_description);
     ~Machine();
 private:
-    bool is_description_valid;
-
-
+    const MachineDescription machine_description; // descricao da maquina
+    std::unique_ptr<MachineDescriptionValidator> machine_description_validator; // validador da descricao da maquina
     Register program_counter; // registro que guarda o endereço da próxima instrução
     Register flags_register; // registro que guarda as flags
     std::vector<Register> general_registers; // registros gerais que o programa utiliza
@@ -49,9 +46,8 @@ private:
 
     void initializeErrorFlags(); // inicializa os flags de erro
     void loadMachineDescription(MachineDescription machine_description_struct); // carrega a descricao da maquina
-    void checkRegisterSize(std::string register_identifier, uint16_t register_size); // checa o tamanho do registro
-    void checkRegistersSizes(); // checa o tamanho dos registos
-    void checkMachineDescriptionValidity(); // checa a validade semantica da descricao da maquina
+    bool isMachineDescriptionValid(const MachineDescription& machine_description); // checa a validade da descricao da maquina
+   
 };
 
 #endif
