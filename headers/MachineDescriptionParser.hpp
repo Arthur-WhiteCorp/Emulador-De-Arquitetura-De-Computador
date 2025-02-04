@@ -8,6 +8,7 @@
 #include <MachineDescription.h>
 #include <iostream>
 #include <set>
+#include <unordered_map>
 
 class  MachineDescriptionParser{
 

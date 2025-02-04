@@ -8,12 +8,12 @@
     "number_of_registers": 4,
     "id_pattern": "R"
  },
- "memory_size": 512,
+ "memory_size": 256,
  "instruction_size": 4,
  "program_counter": {
     "id": "PC",
     "size": 8
  },
- "register_address_size": 2
+ "register_address_size": 4
 
 }

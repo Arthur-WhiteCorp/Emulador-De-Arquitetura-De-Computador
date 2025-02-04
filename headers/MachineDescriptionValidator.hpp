@@ -18,8 +18,11 @@ private:
     void loadMachineDescription(MachineDescription machine_description_struct); // carrega a descricao da maquina
     void checkRegisterSize(std::string register_identifier, uint16_t register_size); // checa o tamanho do registro
     void checkRegistersSizes(); // checa o tamanho dos registos
-    bool checkPrefixesEquality(const std::string& register_identifier_a, const std::string& register_identifier_b, std::size_t prefix_size); // checa os prefixos dos identificadores dos registos
     void checkRegistersIdentifiers(); // checa os identificadores dos registos
+    void checkMemorySize(); // checa o tamanho da memoria
+    void checkInstructionSize(); // checa o tamanho das instrucoes
+    void checkRegisterAddressSize(); // checa o tamanho do endereco dos registos
+    void validateInstructionAndRegisterAddressSize(); // checa se o tamanho da instrucao e do endereco dos registos e valido
     void checkMachineDescriptionValidity(); // checa a validade semantica da descricao da maquina
 };
 
