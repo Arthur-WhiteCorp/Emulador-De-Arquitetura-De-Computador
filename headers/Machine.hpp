@@ -8,11 +8,13 @@
 #include <MachineDescriptionValidator.hpp>
 #include <memory>
 #include <unordered_map>
+#include <BinaryUtils.hpp>
 
 
 class Machine{
 
-using Binary = std::vector<uint8_t>;
+using Byte = uint8_t;
+using Binary = std::vector<Byte>; // tamanho minimo 8 bits (1 byte)
 
 struct Instruction{
     Binary code; // código da instrução em binario
@@ -30,7 +32,7 @@ struct Register{
 struct Memory
 {   
     uint64_t size; // tamanho da memoria em bytes
-    std::vector<Binary> data; // dados da memoria tem que ser um multiplo da palavra
+    std::vector<Byte> data; // dados da memoria tem que ser um multiplo da palavra
 };
 
 public:

@@ -24,10 +24,11 @@ bool Machine::isMachineDescriptionValid(const MachineDescription& machine_descri
 
 void Machine::initializeMemory(){
     memory.size = machine_description.memory_size;
-    memory.data.resize(machine_description.memory_size);
+    Byte  zero = (Byte) 8; // 8 bits
+    memory.data.assign(memory.size, zero); // inicializa com zeros
 }
 void Machine::initializeMachine(){
     initializeMemory();
-    initializeInteralRegisters();
-    initializeGeneralRegisters();
+    //initializeInteralRegisters();
+    //initializeGeneralRegisters();
 }
