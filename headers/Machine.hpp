@@ -13,8 +13,6 @@
 
 class Machine{
 
-using Byte = uint8_t;
-using Binary = std::vector<Byte>; // tamanho minimo 8 bits (1 byte)
 
 struct Instruction{
     Binary code; // código da instrução em binario
