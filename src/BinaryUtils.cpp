@@ -1,37 +1,31 @@
 #include "BinaryUtils.hpp"
 
 
+
+
 template<>
 Binary BinaryUtils<Binary>::Add(const Binary& binary_a, const Binary& binary_b) {
-    bool a_greater = false;
-    a_greater = binary_a.size() >= binary_b.size(); // a e maior que b
-    size_t size_max = 0;
-    size_t size_min = 0;
-    if (a_greater) {
-        size_max = binary_a.size();
-        size_min = binary_b.size();
-    } else {
-        size_max = binary_b.size();
-        size_min = binary_a.size();
+    uint8_t max_size = std::max(binary_a.size(), binary_b.size()); 
+    uint8_t min_size = std::min(binary_a.size(), binary_b.size());
+    bool a_bigger = (binary_a.size() > binary_b.size()); // true se a for maior
+    uint8_t carry = 0; // 0 ou 1
+    uint16_t sum_with_carry = 0; 
+    uint8_t sum_without_carry = 0;
+
+    __uint128_t result;
+
+    if (max_size > NATIVE_MAX_BINARY_SIZE && max_size <= MAX_BINARY_SIZE) {
+        //return Add256(); TODO
     }
 
-    std::vector<uint8_t> result(size_max, 0); // inicialização com 0
-
-    if (a_greater) {
-        for (size_t i = 0; i < size_min; ++i) {
-            result[size_max - i - 1] = binary_a[size_max - i] + binary_b[size_min - i];
-        }
-        for (size_t i = size_min; i < size_max; ++i) {
-            result[size_max - i - 1] = binary_a[size_max - i];
-        }
-    } else {
-        for (size_t i = 0; i < size_min; ++i) {
-            result[size_max - i - 1] = binary_b[size_max - i] + binary_a[size_min - i];
-        }
-        for (size_t i = size_min; i < size_max; ++i) {
-            result[size_max - i - 1] = binary_b[size_max - i];
-        }
+    for (size_t i = 0; i < min_size; i++) { 
+        result = result + (carry << 7); // adiciona o carry
+        sum_with_carry = binary_a[max_size - i - 1] + binary_b[min_size - i - 1]; // soma dois bytes
+        sum_without_carry = binary_a[max_size - i - 1] + binary_b[min_size - i - 1];
+        carry = sum_with_carry >> 8; // calcula novo carry 
+        result = result + ( (result << 8) + sum_without_carry); // adiciona a soma sem o carry        
     }
-    std::cout << "magia" << std::endl;
-    return result;
+
+
+
 }

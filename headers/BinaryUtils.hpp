@@ -6,9 +6,26 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
+#include <climits>
+
+constexpr size_t MAX_BINARY_SIZE = 256; // tamanho maximo de um binary
+constexpr size_t NATIVE_MAX_BINARY_SIZE = 128; // tamanho maximo de um binary suportado pelço C++
+
+constexpr bool IsPowerOfTwo(size_t value) {
+    return (value > 0) && ((value & (value - 1)) == 0);
+}
+
+static_assert(MAX_BINARY_SIZE > 0, "MAX_BINARY_SIZE must be greater than 0");
+static_assert(NATIVE_MAX_BINARY_SIZE > 0, "NATIVE_MAX_BINARY_SIZE must be greater than 0");
+static_assert(MAX_BINARY_SIZE >= NATIVE_MAX_BINARY_SIZE, "MAX_BINARY_SIZE must be at least as large as NATIVE_MAX_BINARY_SIZE");
+static_assert(IsPowerOfTwo(MAX_BINARY_SIZE), "MAX_BINARY_SIZE must be a power of two");
+static_assert(IsPowerOfTwo(NATIVE_MAX_BINARY_SIZE), "NATIVE_MAX_BINARY_SIZE must be a power of two");
 
 using Byte = uint8_t;
+static_assert(sizeof(Byte) * CHAR_BIT == 8, "Byte must be exactly 8 bits");
+
 using Binary = std::vector<Byte>; // tamanho minimo 8 bits (1 byte)
+static_assert(std::is_same_v<Binary, std::vector<Byte>>, "Binary must be a std::vector<Byte>");
 
 template<typename T>
 class BinaryUtils {      
@@ -24,6 +41,9 @@ public:
     static T Not(const T& binary_a); // not bit a bit
     static T ShiftLeft(const T& binary_a, const unsigned int& number); // Bugado
     static T ShiftRight(const T& binary_a, const unsigned int& number); // Bugado
+
+private:
+    BinaryUtils() = delete;
 
 }; 
 
