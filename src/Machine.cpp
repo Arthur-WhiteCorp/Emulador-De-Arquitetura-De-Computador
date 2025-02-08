@@ -2,6 +2,7 @@
 #include <MachineDescription.h>
 #include <iostream>
 #include <BinaryUtils.hpp>
+#include <bitset>
 
 Machine::Machine(MachineDescription machine_description)
     :machine_description(machine_description){
@@ -34,6 +35,8 @@ void Machine::initializeMachine(){
     Binary num_b = {0b0101101,0b00000111};
     Binary result = BinaryUtils<Binary>::Add(num_a, num_b);
     uint8_t num_c = BinaryUtils<uint8_t>::Add(num_c, num_c);
+    std::cout << std::bitset<8>(result[0]) << std::endl;
+    std::cout << std::bitset<8>(result[1]) << std::endl;
     //initializeInteralRegisters();
     //initializeGeneralRegisters();
 }

@@ -27,6 +27,8 @@ static_assert(sizeof(Byte) * CHAR_BIT == 8, "Byte must be exactly 8 bits");
 using Binary = std::vector<Byte>; // tamanho minimo 8 bits (1 byte)
 static_assert(std::is_same_v<Binary, std::vector<Byte>>, "Binary must be a std::vector<Byte>");
 
+
+
 template<typename T>
 class BinaryUtils {      
 
@@ -44,6 +46,10 @@ public:
 
 private:
     BinaryUtils() = delete;
+    using BitUnion_128 = union {
+    __uint128_t num;
+    uint8_t bytes[16];
+    };
 
 }; 
 
