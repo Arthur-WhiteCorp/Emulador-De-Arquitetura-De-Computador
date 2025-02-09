@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstdint>
 #include <climits>
+#include <bitset>
 
 constexpr size_t MAX_BINARY_SIZE = 256; // tamanho maximo de um binary
 constexpr size_t NATIVE_MAX_BINARY_SIZE = 128; // tamanho maximo de um binary suportado pelço C++
@@ -27,6 +28,8 @@ static_assert(sizeof(Byte) * CHAR_BIT == 8, "Byte must be exactly 8 bits");
 using Binary = std::vector<Byte>; // tamanho minimo 8 bits (1 byte)
 static_assert(std::is_same_v<Binary, std::vector<Byte>>, "Binary must be a std::vector<Byte>");
 
+std::ostream& operator<<(std::ostream& os, const Binary& binary);
+   
 
 
 template<typename T>
@@ -37,6 +40,7 @@ public:
     static T Subtract(const T& binary_a, const T& binary_b); // subtração
     static T Multiply(const T& binary_a, const T& binary_b); // multiplicação
     static T Divide(const T& binary_a, const T& binary_b); // divisao
+    static T Remainder(const T& binary_a, const T& binary_b); // resto da divisao
     static T And(const T& binary_a, const T& binary_b); // and bit a bit
     static T Or(const T& binary_a, const T& binary_b); // or bit a bit
     static T Xor(const T& binary_a, const T& binary_b); // xor bit a bit
@@ -57,53 +61,37 @@ template<typename T>
 T BinaryUtils<T>::Add(const T& binary_a, const T& binary_b) {
     return binary_a + binary_b;
 }
-
 template<>
 Binary BinaryUtils<Binary>::Add(const Binary& binary_a, const Binary& binary_b);
+
 template<typename T>
 T BinaryUtils<T>::Subtract(const T& binary_a, const T& binary_b) {
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = std::min(binary_a.size(), binary_b.size());
-
-        T result;
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] - binary_b[i]);
-        }
-        return result;
-    }
     return binary_a - binary_b;
 }
+template<>
+Binary BinaryUtils<Binary>::Subtract(const Binary& binary_a, const Binary& binary_b);
 
 template<typename T>
 T BinaryUtils<T>::Multiply(const T& binary_a, const T& binary_b) {
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = std::min(binary_a.size(), binary_b.size());
-
-        T result;
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] * binary_b[i]);
-        }
-        return result;
-    }
     return binary_a * binary_b;
 }
+template<>
+Binary BinaryUtils<Binary>::Multiply(const Binary& binary_a, const Binary& binary_b);
 
 template<typename T>
 T BinaryUtils<T>::Divide(const T& binary_a, const T& binary_b) {
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = std::min(binary_a.size(), binary_b.size());
-
-        T result;
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] / binary_b[i]);
-        }
-        return result;
-    }
     return binary_a / binary_b;
 }
+template<>
+Binary BinaryUtils<Binary>::Divide(const Binary& binary_a, const Binary& binary_b);
+
+template<typename T>
+T BinaryUtils<T>::Remainder(const T& binary_a, const T& binary_b) {
+    return binary_a % binary_b;
+}
+
+template<>
+Binary BinaryUtils<Binary>::Remainder(const Binary& binary_a, const Binary& binary_b);
 
 template<typename T>
 T BinaryUtils<T>::And(const T& binary_a, const T& binary_b) {
