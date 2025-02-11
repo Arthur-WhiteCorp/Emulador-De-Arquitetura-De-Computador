@@ -20,21 +20,46 @@ bool MachineDescriptionValidator::isValid() {
     return is_valid;
 }
 
-void MachineDescriptionValidator::checkRegisterSize(std::string register_identifier, uint16_t register_size){
-    if (register_identifier == machine_description.general_registers.id_pattern &&
-        register_size > machine_description.general_registers.size_of_general_registers){
+void MachineDescriptionValidator::checkWordSize(){
+    if (machine_description.word_size < 8 || machine_description.word_size > 128 ) { // checa se word_size e menor que 8 ou maior que 256
         is_valid = false;
-        std::cerr << "General Registers '" << register_identifier << "_' sizes must be less than or equal to word_size!" << std::endl;
-    }else if (register_size > machine_description.word_size){
-        is_valid = false;
-        std::cerr << "Register '" << register_identifier << "' size must be less than or equal to word_size!" << std::endl;
+        std::cerr << "'word_size' must be at least 8 and less or equal than 128!" << std::endl;
     }
 
+    if (!(machine_description.word_size > 0 // checa se word_size nao e potencia de 2
+        && (machine_description.word_size & (machine_description.word_size - 1)) == 0)){ 
+        is_valid = false;
+        std::cerr << "'word_size' must be a power of 2!" << std::endl;
+    } 
+}
+
+void MachineDescriptionValidator::checkGeneralRegistersSize(){
+    if (machine_description.general_registers.size_of_general_registers > machine_description.word_size){
+        is_valid = false;
+        std::cerr << "'general_registers.size' must be less than or equal to word_size!" << std::endl;
+    }
+    if (!(machine_description.general_registers.size_of_general_registers > 0 // checa se word_size nao e potencia de 2
+        && (machine_description.general_registers.size_of_general_registers & (machine_description.general_registers.size_of_general_registers - 1)) == 0)){ 
+        is_valid = false;
+        std::cerr << "'general_registers.size' must be a power of 2!" << std::endl;
+    } 
+}
+
+void MachineDescriptionValidator::checkProgramCounterSize(){
+    if (!(machine_description.program_counter.size > 0 // checa se word_size nao e potencia de 2
+        && (machine_description.program_counter.size & (machine_description.program_counter.size - 1)) == 0)){ 
+        is_valid = false;
+        std::cerr << "'program_counter.size' must be a power of 2!" << std::endl;
+    }
+}
+
+void MachineDescriptionValidator::checkFlagsRegisterSize(){
+    // não tem o que checar o tamanho do flags register
 }
 void MachineDescriptionValidator::checkRegistersSizes(){
-    checkRegisterSize(machine_description.program_counter.identifier, machine_description.program_counter.size);
-    checkRegisterSize(machine_description.flags_register.identifier, machine_description.flags_register.size);
-    checkRegisterSize(machine_description.general_registers.id_pattern, machine_description.general_registers.size_of_general_registers);
+    checkGeneralRegistersSize();
+    checkProgramCounterSize();
+    checkFlagsRegisterSize();
 }
 
 void MachineDescriptionValidator::checkRegistersIdentifiers(){
@@ -104,6 +129,7 @@ void MachineDescriptionValidator::validateInstructionAndRegisterAddressSize(){
     }
 }
 void MachineDescriptionValidator::checkMachineDescriptionValidity(){
+    checkWordSize();
     checkRegistersSizes();
     checkRegistersIdentifiers();
     checkMemorySize();

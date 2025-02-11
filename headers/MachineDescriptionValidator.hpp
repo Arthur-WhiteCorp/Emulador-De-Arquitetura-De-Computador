@@ -16,7 +16,10 @@ private:
 
     void initializeErrorFlags(); // inicializa os flags de erro
     void loadMachineDescription(MachineDescription machine_description_struct); // carrega a descricao da maquina
-    void checkRegisterSize(std::string register_identifier, uint16_t register_size); // checa o tamanho do registro
+    void checkWordSize(); // checa o tamanho da palavra
+    void checkGeneralRegistersSize(); // checa o tamanho dos registos gerais
+    void checkProgramCounterSize(); // checa o tamanho do Program Counter
+    void checkFlagsRegisterSize(); // checa o tamanho do Flags Register
     void checkRegistersSizes(); // checa o tamanho dos registos
     void checkRegistersIdentifiers(); // checa os identificadores dos registos
     void checkMemorySize(); // checa o tamanho da memoria

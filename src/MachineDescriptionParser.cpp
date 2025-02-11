@@ -228,19 +228,6 @@ void MachineDescriptionParser::checkWordSizeSyntax(const nlohmann::json& word_si
         success_parsing = false;
         std::cerr << "'word_size' must be an unsigned integer!" << std::endl;
         std::cout << word_size_field << std::endl;
-    }else{
-        word_size = word_size_field.get<uint16_t>();
-        
-
-        if (word_size < 8 || word_size > 256 ) { // checa se word_size e menor que 8 ou maior que 256
-            success_parsing = false;
-            std::cerr << "'word_size' must be at least 8 and less than 257!" << std::endl;
-        }
-
-        if (!(word_size > 0 && (word_size & (word_size - 1)) == 0)){ // checa se word_size nao e potencia de 2
-            success_parsing = false;
-            std::cerr << "'word_size' must be a power of 2!" << std::endl;
-        } 
     }
 }
 
