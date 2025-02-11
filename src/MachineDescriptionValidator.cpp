@@ -64,8 +64,19 @@ void MachineDescriptionValidator::checkMemorySize(){
     std::uint64_t max_memory_size = pow(2, machine_description.word_size);
     if (machine_description.memory_size > max_memory_size){
         is_valid = false;
-        std::cerr << "'memory_size' must be less than or equal to 2^word_size!" << std::endl;    
+        std::cerr << "'memory_size' must be less than or equal to 2^'word_size'!" << std::endl;    
     }
+
+    if (machine_description.memory_size == 0){
+        is_valid = false;
+        std::cerr << "'memory_size' must be greater than 0!" << std::endl;
+    }
+
+    if (machine_description.memory_size % (machine_description.word_size/8) != 0){
+        is_valid = false;
+        std::cerr << "'memory_size' must be a multiple of 'word_size'!" << std::endl;
+    }
+
 }
 
 void MachineDescriptionValidator::checkInstructionSize(){
@@ -99,4 +110,10 @@ void MachineDescriptionValidator::checkMachineDescriptionValidity(){
     checkInstructionSize();
     checkRegisterAddressSize();
     validateInstructionAndRegisterAddressSize();
+
+    if (!is_valid){
+        std::cerr << "Machine description is invalid!" << std::endl;
+    }else{
+        std::cout << "Machine description is valid!" << std::endl;
+    }
 }

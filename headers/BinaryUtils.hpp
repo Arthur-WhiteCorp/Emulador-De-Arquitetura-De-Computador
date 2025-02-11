@@ -9,7 +9,7 @@
 #include <climits>
 #include <bitset>
 
-constexpr size_t MAX_BINARY_SIZE = 256; // tamanho maximo de um binary
+constexpr size_t MAX_BINARY_SIZE = 128; // tamanho maximo de um binary
 constexpr size_t NATIVE_MAX_BINARY_SIZE = 128; // tamanho maximo de um binary suportado pelço C++
 
 constexpr bool IsPowerOfTwo(size_t value) {
@@ -31,9 +31,10 @@ static_assert(std::is_same_v<Binary, std::vector<Byte>>, "Binary must be a std::
 std::ostream& operator<<(std::ostream& os, const Binary& binary);
    
 
-
 template<typename T>
 class BinaryUtils {      
+    static_assert(std::is_unsigned<T>::value || (std::is_same<T, Binary>::value), 
+    "T must be an unsigned type or a vector of Byte"); // T precisa ser um tipo unsigned ou um vector de unsigned
 
 public:
     static T Add(const T& binary_a, const T& binary_b); // soma
@@ -95,80 +96,45 @@ Binary BinaryUtils<Binary>::Remainder(const Binary& binary_a, const Binary& bina
 
 template<typename T>
 T BinaryUtils<T>::And(const T& binary_a, const T& binary_b) {
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = std::min(binary_a.size(), binary_b.size());
-
-        T result;
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] & binary_b[i]);
-        }
-        return result;
-    }
     return binary_a & binary_b;
 }
+template<>
+Binary BinaryUtils<Binary>::And(const Binary& binary_a, const Binary& binary_b);
 
 template<typename T>
 T BinaryUtils<T>::Or(const T& binary_a, const T& binary_b) {
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = std::min(binary_a.size(), binary_b.size());
-
-        T result;
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] | binary_b[i]);
-        }
-        return result;
-    }
     return binary_a | binary_b;
 }
+template<>
+Binary BinaryUtils<Binary>::Or(const Binary& binary_a, const Binary& binary_b);
 
 template<typename T>
 T BinaryUtils<T>::Xor(const T& binary_a, const T& binary_b) {
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = std::min(binary_a.size(), binary_b.size());
-
-        T result;
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] ^ binary_b[i]);
-        }
-        return result;
-    }
     return binary_a ^ binary_b;
 }
+template<>
+Binary BinaryUtils<Binary>::Xor(const Binary& binary_a, const Binary& binary_b);
+
+template<typename T>
+T BinaryUtils<T>::Not(const T& binary_a) {
+    return ~binary_a;
+}
+template<>
+Binary BinaryUtils<Binary>::Not(const Binary& binary_a);
 
 template<typename T>
 T BinaryUtils<T>::ShiftLeft(const T& binary_a, const unsigned int& number) {
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = binary_a.size(); 
-        T result;
-        
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] << number);
-        }
-        return result;
-    }
-    return binary_a << number;
-    
+    return binary_a << number;  
 }
+template<>
+Binary BinaryUtils<Binary>::ShiftLeft(const Binary& binary_a, const unsigned int& number);
 
 template<typename T>
 T BinaryUtils<T>::ShiftRight(const T& binary_a, const unsigned int& number) {
-    /* Bugado
-    if (std::is_same<std::vector<typename T::value_type>, T>::value) {
-        size_t size = std::min(binary_a.size(), binary_b.size());
-
-        T result;
-        result.reserve(binary_a.size());
-        for (size_t i = 0; i < size; ++i) {
-            result.push_back(binary_a[i] >> number);
-        }
-        return result;
-    }
-    return binary_a >> binary_b;
-    */
+    return binary_a >> number;
 }
+template<>
+Binary BinaryUtils<Binary>::ShiftRight(const Binary& binary_a, const unsigned int& number);
+
 
 #endif
