@@ -16,16 +16,29 @@ class Machine{
 
 struct Instruction{
     Binary code; // código da instrução em binario
-
 };
 
-using InstructionSet = std::vector<Instruction>;
-
-struct Register{
+struct RegisterInfo{
     std::string identifier; // identificador do registro 
     uint16_t size; // tamanho do registro em bits
-    Binary data; // dados do registro
 };
+
+struct GeneralRegister{
+    RegisterInfo info;
+    Binary data;
+};
+
+struct ProgramCounter{
+    RegisterInfo info;
+    Binary address;
+};
+
+using Flags = std::vector<bool>;
+struct FlagsRegister{
+    RegisterInfo info;
+    Flags flags;
+};
+
 
 struct Memory
 {   
@@ -33,15 +46,20 @@ struct Memory
     std::vector<Byte> data; // dados da memoria tem que ser um multiplo da palavra
 };
 
+using InstructionSet = std::vector<Instruction>;
+using GeneralRegistersMap = std::unordered_map<std::string, GeneralRegister>;
+
+
+
 public:
     Machine(MachineDescription machine_description);
     ~Machine();
 private:
     const MachineDescription machine_description; // descricao da maquina
     std::unique_ptr<MachineDescriptionValidator> machine_description_validator; // validador da descricao da maquina
-    Register program_counter; // registro que guarda o endereço da próxima instrução
-    Register flags_register; // registro que guarda as flags
-    std::unordered_map<std::string, Register> general_registers;
+    ProgramCounter program_counter; // registro que guarda o endereço da próxima instrução
+    FlagsRegister flags_register; // registro que guarda as flags
+    GeneralRegistersMap general_registers; // registradores gerais
     InstructionSet instruction_set; // lista de instruções
     Memory memory; // memória
 
