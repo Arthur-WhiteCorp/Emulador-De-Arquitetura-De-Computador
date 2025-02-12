@@ -8,6 +8,8 @@
 #include <cstdint>
 #include <climits>
 #include <bitset>
+#include <functional>
+#include <Hash128Bits.hpp>
 
 constexpr size_t MAX_BINARY_SIZE = 128; // tamanho maximo de um binary
 constexpr size_t NATIVE_MAX_BINARY_SIZE = 128; // tamanho maximo de um binary suportado pelço C++
@@ -28,13 +30,52 @@ static_assert(sizeof(Byte) * CHAR_BIT == 8, "Byte must be exactly 8 bits");
 using Binary = std::vector<Byte>; // tamanho minimo 8 bits (1 byte)
 static_assert(std::is_same_v<Binary, std::vector<Byte>>, "Binary must be a std::vector<Byte>");
 
+using BitUnion_128 = union {
+    __uint128_t num;
+    uint8_t bytes[16];
+    };
+
+struct BinaryHash {
+    std::size_t operator()(const Binary& binary) const {
+        uint8_t size = binary.size();
+         __uint128_t num;
+
+        for (uint8_t i = 0; i < size; ++i) {
+            num = (num << 8) + binary[i];
+        } 
+            
+        return Hash128Bits::hash(num);    
+    }
+};
+
+struct BinaryEqual {
+    bool operator()(const Binary& lhs, const Binary& rhs) const {
+        BitUnion_128 hash_union;
+        uint8_t size_lhs = lhs.size();
+        uint8_t size_rhs = rhs.size();
+        __uint128_t num_lhs;
+        __uint128_t num_rhs;
+        for (uint8_t i = 0; i < size_lhs; ++i) {
+            num_lhs = (num_lhs << 8) + lhs[i];
+        }
+        for (uint8_t i = 0; i < size_rhs; ++i) {
+            num_rhs = (num_rhs << 8) + rhs[i];
+        }
+        return num_lhs == num_rhs;
+    }
+};
+
+
 std::ostream& operator<<(std::ostream& os, const Binary& binary);
-   
+
 
 template<typename T>
 class BinaryUtils {      
-    static_assert(std::is_unsigned<T>::value || (std::is_same<T, Binary>::value), 
+    static_assert(std::is_unsigned<T>::value || (std::is_same<T, Binary>::value),
     "T must be an unsigned type or a vector of Byte"); // T precisa ser um tipo unsigned ou um vector de unsigned
+
+    static_assert(std::is_same<T, Binary>::value ? sizeof(T) <= 128 : true, 
+    "Binary size must be <= 128"); // checa o tamanho do Binary
 
 public:
     static T Add(const T& binary_a, const T& binary_b); // soma
@@ -52,12 +93,9 @@ public:
 
 private:
     BinaryUtils() = delete;
-    using BitUnion_128 = union {
-    __uint128_t num;
-    uint8_t bytes[16];
-    };
-
 }; 
+
+
 
 template<typename T>
 T BinaryUtils<T>::Add(const T& binary_a, const T& binary_b) {

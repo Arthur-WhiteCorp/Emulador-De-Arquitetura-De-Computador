@@ -25,6 +25,7 @@ set(project_SRC
   ${PROJECT_SOURCE_DIR}/src/MachineDescription.cpp
   ${PROJECT_SOURCE_DIR}/src/MachineDescriptionValidator.cpp
   ${PROJECT_SOURCE_DIR}/src/BinaryUtils.cpp
+  ${PROJECT_SOURCE_DIR}/src/Hash128Bits.cpp
 )
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")

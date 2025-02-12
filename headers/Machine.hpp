@@ -48,8 +48,7 @@ struct Memory
 
 using InstructionSet = std::vector<Instruction>;
 using RegisterIdToBinaryMap = std::unordered_map<std::string, Binary>;
-using GeneralRegistersMap = std::unordered_map<std::string, GeneralRegister>;
-// preciso implementar um map de identificador para Binary
+using GeneralRegistersMap = std::unordered_map<Binary, GeneralRegister, BinaryHash, BinaryEqual>;
 
 public:
     Machine(MachineDescription machine_description);
