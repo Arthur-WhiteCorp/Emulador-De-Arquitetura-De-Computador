@@ -49,7 +49,7 @@ struct Memory
 using InstructionSet = std::vector<Instruction>;
 using RegisterIdToBinaryMap = std::unordered_map<std::string, Binary>;
 using GeneralRegistersMap = std::unordered_map<Binary, GeneralRegister, BinaryHash, BinaryEqual>;
-
+// falta testar meu map
 public:
     Machine(MachineDescription machine_description);
     ~Machine();
