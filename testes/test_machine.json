@@ -9,11 +9,11 @@
     "id_pattern": "R"
  },
  "memory_size": 256,
- "instruction_size": 4,
+ "alu_instruction_size": 4,
  "program_counter": {
     "id": "PC",
     "size": 8
  },
- "register_address_size": 4
+ "register_address_size": 2
 
 }

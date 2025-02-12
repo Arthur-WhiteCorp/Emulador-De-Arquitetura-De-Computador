@@ -3,7 +3,7 @@
 MachineDescription::MachineDescription(const MachineDescription& other) {
     word_size = other.word_size;
     register_address_size = other.register_address_size;
-    instruction_size = other.instruction_size;
+    alu_instruction_size = other.alu_instruction_size;
     memory_size = other.memory_size;
     program_counter = other.program_counter;
     flags_register = other.flags_register;
@@ -21,7 +21,7 @@ MachineDescription& MachineDescription::operator=(const MachineDescription& othe
     if (this != &other) {
         word_size = other.word_size;
         register_address_size = other.register_address_size;
-        instruction_size = other.instruction_size;
+        alu_instruction_size = other.alu_instruction_size;
         memory_size = other.memory_size;
         program_counter = other.program_counter;
         flags_register = other.flags_register;

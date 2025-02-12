@@ -46,8 +46,9 @@ public:
     static T Or(const T& binary_a, const T& binary_b); // or bit a bit
     static T Xor(const T& binary_a, const T& binary_b); // xor bit a bit
     static T Not(const T& binary_a); // not bit a bit
-    static T ShiftLeft(const T& binary_a, const unsigned int& number); // Bugado
-    static T ShiftRight(const T& binary_a, const unsigned int& number); // Bugado
+    static T ShiftLeft(const T& binary_a, const unsigned int& number); // shiftLeft
+    static T ShiftRight(const T& binary_a, const unsigned int& number); // shiftRight
+    //static Binary ToUnsigned(const T& binary_a); // transforma Binary em __Uint128_t
 
 private:
     BinaryUtils() = delete;

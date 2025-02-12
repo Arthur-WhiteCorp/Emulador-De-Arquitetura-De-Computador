@@ -50,7 +50,7 @@ private:
     void checkRequiredFieldSyntax(const nlohmann::json& field, const std::string& field_name); // Verifica a Sintaxe dos campos do JSON
     void checkWordSizeSyntax(const nlohmann::json& word_size); // Verifica a Sintaxe do campo word_size
     void checkRegisterAddressSizeSyntax(const nlohmann::json& register_address_size); // Verifica a Sintaxe do campo register_address_size
-    void checkInstructionSizeSyntax(const nlohmann::json& instruction_size); // Verifica a Sintaxe do campo instruction_size
+    void checkAluInstructionSizeSyntax(const nlohmann::json& instruction_size); // Verifica a Sintaxe do campo instruction_size
     void checkMemorySizeSyntax(const nlohmann::json& memory_size); // Verifica a Sintaxe do campo memory_size
     void checkProgramCounterSyntax(const nlohmann::json& program_counter); // Verifica a Sintaxe do campo program_counter
     void checkFlagsRegisterSyntax(const nlohmann::json& flags_register); // Verifica a Sintaxe do campo flags_register

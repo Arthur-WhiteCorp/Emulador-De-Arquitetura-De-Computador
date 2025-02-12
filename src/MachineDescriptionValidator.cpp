@@ -104,11 +104,12 @@ void MachineDescriptionValidator::checkMemorySize(){
 
 }
 
-void MachineDescriptionValidator::checkInstructionSize(){
-    if (machine_description.instruction_size > machine_description.word_size){
+void MachineDescriptionValidator::checkAluInstructionSize(){
+    if (machine_description.alu_instruction_size > machine_description.word_size){
         is_valid = false;
-        std::cerr << "'instruction_size' must be less than or equal to word_size!" << std::endl;
+        std::cerr << "'alu_instruction_size' must be less than or equal to 'word_size'!" << std::endl;
     }
+    std::cout << "alu_size" << machine_description.alu_instruction_size << std::endl;
 }
 
 void MachineDescriptionValidator::checkRegisterAddressSize(){
@@ -118,12 +119,12 @@ void MachineDescriptionValidator::checkRegisterAddressSize(){
     }
 }
 
-void MachineDescriptionValidator::validateInstructionAndRegisterAddressSize(){
-    std::uint16_t total_size = machine_description.register_address_size + machine_description.instruction_size;
+void MachineDescriptionValidator::validateInstructionAndGeneralRegisterAddressSize(){
+    std::uint16_t total_size = machine_description.register_address_size + machine_description.alu_instruction_size;
 
     if (total_size > machine_description.word_size){
         is_valid = false;
-        std::cerr << "not enough space for instruction and register address!" << std::endl;
+        std::cerr << "not enough space for alu instruction and register address!" << std::endl;
         std::cerr << "'register_address_size' + 'instruction_size' > word_size" << std::endl;
 
     }
@@ -133,9 +134,9 @@ void MachineDescriptionValidator::checkMachineDescriptionValidity(){
     checkRegistersSizes();
     checkRegistersIdentifiers();
     checkMemorySize();
-    checkInstructionSize();
+    checkAluInstructionSize();
     checkRegisterAddressSize();
-    validateInstructionAndRegisterAddressSize();
+    validateInstructionAndGeneralRegisterAddressSize();
 
     if (!is_valid){
         std::cerr << "Machine description is invalid!" << std::endl;

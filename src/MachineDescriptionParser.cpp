@@ -25,7 +25,7 @@ MachineDescription MachineDescriptionParser::getMachineDescription() {
 }
 
 bool MachineDescriptionParser::isSuccessful() {
-    return success_opening && success_converting;
+    return success_opening && success_converting && success_parsing;
 }
 
 void MachineDescriptionParser::initializeErrorFlags() {
@@ -83,7 +83,7 @@ void MachineDescriptionParser::closeMachineDescriptionFile() {
 void MachineDescriptionParser::fillExpectedMachineDescriptionFields() {
     expected_machine_description_fields.insert("word_size");
     expected_machine_description_fields.insert("register_address_size");
-    expected_machine_description_fields.insert("instruction_size");
+    expected_machine_description_fields.insert("alu_instruction_size");
     expected_machine_description_fields.insert("memory_size");
     expected_machine_description_fields.insert("program_counter");   
     expected_machine_description_fields.insert("flags_register");
@@ -123,8 +123,8 @@ void MachineDescriptionParser::fillFieldFillers() {
         machine_description.memory_size = field.get<uint64_t>();
     };
 
-    field_fillers["instruction_size"] = [&](const nlohmann::json& field) {
-        machine_description.instruction_size = field.get<uint8_t>();
+    field_fillers["alu_instruction_size"] = [&](const nlohmann::json& field) {
+        machine_description.alu_instruction_size = field.get<uint8_t>();
     };
 
     field_fillers["register_address_size"] = [&](const nlohmann::json& field) {
@@ -215,7 +215,7 @@ void MachineDescriptionParser::checkRequiredFieldSyntax(const nlohmann::json& fi
     std::string field_name_lower = lowerFieldName(field_name);
     if (field_name_lower == "word_size") { checkWordSizeSyntax(field); return; }
     if (field_name_lower == "register_address_size") { checkRegisterAddressSizeSyntax(field); return; }
-    if (field_name_lower == "instruction_size") { checkInstructionSizeSyntax(field); return; }
+    if (field_name_lower == "alu_instruction_size") { checkAluInstructionSizeSyntax(field); return; }
     if (field_name_lower == "memory_size") { checkMemorySizeSyntax(field); return; }
     if (field_name_lower == "program_counter") { checkProgramCounterSyntax(field); return; }   
     if (field_name_lower == "flags_register") { checkFlagsRegisterSyntax(field); return; }
@@ -241,12 +241,10 @@ void MachineDescriptionParser::checkRegisterAddressSizeSyntax(const nlohmann::js
 
 }
 
-void MachineDescriptionParser::checkInstructionSizeSyntax(const nlohmann::json& instruction_size_field) {
-    if (!instruction_size_field.is_number_unsigned()){
+void MachineDescriptionParser::checkAluInstructionSizeSyntax(const nlohmann::json& alu_instruction_size_field) {
+    if (!alu_instruction_size_field.is_number_unsigned()){
         success_parsing = false;
-        std::cerr << "'instruction_size' must be an unsigned integer!" << std::endl;
-    }else{
-        auto instruction_size = instruction_size_field.get<uint8_t>();
+        std::cerr << "'alu_instruction_size' must be an unsigned integer!" << std::endl;
     }
 }
 

@@ -35,9 +35,10 @@ void Machine::initializeGeneralRegisters(){
     size_t size = general_registers_size/8;
     Binary zero(general_registers_size/8, 0); // cria um zero de 8, 16, 32, 64 ou 128 bits dependendo do tamanho do general_registers
     // tenho que decidir como vai ficar esse tamanho (talvez mude algo no validator)
-    for (const auto& register_ : machine_description.general_registers.registers){
-        
-    }
+    Byte zero_byte(0b00000000);
+    //for (const auto& register_ : machine_description.general_registers.registers){
+    //    id_to_binary
+    //}
 }
 
 

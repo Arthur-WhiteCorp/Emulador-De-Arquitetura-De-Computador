@@ -23,9 +23,9 @@ private:
     void checkRegistersSizes(); // checa o tamanho dos registos
     void checkRegistersIdentifiers(); // checa os identificadores dos registos
     void checkMemorySize(); // checa o tamanho da memoria
-    void checkInstructionSize(); // checa o tamanho das instrucoes
+    void checkAluInstructionSize(); // checa o tamanho das instrucoes
     void checkRegisterAddressSize(); // checa o tamanho do endereco dos registos
-    void validateInstructionAndRegisterAddressSize(); // checa se o tamanho da instrucao e do endereco dos registos e valido
+    void validateInstructionAndGeneralRegisterAddressSize(); // checa se o tamanho da instrucao e do endereco dos registos e valido
     void checkMachineDescriptionValidity(); // checa a validade semantica da descricao da maquina
 };
 
