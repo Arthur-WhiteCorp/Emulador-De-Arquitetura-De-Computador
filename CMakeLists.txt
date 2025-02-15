@@ -8,25 +8,31 @@ if(NOT UNIX)
   message(WARNING "Unsupported operating system")
 endif()
 
+find_package(glfw3 REQUIRED)
+if (NOT glfw3_FOUND)
+    message(FATAL_ERROR "GLFW not found! Please install it using:\n  sudo apt install libglfw3-dev")
+endif()
+
+find_package(OpenGL REQUIRED)
+if (NOT OpenGL_FOUND)
+    message(FATAL_ERROR "OpenGL not found! Please install it using:\n  sudo apt install libgl1-mesa-dev")
+endif()
+
+
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/headers
   ${PROJECT_SOURCE_DIR}/third-party/nlohmann-json/include/nlohmann
+  ${PROJECT_SOURCE_DIR}/third-party/imgui/headers
 )
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/nlohmann-json)
 
+file(GLOB project_SRC "${PROJECT_SOURCE_DIR}/src/*.cpp")
+# Collect .cpp files from the second folder and append them to project_SRC
+file(GLOB another_folder_SRC "${PROJECT_SOURCE_DIR}/third-party/imgui/src/*.cpp")
+list(APPEND project_SRC ${another_folder_SRC})
 
-
-set(project_SRC 
-  ${PROJECT_SOURCE_DIR}/src/main.cpp
-  ${PROJECT_SOURCE_DIR}/src/Machine.cpp
-  ${PROJECT_SOURCE_DIR}/src/MachineDescriptionParser.cpp
-  ${PROJECT_SOURCE_DIR}/src/MachineDescription.cpp
-  ${PROJECT_SOURCE_DIR}/src/MachineDescriptionValidator.cpp
-  ${PROJECT_SOURCE_DIR}/src/BinaryUtils.cpp
-  ${PROJECT_SOURCE_DIR}/src/Hash128Bits.cpp
-)
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   set (flags_1 "-Wno-overloaded-virtual")
@@ -51,4 +57,6 @@ add_executable(project
 
 
 target_link_libraries(project PRIVATE nlohmann_json::nlohmann_json)
-
+# Link GLFW and OpenGL libraries
+target_link_libraries(project PRIVATE glfw ${OPENGL_LIBRARIES})
+target_link_libraries(project PRIVATE OpenGL::GL)

@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -5,7 +6,6 @@
 #include <Machine.hpp>
 #include <MachineDescriptionParser.hpp>
 #include <MachineDescription.h>
-
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
