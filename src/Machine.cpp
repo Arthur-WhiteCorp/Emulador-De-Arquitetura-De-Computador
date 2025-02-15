@@ -30,15 +30,22 @@ void Machine::initializeMemory(){
     memory.data.assign(memory.size, zero); // inicializa com zeros
 }
 
-void Machine::initializeGeneralRegisters(){
+void Machine::initializeGeneralRegisters(){ 
     uint16_t general_registers_size = machine_description.general_registers.size_of_general_registers;
-    size_t size = general_registers_size/8;
-    Binary zero(general_registers_size/8, 0); // cria um zero de 8, 16, 32, 64 ou 128 bits dependendo do tamanho do general_registers
-    // tenho que decidir como vai ficar esse tamanho (talvez mude algo no validator)
-    Byte zero_byte(0b00000000);
-    //for (const auto& register_ : machine_description.general_registers.registers){
-    //    id_to_binary
-    //}
+    size_t data_size = general_registers_size/8;
+    Binary data_zero(data_size, 0); // cria um zero Binary de 8, 16, 32, 64 ou 128 bits dependendo do tamanho do general_registers
+    Binary identifier_byte(1,0); // Binary de 1 byte para criar o identificado:r binario
+    Binary one(1,1);  // Binary de 1 byte para somar com o identificador binario
+    int counter = 0;
+    for (const auto reg:machine_description.general_registers.registers){
+        general_registers.emplace(identifier_byte, GeneralRegister{RegisterInfo{"", general_registers_size},data_zero});
+        id_to_binary.emplace(reg.identifier, identifier_byte);
+        identifier_byte = BinaryUtils<Binary>::Add(identifier_byte, one);
+        counter++;
+        
+    }
+    std::cout << general_registers.find(one)->second.data<< std::endl;
+        
 }
 
 

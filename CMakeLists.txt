@@ -8,6 +8,8 @@ if(NOT UNIX)
   message(WARNING "Unsupported operating system")
 endif()
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/headers

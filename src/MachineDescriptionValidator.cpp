@@ -1,5 +1,6 @@
 #include <MachineDescriptionValidator.hpp>
 #include <MachineDescription.h>
+#include <cstdint>
 #include <iostream>
 #include <math.h>
 
@@ -62,6 +63,15 @@ void MachineDescriptionValidator::checkRegistersSizes(){
     checkFlagsRegisterSize();
 }
 
+void MachineDescriptionValidator::checkNumberOfGeneralRegisters(){
+    uint8_t max_number_of_general_registers = pow(2, machine_description.register_address_size); // maximo 2^register_address_size
+    if (machine_description.general_registers.number_of_general_registers > max_number_of_general_registers){
+        is_valid = false;
+        std::cerr << "'general_registers.number_of_registers' must be less than or equal to '2^register_address_size'!" << std::endl;
+    }
+}
+
+
 void MachineDescriptionValidator::checkRegistersIdentifiers(){
     const auto& program_counter_id = machine_description.program_counter.identifier;
     const auto& flags_register_id = machine_description.flags_register.identifier;
@@ -109,7 +119,6 @@ void MachineDescriptionValidator::checkAluInstructionSize(){
         is_valid = false;
         std::cerr << "'alu_instruction_size' must be less than or equal to 'word_size'!" << std::endl;
     }
-    std::cout << "alu_size" << machine_description.alu_instruction_size << std::endl;
 }
 
 void MachineDescriptionValidator::checkRegisterAddressSize(){
@@ -132,6 +141,7 @@ void MachineDescriptionValidator::validateInstructionAndGeneralRegisterAddressSi
 void MachineDescriptionValidator::checkMachineDescriptionValidity(){
     checkWordSize();
     checkRegistersSizes();
+    checkNumberOfGeneralRegisters();
     checkRegistersIdentifiers();
     checkMemorySize();
     checkAluInstructionSize();

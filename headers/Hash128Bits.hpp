@@ -1,6 +1,5 @@
 #ifndef HASH128_H
 #define HASH128_H
-
 #include <cstdint>
 #include <functional>
 

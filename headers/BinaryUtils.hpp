@@ -36,34 +36,15 @@ using BitUnion_128 = union {
     };
 
 struct BinaryHash {
-    std::size_t operator()(const Binary& binary) const {
-        uint8_t size = binary.size();
-         __uint128_t num;
-
-        for (uint8_t i = 0; i < size; ++i) {
-            num = (num << 8) + binary[i];
-        } 
-            
-        return Hash128Bits::hash(num);    
-    }
+    std::size_t operator()(const Binary& binary) const;
 };
 
 struct BinaryEqual {
-    bool operator()(const Binary& lhs, const Binary& rhs) const {
-        BitUnion_128 hash_union;
-        uint8_t size_lhs = lhs.size();
-        uint8_t size_rhs = rhs.size();
-        __uint128_t num_lhs;
-        __uint128_t num_rhs;
-        for (uint8_t i = 0; i < size_lhs; ++i) {
-            num_lhs = (num_lhs << 8) + lhs[i];
-        }
-        for (uint8_t i = 0; i < size_rhs; ++i) {
-            num_rhs = (num_rhs << 8) + rhs[i];
-        }
-        return num_lhs == num_rhs;
-    }
+    bool operator()(const Binary& lhs, const Binary& rhs) const;
 };
+
+
+
 
 
 std::ostream& operator<<(std::ostream& os, const Binary& binary);
