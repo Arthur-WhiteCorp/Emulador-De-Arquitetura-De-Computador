@@ -21,6 +21,7 @@ private:
     void checkProgramCounterSize(); // checa o tamanho do Program Counter
     void checkFlagsRegisterSize(); // checa o tamanho do Flags Register
     void checkRegistersSizes(); // checa o tamanho dos registos
+    void checkNumberOfGeneralRegisters(); // checha o numero de registos gerais (máximo 2^geretal_re)
     void checkRegistersIdentifiers(); // checa os identificadores dos registos
     void checkMemorySize(); // checa o tamanho da memoria
     void checkAluInstructionSize(); // checa o tamanho das instrucoes

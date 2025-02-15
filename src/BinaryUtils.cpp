@@ -1,7 +1,7 @@
-#include "BinaryUtils.hpp"
+#include <BinaryUtils.hpp>
 #include <iostream>
 #include <bitset>
-
+#include <Hash128Bits.hpp>
 
 
 std::ostream& operator<<(std::ostream& os, const Binary& binary) {
@@ -11,6 +11,30 @@ std::ostream& operator<<(std::ostream& os, const Binary& binary) {
     return os;
 }
 
+std::size_t BinaryHash::operator()(const Binary& binary) const{
+    uint8_t size = binary.size();
+    __uint128_t num = 0;
+
+    for (uint8_t i = 0; i < size; ++i) {
+        num = (num << 8) + binary[i];
+    }  
+    return Hash128Bits::hash(num);    
+}
+
+bool BinaryEqual::operator()(const Binary& lhs, const Binary& rhs) const {
+    BitUnion_128 hash_union;
+    uint8_t size_lhs = lhs.size();
+    uint8_t size_rhs = rhs.size();
+    __uint128_t num_lhs = 0;
+    __uint128_t num_rhs = 0;
+    for (uint8_t i = 0; i < size_lhs; ++i) {
+        num_lhs = (num_lhs << 8) + lhs[i];
+    }
+    for (uint8_t i = 0; i < size_rhs; ++i) {
+        num_rhs = (num_rhs << 8) + rhs[i];
+    }
+    return num_lhs == num_rhs;
+}
 
 template<>
 Binary BinaryUtils<Binary>::Add(const Binary& binary_a, const Binary& binary_b) {

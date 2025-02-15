@@ -8,6 +8,8 @@ if(NOT UNIX)
   message(WARNING "Unsupported operating system")
 endif()
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 find_package(glfw3 REQUIRED)
 if (NOT glfw3_FOUND)
     message(FATAL_ERROR "GLFW not found! Please install it using:\n  sudo apt install libglfw3-dev")
@@ -60,3 +62,7 @@ target_link_libraries(project PRIVATE nlohmann_json::nlohmann_json)
 # Link GLFW and OpenGL libraries
 target_link_libraries(project PRIVATE glfw ${OPENGL_LIBRARIES})
 target_link_libraries(project PRIVATE OpenGL::GL)
+
+
+
+
