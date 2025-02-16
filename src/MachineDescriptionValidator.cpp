@@ -96,12 +96,6 @@ void MachineDescriptionValidator::checkRegistersIdentifiers(){
 }
 
 void MachineDescriptionValidator::checkMemorySize(){
-    std::uint64_t max_memory_size = pow(2, machine_description.word_size);
-    if (machine_description.memory_size > max_memory_size){
-        is_valid = false;
-        std::cerr << "'memory_size' must be less than or equal to 2^'word_size'!" << std::endl;    
-    }
-
     if (machine_description.memory_size == 0){
         is_valid = false;
         std::cerr << "'memory_size' must be greater than 0!" << std::endl;

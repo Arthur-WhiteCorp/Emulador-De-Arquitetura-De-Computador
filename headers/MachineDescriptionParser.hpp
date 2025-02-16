@@ -1,6 +1,7 @@
 #ifndef MACHINE_DESCRIPTION_PARSER_HPP
 #define MACHINE_DESCRIPTION_PARSER_HPP
 
+#include "ParsingUtils.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
@@ -25,9 +26,11 @@ private:
     bool success_parsing; // Checa a validade do JSON 
     bool success_closing; // Checa se o arquivo de descricao da maquina foi fechado
     
+    ParsingUtils utils;
+    
     std::string machine_description_file_path; // Caminho do arquivo de descricao da maquina
     std::ifstream machine_description_file; // Arquivo de descricao da maquina
-    nlohmann::json machine_description_json; // JSON de descricao da maquina
+    nlohmann::json  machine_description_json; // JSON de descricao da maquina
     MachineDescription machine_description; // struct de descricao da maquina
 
     std::set<std::string> expected_machine_description_fields; // Campos do JSON de descricao da maquina
