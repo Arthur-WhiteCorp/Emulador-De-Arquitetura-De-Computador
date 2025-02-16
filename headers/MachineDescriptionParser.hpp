@@ -2,6 +2,7 @@
 #define MACHINE_DESCRIPTION_PARSER_HPP
 
 #include "JsonHandler.hpp"
+#include "ParsingUtils.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
@@ -26,6 +27,7 @@ private:
     JsonHandler handler;
     
     nlohmann::json machine_description_json; // JSON de descricao da maquina
+    
     MachineDescription machine_description; // struct de descricao da maquina
 
     std::set<std::string> expected_machine_description_fields; // Campos do JSON de descricao da maquina
