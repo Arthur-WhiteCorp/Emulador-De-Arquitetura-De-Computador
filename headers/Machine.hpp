@@ -56,6 +56,7 @@ public:
 private:
     const MachineDescription machine_description; // descricao da maquina
     std::unique_ptr<MachineDescriptionValidator> machine_description_validator; // validador da descricao da maquina
+    //std::unique_ptr<InstructionSetValidator> instruction_set_validator; // validador do conjunto de instrucoes
     ProgramCounter program_counter; // registro que guarda o endereço da próxima instrução
     FlagsRegister flags_register; // registro que guarda as flags
     RegisterIdToBinaryMap id_to_binary; // map de identificador para binario
@@ -67,9 +68,12 @@ private:
     void loadMachineDescription(MachineDescription machine_description_struct); // carrega a descricao da maquina
     bool isMachineDescriptionValid(const MachineDescription& machine_description); // checa a validade da descricao da maquina
     void initializeMemory(); // inicializa a memória
-    void initializeInteralRegisters(); // inicializa os registradores internos (pc e flags)
+    void initializeProgramCounter(); // inicializa o Program Counter
+    void initializeFlagsRegister(); // inicializa o Flags Register
+    void initializeInternalRegisters(); // inicializa os registradores internos (pc e flags)
     void initializeGeneralRegisters(); // inicializa os registradores gerais
     void initializeMachine(); // cria a maquina baseado na descricao da maquina
+    void loadInstructionSet(); // carrega o conjunto de instrucoes
 };
 
 #endif

@@ -10,6 +10,8 @@ Machine::Machine(MachineDescription machine_description)
     if (isMachineDescriptionValid(machine_description)){
         initializeMachine();
     };
+    
+    loadInstructionSet();
 }
 
 Machine::~Machine(){
@@ -44,17 +46,28 @@ void Machine::initializeGeneralRegisters(){
         counter++;
         
     }
-    std::cout << general_registers.find(one)->second.data<< std::endl;
         
 }
+void Machine::initializeProgramCounter(){
+    program_counter.info.size = machine_description.program_counter.size;
+    program_counter.info.identifier = machine_description.program_counter.identifier;
+    program_counter.address.assign(program_counter.info.size, 0);
+}
 
+void Machine::initializeFlagsRegister(){
+    flags_register.info.size = machine_description.flags_register.size;
+    flags_register.info.identifier = machine_description.flags_register.identifier;
+    flags_register.flags.assign(flags_register.info.size, false);
+}
 
+void Machine::initializeInternalRegisters(){
+    initializeProgramCounter();
+    initializeFlagsRegister();
+}
 void Machine::initializeMachine(){
     initializeMemory();
     initializeGeneralRegisters();
-
-
-
+    initializeInternalRegisters();
 
     Binary num_a = {0b10000101, 0b00010011};
     Binary num_b = {0b0101101,0b00000111};
@@ -93,4 +106,8 @@ void Machine::initializeMachine(){
     // erro para teste
 
    
+}
+
+void Machine::loadInstructionSet(){
+    //TODO
 }

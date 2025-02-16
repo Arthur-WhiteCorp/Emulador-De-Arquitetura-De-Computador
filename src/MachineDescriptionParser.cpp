@@ -69,6 +69,7 @@ void MachineDescriptionParser::closeMachineDescriptionFile() {
     }
 
     machine_description_file.close();
+
     if (machine_description_file.is_open()) {
         std::cerr << "Failed to close the file: " << machine_description_file_path << std::endl;
         success_closing = false;
