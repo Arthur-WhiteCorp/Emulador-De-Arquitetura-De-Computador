@@ -4,19 +4,20 @@
 #include <nlohmann/json.hpp>
 #include <cctype>
 #include <typeinfo>
+#include <JsonHandler.hpp>
 
-
-MachineDescriptionParser::MachineDescriptionParser(std::string machine_description_file_path) {
-    initializeErrorFlags();
-    openMachineDescriptionFile(machine_description_file_path);
-    turnMachineDescriptionFileToJson();
-    fillExpectedMachineDescriptionFields();
-    fillFieldFillers(); // nome engraçado
-    parseMachineDescription();
+MachineDescriptionParser::MachineDescriptionParser(std::string machine_description_file_path):
+    handler(machine_description_file_path) {
+    initializeErrorFlags(); 
+    if (handler.isValidJson()){
+        machine_description_json = handler.getJson();
+        fillExpectedMachineDescriptionFields();
+        fillFieldFillers(); // nome engraçado
+        parseMachineDescription();
+    }
 }
 
 MachineDescriptionParser::~MachineDescriptionParser() {
-    closeMachineDescriptionFile();
 }
 
 
@@ -25,60 +26,11 @@ MachineDescription MachineDescriptionParser::getMachineDescription() {
 }
 
 bool MachineDescriptionParser::isSuccessful() {
-    return success_opening && success_converting && success_parsing;
+    return  success_parsing;
 }
 
 void MachineDescriptionParser::initializeErrorFlags() {
-    success_opening = true;
-    success_converting = true;
     success_parsing = true;
-    success_closing = true;
-}
-
-void MachineDescriptionParser::openMachineDescriptionFile(std::string machine_description_file_path) {
-    this->machine_description_file_path = machine_description_file_path;
-    machine_description_file.open(machine_description_file_path);
-    if (!machine_description_file.is_open()) {
-        std::cerr << "Failed to open file!" << std::endl;
-        success_opening = false;
-        return;
-    }
-    success_opening = true;
-    return;
-}
-
-void MachineDescriptionParser::turnMachineDescriptionFileToJson() {
-    if (!success_opening){ // checa se o passo anterior foi bem sucedido
-        return;
-    }
-    
-    try {
-        machine_description_json = nlohmann::json::parse(machine_description_file);
-        std::cout << "Conversion to JSON was successful!" << std::endl;
-        return;
-    } catch (const nlohmann::json::parse_error& e) {
-        std::cerr << "Failed to convert file to JSON: " << e.what() << std::endl;
-        success_converting = false;
-        return;
-    }
-}
-
-void MachineDescriptionParser::closeMachineDescriptionFile() {
-    if (!success_opening){ // checa se a abertura foi bem sucedida
-        return;
-    }
-
-    machine_description_file.close();
-
-    if (machine_description_file.is_open()) {
-        std::cerr << "Failed to close the file: " << machine_description_file_path << std::endl;
-        success_closing = false;
-        return;  
-    } else {
-        std::cout << "Successfully closed the file: " << machine_description_file_path << std::endl;
-        success_closing = true;
-        return;
-    }
 }
 
 void MachineDescriptionParser::fillExpectedMachineDescriptionFields() {
@@ -379,9 +331,6 @@ void MachineDescriptionParser::fillMachineDescription() {
 }
 
 void MachineDescriptionParser::parseMachineDescription() {
-    if (!success_opening){ // checa se a abertura ou conversao foi bem sucedida
-        return;
-    }
 
     for (auto field = machine_description_json.begin(); field != machine_description_json.end(); field++) {
         checkFieldValidity(field.key());

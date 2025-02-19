@@ -55,7 +55,7 @@ public:
     ~Machine();
 private:
     const MachineDescription machine_description; // descricao da maquina
-    std::unique_ptr<MachineDescriptionValidator> machine_description_validator; // validador da descricao da maquina
+    MachineDescriptionValidator machine_description_validator; // validador da descricao da maquina
     //std::unique_ptr<InstructionSetValidator> instruction_set_validator; // validador do conjunto de instrucoes
     ProgramCounter program_counter; // registro que guarda o endereço da próxima instrução
     FlagsRegister flags_register; // registro que guarda as flags

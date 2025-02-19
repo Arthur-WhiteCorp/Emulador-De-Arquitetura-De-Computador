@@ -1,36 +1,44 @@
-#include <ParsingUtils.hpp>
+#include <JsonHandler.hpp>
 #include <iostream>
 
 
 
-ParsingUtils::ParsingUtils() {
+JsonHandler::JsonHandler(std::string file_path) {
     initializeErrorFlags();
-   
+    openFile(file_path);
+    turnFileToJson();
 }
 
-ParsingUtils::~ParsingUtils() {
+JsonHandler::~JsonHandler() {
     if (!close_called) {
         closeFile();
     }
 }
 
-void ParsingUtils::initializeErrorFlags() {
+nlohmann::json JsonHandler::getJson() {
+    return json;
+}
+
+
+void JsonHandler::initializeErrorFlags() {
     success_opening = true;
     success_converting = true;
 }
-void ParsingUtils::openFile(std::string file_path) {
+void JsonHandler::openFile(std::string file_path) {
     this->file_path = file_path;
     file.open(file_path);
     if (!file.is_open()) {
         std::cerr << "Failed to open file!" << std::endl;
         success_opening = false;
         return;
+    }else {
+        std::cout << "Successfully opened file!" << std::endl;
     }
     success_opening = true;
     return;
 }
 
-void ParsingUtils::turnFileToJson() {
+void JsonHandler::turnFileToJson() {
     try {
         json = nlohmann::json::parse(file);
         std::cout << "Conversion to JSON was successful!" << std::endl;
@@ -43,7 +51,7 @@ void ParsingUtils::turnFileToJson() {
     }
 }
 
-void ParsingUtils::closeFile() {
+void JsonHandler::closeFile() {
 
     if (!success_opening){ // checa se a abertura foi bem sucedida
         return;
@@ -52,7 +60,7 @@ void ParsingUtils::closeFile() {
     close_called = true;
 
     file.close();
-    
+
     if (file.is_open()) {
         std::cerr << "Failed to close the file: " << file_path << std::endl;
         success_closing = false;
@@ -63,4 +71,8 @@ void ParsingUtils::closeFile() {
         return;
     }
 
+}
+
+bool JsonHandler::isValidJson() {
+    return success_converting && success_opening;
 }
