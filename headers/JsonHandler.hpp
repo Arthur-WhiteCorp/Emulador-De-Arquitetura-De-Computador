@@ -2,16 +2,17 @@
 #define PARSING_UTILS_HPP
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <memory>
 
-class ParsingUtils {
+class JsonHandler {
 public:
 
-    ParsingUtils();
-    ~ParsingUtils();
-    const nlohmann::json& getJson();
+    JsonHandler(std::string file_path);
+    ~JsonHandler();
+    nlohmann::json getJson();
     bool isValidJson();
 private:
-
+ 
     std::string file_path; // Caminho do arquivo
     std::ifstream file; // Arquivo de descricao
     nlohmann::json json; // JSON de descricao
