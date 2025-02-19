@@ -18,17 +18,11 @@ include_directories(
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/nlohmann-json)
 
+file(GLOB project_SRC "${PROJECT_SOURCE_DIR}/src/*.cpp")
+# Collect .cpp files from the second folder and append them to project_SRC
+file(GLOB another_folder_SRC "${PROJECT_SOURCE_DIR}/third-party/imgui/src/*.cpp")
+list(APPEND project_SRC ${another_folder_SRC})
 
-
-set(project_SRC 
-  ${PROJECT_SOURCE_DIR}/src/main.cpp
-  ${PROJECT_SOURCE_DIR}/src/Machine.cpp
-  ${PROJECT_SOURCE_DIR}/src/MachineDescriptionParser.cpp
-  ${PROJECT_SOURCE_DIR}/src/MachineDescription.cpp
-  ${PROJECT_SOURCE_DIR}/src/MachineDescriptionValidator.cpp
-  ${PROJECT_SOURCE_DIR}/src/BinaryUtils.cpp
-  ${PROJECT_SOURCE_DIR}/src/Hash128Bits.cpp
-)
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   set (flags_1 "-Wno-overloaded-virtual")
