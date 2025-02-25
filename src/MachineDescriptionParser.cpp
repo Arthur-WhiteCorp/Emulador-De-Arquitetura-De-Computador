@@ -187,6 +187,8 @@ void MachineDescriptionParser::checkWordSizeSyntax(const nlohmann::json& word_si
 void MachineDescriptionParser::checkRegisterAddressSizeSyntax(const nlohmann::json& register_address_size_field) {
     if (!register_address_size_field.is_number_unsigned()){
         success_parsing = false;
+
+            
         std::cerr << "'register_address_size' must be an unsigned integer!" << std::endl;
     }else{
         auto register_address_size = register_address_size_field.get<uint8_t>();

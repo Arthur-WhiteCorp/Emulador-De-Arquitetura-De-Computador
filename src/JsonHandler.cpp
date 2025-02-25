@@ -28,11 +28,11 @@ void JsonHandler::openFile(std::string file_path) {
     this->file_path = file_path;
     file.open(file_path);
     if (!file.is_open()) {
-        std::cerr << "Failed to open file!" << std::endl;
+        std::cerr << "Failed to open the file: " << file_path << "!" << std::endl;
         success_opening = false;
         return;
     }else {
-        std::cout << "Successfully opened file!" << std::endl;
+        std::cout << "Successfully opened the file: "<< file_path << std::endl;
     }
     success_opening = true;
     return;
