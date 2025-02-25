@@ -1,5 +1,5 @@
 #include <InstructionSetDescriptionParser.hpp>
-
+#include <set>
 
 InstructionSetDescriptionParser::InstructionSetDescriptionParser(std::string file_path): handler(file_path) {
     initializeErrorFlags();
@@ -11,6 +11,10 @@ InstructionSetDescriptionParser::InstructionSetDescriptionParser(std::string fil
 InstructionSetDescriptionParser::~InstructionSetDescriptionParser() {
     
 }
+ 
+void InstructionSetDescriptionParser::fillExpectedInstructionSetDescriptionFields() {
+}
+
 
 void InstructionSetDescriptionParser::initializeErrorFlags() {
     success_parsing = true;    
