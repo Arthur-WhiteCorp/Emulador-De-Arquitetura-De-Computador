@@ -2,8 +2,8 @@
 #define JSONSCHEMA_H
 
 #include <JsonFieldDescription.h>
-#include <vector>
+#include <unordered_map>
 
-using JsonSchema = std::vector<FieldDescription>;
+using JsonSchema = std::unordered_map<std::string, FieldDescription>;
 
 #endif
