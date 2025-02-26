@@ -20,12 +20,16 @@ private:
     nlohmann::json machine_description_json; // JSON de descricao da maquina
     JsonSchema json_schema; // Descrição da sintaxe valida do JSON
     InstructionSetDescription instruction_set_description; // Struct de descricao das instrucoes da maquina
-    
 
     void initializeErrorFlags(); // inicializa as flags de erro
-    void checkRequiredFields();
-    void fillExpectedInstructionSetDescriptionFields(); // LA, JUMPER, CONDICIONAL_JUMPER, DATA, INPUT_OUTPUT
-    void checkInstructionSetDescriptionJsonStructure(); // Checa se possui os campos e subcampos corretos
+    void putMainFieldsInSchema(); // Coloca os campos principais do JSON na schema
+    void checkSubFieldsValidity(const std::string& field_name); 
+    void checkFieldValidity(const std::string& parent_field_name); 
+    void initializeArithmeticLogicFieldSchema();
+    void initializeJumpFieldSchema();
+    void initializeConditioanlJumpFieldSchema();
+    void initializeDataFieldSchema();
+    void initializeJsonSchema();
     void parseInstructionSetDescription();
    
 };

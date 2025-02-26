@@ -28,7 +28,7 @@ struct FieldDescription {
     FieldType type;
     bool isRequired;
     FieldConstraints constraints;
-    std::vector<FieldDescription> nestedFields;
+    std::unique_ptr<std::vector<FieldDescription>> subFieldsFormats; // descreve os formatos dos campos aninhados
 };
 
 #endif
