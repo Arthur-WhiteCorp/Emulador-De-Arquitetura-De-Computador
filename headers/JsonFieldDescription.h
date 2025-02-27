@@ -9,7 +9,7 @@
 enum class FieldType {
     String,
     Number,
-    Unigned,
+    Unsigned,
     Boolean,
     Object,
     Array,
