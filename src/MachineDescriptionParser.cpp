@@ -14,6 +14,8 @@ MachineDescriptionParser::MachineDescriptionParser(std::string machine_descripti
         fillExpectedMachineDescriptionFields();
         fillFieldFillers(); // nome engraçado
         parseMachineDescription();
+    }else{
+        success_parsing = false;
     }
 }
 

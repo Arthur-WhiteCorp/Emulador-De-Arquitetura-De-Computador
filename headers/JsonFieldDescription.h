@@ -1,5 +1,5 @@
-#ifndef FIELDDESCRIPTION_H
-#define FIELDDESCRIPTION_H
+#ifndef FIELD_DESCRIPTION_H
+#define FIELD_DESCRIPTION_H
 
 #include <string>
 #include <vector>
@@ -7,13 +7,14 @@
 
 
 enum class FieldType {
-    String,
-    Number,
-    Unsigned,
-    Boolean,
-    Object,
-    Array,
-    Null
+    STRING,
+    NUMBER,
+    NUMBER_FLOAT,
+    UNSIGNED,
+    BOOLEAN,
+    OBJECT,
+    ARRAY,
+    NULL_
 };
 
 struct FieldConstraints {

@@ -27,7 +27,7 @@ void InstructionSetDescriptionParser::putMainFieldsInSchema() {
 
 void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
     json_schema["Arithmetic_Logic"].name = "Arithmetic_Logic";
-    json_schema["Arithmetic_Logic"].type = FieldType::Object;
+    json_schema["Arithmetic_Logic"].type = FieldType::OBJECT;
     json_schema["Arithmetic_Logic"].isRequired = true;
     json_schema["Arithmetic_Logic"].subFieldsFormats = std::make_unique<std::vector<FieldDescription>>();
 
@@ -35,7 +35,7 @@ void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
     // Campos de Insstruções any indica que podem ter qualquer nome
     json_schema["Arithmetic_Logic"].subFieldsFormats->push_back(FieldDescription());
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).name = "Any"; // Pode ser qualquer string
-    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).type = FieldType::Object;
+    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).type = FieldType::OBJECT;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).isRequired = true;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).constraints = FieldConstraints();
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats = std::make_unique<std::vector<FieldDescription>>();
@@ -43,7 +43,7 @@ void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
     // Campo syntax
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->push_back(FieldDescription());
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(0).name = "syntax"; 
-    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(0).type = FieldType::String;
+    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(0).type = FieldType::STRING;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(0).isRequired = true;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(0).constraints = FieldConstraints();
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(0).subFieldsFormats = std::make_unique<std::vector<FieldDescription>>();
@@ -51,7 +51,7 @@ void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
     // Campo behavior
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->push_back(FieldDescription());
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(1).name = "behavior"; 
-    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(1).type = FieldType::String;
+    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(1).type = FieldType::STRING;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(1).isRequired = true;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(1).constraints = FieldConstraints();
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(1).subFieldsFormats = std::make_unique<std::vector<FieldDescription>>();
@@ -59,7 +59,7 @@ void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
     // Campo number_of_args
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->push_back(FieldDescription());
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(2).name = "number_of_args"; 
-    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(2).type = FieldType::Unsigned;
+    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(2).type = FieldType::UNSIGNED;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(2).isRequired = true;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(2).constraints = FieldConstraints();
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(2).subFieldsFormats = std::make_unique<std::vector<FieldDescription>>();
@@ -67,7 +67,7 @@ void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
     // Campo flags_modification
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->push_back(FieldDescription());
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(3).name = "flags_modification"; 
-    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(3).type = FieldType::String;
+    json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(3).type = FieldType::STRING;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(3).isRequired = true;
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(3).constraints = FieldConstraints();
     json_schema["Arithmetic_Logic"].subFieldsFormats->at(0).subFieldsFormats->at(3).subFieldsFormats = std::make_unique<std::vector<FieldDescription>>();
