@@ -10,8 +10,6 @@
 "Jumper":{
 },
 "Conditional_Jumper":{
-    "LA": "LA",
-    "Jumper": "Jumper"
 },
 "Data":{
 },

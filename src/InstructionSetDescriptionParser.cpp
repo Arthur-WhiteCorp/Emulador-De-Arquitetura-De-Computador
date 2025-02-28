@@ -1,6 +1,7 @@
 #include <InstructionSetDescriptionParser.hpp>
 #include <JsonSchema.h>
 #include <memory>
+#include <ParserUtils.hpp>
 #include <set>
 
 InstructionSetDescriptionParser::InstructionSetDescriptionParser(std::string file_path): handler(file_path) {
@@ -23,6 +24,8 @@ void InstructionSetDescriptionParser::putMainFieldsInSchema() {
     json_schema["Jumper"] = FieldDescription();
     json_schema["Conditional_Jumper"] = FieldDescription();
     json_schema["Data"] = FieldDescription();
+
+    initializeJsonSchema();
 }
 
 void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
@@ -77,17 +80,27 @@ void InstructionSetDescriptionParser::initializeJsonSchema() {
     initializeArithmeticLogicFieldSchema();    
 }
 
-void InstructionSetDescriptionParser::checkSubFieldsValidity(const std::string& parent_field_name) {
+void InstructionSetDescriptionParser::checkSubFieldsValidity(const std::string& sub_field_name, const nlohmann::json& json) {
+    if ( ParserUtils::isEqualToDescription(json, sub_field_name, json_schema[sub_field_name]) ){
+        success_parsing = true;
+        std::cout << "Field " << sub_field_name << " is valid" << std::endl;
+    }else{
+        success_parsing = false;
+        std::cerr << "Field " << sub_field_name << " is not valid" << std::endl;
+    }
 }
 void InstructionSetDescriptionParser::checkFieldValidity(const std::string& field_name) {
     if (json_schema.find(field_name) == nullptr){
         success_parsing = false;
-        std::cerr << "Field " << field_name << " not recognized" << std::endl;
+        std::cerr << "Main Field " << field_name << " not recognized" << std::endl;
     }else{
         if (machine_description_json[field_name].is_object()){
             for (auto sub_field = machine_description_json[field_name].begin(); sub_field != machine_description_json[field_name].end(); ++sub_field){
-                checkSubFieldsValidity(sub_field.key());
+                checkSubFieldsValidity(sub_field.key(), sub_field.value());
             }
+        }
+        else{
+            success_parsing = false;
         }
     } 
 }
