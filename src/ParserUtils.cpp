@@ -26,11 +26,19 @@ namespace ParserUtils {
 
 
 
-    bool isEqualToDescription(const nlohmann::json& json, std::string field_name, FieldDescription description) {
-        bool is_name_equal = field_name == description.name;
+    bool isEqualToDescription(const nlohmann::json& json,const std::string& field_name, const FieldDescription& description) {
+        bool is_name_equal; 
+
+        if (description.name == "Any") {
+            is_name_equal = true;
+        }else{
+            is_name_equal = field_name == description.name;
+        }
+
         FieldType field_type = getType(json);
         bool is_type_equal = field_type == description.type;
         return is_name_equal && is_type_equal;
            
     }
+
 }
