@@ -80,14 +80,32 @@ void InstructionSetDescriptionParser::initializeJsonSchema() {
     initializeArithmeticLogicFieldSchema();    
 }
 
-void InstructionSetDescriptionParser::checkSubFieldsValidity(const std::string& sub_field_name, const nlohmann::json& json) {
-    if ( ParserUtils::isEqualToDescription(json, sub_field_name, json_schema[sub_field_name]) ){
+void InstructionSetDescriptionParser::checkSubFieldsValidity(const std::string& parent_field_name,const std::string& sub_field_name, const nlohmann::json& json) {
+    const std::vector<std::reference_wrapper<FieldDescription>> sub_field_description = ParserUtils::getSubFieldDescription(json_schema[parent_field_name], sub_field_name);
+    bool is_found = (sub_field_description.size() > 0) ? true : false;
+
+    if (!is_found){
+        success_parsing = false;
+        std::cerr << "Field " << sub_field_name << " not found" << std::endl;
+    }
+    for (const auto& sub_field : sub_field_description){
+        if (ParserUtils::isEqualToDescription(json, sub_field_name,  3)){
+            success_parsing = true;
+            std::cout << "Field " << sub_field_name << " is valid" << std::endl;
+        }else{
+            success_parsing = false;
+            std::cerr << "Field " << sub_field_name << " is not valid" << std::endl;
+        }
+    }
+    /*
+    if ( ParserUtils::isEqualToDescription(json, sub_field_name, sub_field_description) && is_found){
         success_parsing = true;
         std::cout << "Field " << sub_field_name << " is valid" << std::endl;
     }else{
         success_parsing = false;
         std::cerr << "Field " << sub_field_name << " is not valid" << std::endl;
     }
+    */
 }
 void InstructionSetDescriptionParser::checkFieldValidity(const std::string& field_name) {
     if (json_schema.find(field_name) == nullptr){
@@ -96,7 +114,7 @@ void InstructionSetDescriptionParser::checkFieldValidity(const std::string& fiel
     }else{
         if (machine_description_json[field_name].is_object()){
             for (auto sub_field = machine_description_json[field_name].begin(); sub_field != machine_description_json[field_name].end(); ++sub_field){
-                checkSubFieldsValidity(sub_field.key(), sub_field.value());
+                checkSubFieldsValidity(field_name, sub_field.key(), sub_field.value());
             }
         }
         else{

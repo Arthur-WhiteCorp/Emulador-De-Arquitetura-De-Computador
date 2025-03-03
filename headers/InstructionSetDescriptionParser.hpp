@@ -23,7 +23,7 @@ private:
 
     void initializeErrorFlags(); // inicializa as flags de erro
     void putMainFieldsInSchema(); // Coloca os campos principais do JSON na schema
-    void checkSubFieldsValidity(const std::string& sub_field_name, const nlohmann::json& json); 
+    void checkSubFieldsValidity(const std::string& parent_field_name, const std::string& sub_field_name, const nlohmann::json& json); 
     void checkFieldValidity(const std::string& field_name); 
     void initializeArithmeticLogicFieldSchema();
     void initializeJumpFieldSchema();
