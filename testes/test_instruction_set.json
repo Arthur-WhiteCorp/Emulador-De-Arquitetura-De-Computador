@@ -5,7 +5,8 @@
         "number_of_args": 2,
         "behavior": "R0 = R0 + R1",
         "flags_modification": "(R0>MAX)? flags_register[0] = 1 : flags_register[0] = 0"
-    }
+        },
+    "SUB": "R0 = R0 - R1"      
 },
 "Jumper":{
 },
