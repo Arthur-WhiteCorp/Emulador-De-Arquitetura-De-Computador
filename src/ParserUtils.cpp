@@ -6,30 +6,55 @@
 #include <functional>
 
 namespace ParserUtils {
-    FieldType getType(const nlohmann::json& json) {
+    JsonSchema::FieldType getType(const nlohmann::json& json) {
         switch (json.type()) {
             case nlohmann::json::value_t::object:
-                return FieldType::OBJECT;
+                return JsonSchema::FieldType::OBJECT;
             case nlohmann::json::value_t::array:
-                return FieldType::ARRAY;
+                return JsonSchema::FieldType::ARRAY;
             case nlohmann::json::value_t::string:
-                return FieldType::STRING;
+                return JsonSchema::FieldType::STRING;
             case nlohmann::json::value_t::number_integer:
-                return FieldType::NUMBER;
+                return JsonSchema::FieldType::NUMBER;
             case nlohmann::json::value_t::number_float:
-                return FieldType::NUMBER_FLOAT;
+                return JsonSchema::FieldType::NUMBER_FLOAT;
             case nlohmann::json::value_t::number_unsigned:
-                return FieldType::UNSIGNED;
+                return JsonSchema::FieldType::UNSIGNED;
             case nlohmann::json::value_t::boolean:
-                return FieldType::BOOLEAN; 
+                return JsonSchema::FieldType::BOOLEAN; 
+            case nlohmann::json::value_t::null:
+                return JsonSchema::FieldType::NULL_;
             default:
-                return FieldType::NULL_;
+                std::cerr << "Invalid type" << std::endl;
+                assert(false);
         }
     }
 
+    std::string getFieldTypeName(const JsonSchema::FieldType& type) {
+        switch (type) {
+            case JsonSchema::FieldType::OBJECT:
+                return "OBJECT";
+            case JsonSchema::FieldType::ARRAY:
+                return "ARRAY";
+            case JsonSchema::FieldType::STRING:
+                return "STRING";
+            case JsonSchema::FieldType::NUMBER:
+                return "NUMBER";
+            case JsonSchema::FieldType::NUMBER_FLOAT:
+                return "NUMBER_FLOAT";
+            case JsonSchema::FieldType::UNSIGNED:
+                return "UNSIGNED";
+            case JsonSchema::FieldType::BOOLEAN:
+                return "BOOLEAN";
+            case JsonSchema::FieldType::NULL_:
+                return "NULL_";
+            default:
+                std::cerr << "Invalid type" << std::endl;
+                assert(false);
+        }
+    }
 
-
-    bool isEqualToDescription(const nlohmann::json& json,const std::string& field_name, const FieldDescription& description) {
+    bool isEqualToDescription(const nlohmann::json& json,const std::string& field_name, const JsonSchema::FieldDescription& description) {
         bool is_name_equal; 
 
         if (description.name == "Any") {
@@ -37,22 +62,23 @@ namespace ParserUtils {
         }else{
             is_name_equal = field_name == description.name;
         }
-        
-        FieldType field_type = getType(json);
+
+        JsonSchema::FieldType field_type = getType(json);
         bool is_type_equal = field_type == description.type;
-        std::cout << (unsigned)field_type << " " << (unsigned) description.type << std::endl;
+
+
         return is_name_equal && is_type_equal;
            
     }
-    bool isConstraintNull(const FieldConstraints &constraints_a, const FieldConstraintsType &constraint_type){
+    bool isConstraintNull(const JsonSchema::FieldConstraints &constraints_a, const JsonSchema::FieldConstraintsType &constraint_type){
         switch (constraint_type) {
-            case FieldConstraintsType::MIN_LENGTH:
+            case JsonSchema::FieldConstraintsType::MIN_LENGTH:
                 return constraints_a.minLength == nullptr;
-            case FieldConstraintsType::MAX_LENGTH:
+            case JsonSchema::FieldConstraintsType::MAX_LENGTH:
                 return constraints_a.maxLength == nullptr;
-            case FieldConstraintsType::MIN_VALUE:
+            case JsonSchema::FieldConstraintsType::MIN_VALUE:
                 return constraints_a.minValue == nullptr;
-            case FieldConstraintsType::MAX_VALUE:
+            case JsonSchema::FieldConstraintsType::MAX_VALUE:
                 return constraints_a.maxValue == nullptr;
             default:
                 std::cerr << "Invalid constraint type" << std::endl;
@@ -60,15 +86,15 @@ namespace ParserUtils {
         } 
     }
 
-    bool areConstraintsEqual(const FieldConstraints &constraints_a, const FieldConstraints &constraints_b, const FieldConstraintsType &constraint_type){
+    bool areConstraintsEqual(const JsonSchema::FieldConstraints &constraints_a, const JsonSchema::FieldConstraints &constraints_b, const JsonSchema::FieldConstraintsType &constraint_type){
         switch (constraint_type) {
-            case FieldConstraintsType::MIN_LENGTH:
+            case JsonSchema::FieldConstraintsType::MIN_LENGTH:
                 return *constraints_a.minLength == *constraints_b.minLength;
-            case FieldConstraintsType::MAX_LENGTH:
+            case JsonSchema::FieldConstraintsType::MAX_LENGTH:
                 return *constraints_a.maxLength == *constraints_b.maxLength;
-            case FieldConstraintsType::MIN_VALUE:
+            case JsonSchema::FieldConstraintsType::MIN_VALUE:
                 return *constraints_a.minValue == *constraints_b.minValue;
-            case FieldConstraintsType::MAX_VALUE:
+            case JsonSchema::FieldConstraintsType::MAX_VALUE:
                 return *constraints_a.maxValue == *constraints_b.maxValue;
             default:
                 std::cerr << "Invalid constraint type" << std::endl;
@@ -76,31 +102,26 @@ namespace ParserUtils {
         }  
     }
 
-    bool areAllConstraintsEqual(const FieldConstraints &constraints_a, const FieldConstraints &constraints_b){
+    bool areAllConstraintsEqual(const JsonSchema::FieldConstraints &constraints_a, const JsonSchema::FieldConstraints &constraints_b){
         return false;
     } 
-    bool areDescriptionsEqual(const FieldDescription &description_a, const FieldDescription &description_b){
+    bool areDescriptionsEqual(const JsonSchema::FieldDescription &description_a, const JsonSchema::FieldDescription &description_b){
 
         bool is_name_equal = description_a.name == description_b.name;
         bool is_type_equal = description_a.type == description_b.type;
         bool is_required_equal = description_a.isRequired == description_b.isRequired;
-        bool is_constraints_min_length_equal = *description_a.constraints.minLength == *description_b.constraints.minLength;   
-        bool is_constraints_max_length_equal = *description_a.constraints.maxLength == *description_b.constraints.maxLength;   
-        bool is_constraints_min_value_equal = *description_a.constraints.minValue == *description_b.constraints.minValue;   
-        bool is_constraints_max_value_equal = *description_a.constraints.maxValue == *description_b.constraints.maxValue;
+       
 
-        return false; 
+        return is_name_equal && is_type_equal && is_required_equal; 
     }
    
 
-    const std::vector <std::reference_wrapper<FieldDescription>> getSubFieldDescription(const FieldDescription& main_field_description, const std::string& field_name){
-
-        std::vector<std::reference_wrapper<FieldDescription>> sub_fields_found;
+    const std::vector <std::reference_wrapper<JsonSchema::FieldDescription>> getSubJsonSchema(const JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name){
+        std::vector<std::reference_wrapper<JsonSchema::FieldDescription>> sub_fields_found;
         for (auto sub_field = main_field_description.subFieldsFormats->begin(); sub_field != main_field_description.subFieldsFormats->end(); ++sub_field){
-            if (sub_field->name == field_name || field_name == "Any"){
+            if (sub_field->name == sub_field_name || sub_field->name == "Any"){
                 sub_fields_found.push_back(*sub_field);
             }
-            std::cout << "sub_field" << sub_field->name << std::endl;
         }
         return sub_fields_found; 
     }      
