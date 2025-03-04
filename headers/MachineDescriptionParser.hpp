@@ -23,16 +23,8 @@ public:
 private:
 
     bool success_parsing; // Checa a validade do JSON 
-    
     JsonHandler handler;
-<<<<<<< HEAD
-    
     nlohmann::json machine_description_json; // JSON de descricao da maquina
-    
-=======
-    
-    nlohmann::json machine_description_json; // JSON de descricao da maquina
->>>>>>> 3e14be7 (refatorando a classe MachineDescriptionParser e criando a classe JsonHandler)
     MachineDescription machine_description; // struct de descricao da maquina
 
     std::set<std::string> expected_machine_description_fields; // Campos do JSON de descricao da maquina
