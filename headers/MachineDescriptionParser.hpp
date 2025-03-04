@@ -2,7 +2,7 @@
 #define MACHINE_DESCRIPTION_PARSER_HPP
 
 #include "JsonHandler.hpp"
-#include "ParsingUtils.hpp"
+#include "ParserUtils.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>

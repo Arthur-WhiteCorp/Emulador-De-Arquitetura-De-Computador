@@ -47,11 +47,7 @@ void Machine::initializeGeneralRegisters(){
     }
         
 }
-void Machine::initializeProgramCounter(){
-    program_counter.info.size = machine_description.program_counter.size;
-    program_counter.info.identifier = machine_description.program_counter.identifier;
-    program_counter.address.assign(program_counter.info.size, 0);
-}
+
 void Machine::initializeProgramCounter(){
     program_counter.info.size = machine_description.program_counter.size;
     program_counter.info.identifier = machine_description.program_counter.identifier;
