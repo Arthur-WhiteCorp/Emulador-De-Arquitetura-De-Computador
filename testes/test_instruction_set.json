@@ -3,16 +3,39 @@
     "ADD": {
         "syntax": "ADD R0 R1",
         "number_of_args": 2,
-        "behavior": "R0 = R0 + R1",
-        "flags_modification": "(R0>MAX)? flags_register[0] = 1 : flags_register[0] = 0"
-        },
-    "SUB": "R0 = R0 - R1"      
+        "behavior": "R0 = R0 + R1"
+        }
 },
 "Jumper":{
+    "JMP": {
+        "syntax": "JMP R0",
+        "number_of_args": 1,
+        "behavior": "PC = R0"
+    }
 },
 "Conditional_Jumper":{
+    "J": {
+        "syntax": "J NEXT",
+        "number_of_args": 1,
+        "behavior": "PC = NEXT",
+        "activation": "AND",
+        "flags": {
+            "a": {
+                "true": "flags_register[0] == 1",
+                "false":"flags_register[0] == 0"
+            },
+            "b": {
+                "true": "flags_register[1] == 1",
+                "false": "flags_register[1] == 0"
+            }
+        }
+    }
 },
 "Data":{
-},
-"Xablau":78
+    "LOAD": {
+        "syntax": "LOAD R0 R1",
+        "number_of_args": 2,
+        "behavior": "R1 = MEMORY[R0]" 
+        }
+    }
 }

@@ -23,13 +23,14 @@ private:
 
     void initializeErrorFlags(); // inicializa as flags de erro
     void putMainFieldsInSchema(); // Coloca os campos principais do JSON na schema
-    void checkSubFieldsValidity(const JsonSchema::FieldDescription& parent_field_name, const std::string& sub_field_name, const nlohmann::json& json); 
-    void checkFieldValidity(const std::string& field_name); 
+    void checkAndFindSubFields(const JsonSchema::FieldDescription& schema, const std::string& sub_field_name, const std::string& parent_field_name, const nlohmann::json& json); 
+    void checkAndFindField(const std::string& field_name); 
     void initializeArithmeticLogicFieldSchema();
-    void initializeJumpFieldSchema();
-    void initializeConditioanlJumpFieldSchema();
+    void initializeJumperFieldSchema();
+    void initializeConditionalJumperFieldSchema();
     void initializeDataFieldSchema();
     void initializeJsonSchema();
+    void checkIfFieldIsFound(const JsonSchema::FieldDescription& field_description, const std::string& parent_field_name = "none"); // Checa se o campo foi encontrado, "none" indica que é um campo principal
     void parseInstructionSetDescription();
    
 };
