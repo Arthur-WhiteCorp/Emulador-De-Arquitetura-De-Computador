@@ -17,6 +17,8 @@ namespace ParserUtils {
     JsonSchema::FieldType getType(const nlohmann::json& json); 
     std::string getFieldTypeName(const JsonSchema::FieldType& type); // pega o nome do tipo (string ao inves de unsigned)
     const std::vector<std::reference_wrapper<JsonSchema::FieldDescription>> getSubJsonSchema(const JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name);
+    void addSubFieldDescription(JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name, const JsonSchema::FieldType& sub_field_type, const bool& is_required);
+
 };
 
 #endif

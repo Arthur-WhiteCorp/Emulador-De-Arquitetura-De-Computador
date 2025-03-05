@@ -6,6 +6,7 @@
 #include <memory>
 
 namespace JsonSchema{
+
     enum class FieldType {
         STRING,
         NUMBER,
@@ -35,13 +36,15 @@ namespace JsonSchema{
     struct FieldDescription {
         std::string name;
         FieldType type;
-        bool isRequired;
+        bool is_required;
+        bool is_found = false; // para o parsing checa se a descricao foi encontrada no json
         std::unique_ptr<std::vector<FieldDescription>> subFieldsFormats; // descreve os formatos dos campos aninhados
         FieldDescription() = default;
-        FieldDescription(std::string name, FieldType type, bool isRequired )
-            : name(name), type(type), isRequired(isRequired), subFieldsFormats() {}
+        FieldDescription(std::string name, FieldType type, bool is_required )
+            : name(name), type(type), is_required(is_required), subFieldsFormats() {}
     };
 
     const FieldDescription null_description = FieldDescription("null", FieldType::NULL_, false);
+    const std::string ANY = "Any"; // campo de nome qualquer
 }
 #endif

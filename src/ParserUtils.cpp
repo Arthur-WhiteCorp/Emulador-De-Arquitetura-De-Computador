@@ -4,8 +4,10 @@
 #include <iostream>
 #include <cassert>
 #include <functional>
+#include <memory>
 
 namespace ParserUtils {
+
     JsonSchema::FieldType getType(const nlohmann::json& json) {
         switch (json.type()) {
             case nlohmann::json::value_t::object:
@@ -57,7 +59,7 @@ namespace ParserUtils {
     bool isEqualToDescription(const nlohmann::json& json,const std::string& field_name, const JsonSchema::FieldDescription& description) {
         bool is_name_equal; 
 
-        if (description.name == "Any") {
+        if (description.name == JsonSchema::ANY){
             is_name_equal = true;
         }else{
             is_name_equal = field_name == description.name;
@@ -109,7 +111,7 @@ namespace ParserUtils {
 
         bool is_name_equal = description_a.name == description_b.name;
         bool is_type_equal = description_a.type == description_b.type;
-        bool is_required_equal = description_a.isRequired == description_b.isRequired;
+        bool is_required_equal = description_a.is_required == description_b.is_required;
        
 
         return is_name_equal && is_type_equal && is_required_equal; 
@@ -118,6 +120,11 @@ namespace ParserUtils {
 
     const std::vector <std::reference_wrapper<JsonSchema::FieldDescription>> getSubJsonSchema(const JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name){
         std::vector<std::reference_wrapper<JsonSchema::FieldDescription>> sub_fields_found;
+        
+        if (main_field_description.subFieldsFormats == nullptr){
+            return sub_fields_found;
+        }
+
         for (auto sub_field = main_field_description.subFieldsFormats->begin(); sub_field != main_field_description.subFieldsFormats->end(); ++sub_field){
             if (sub_field->name == sub_field_name || sub_field->name == "Any"){
                 sub_fields_found.push_back(*sub_field);
@@ -125,4 +132,14 @@ namespace ParserUtils {
         }
         return sub_fields_found; 
     }      
+    
+    void addSubFieldDescription(JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name, const JsonSchema::FieldType& sub_field_type, const bool& is_required){
+        if (main_field_description.subFieldsFormats == nullptr){
+            main_field_description.subFieldsFormats = std::make_unique<std::vector<JsonSchema::FieldDescription>>();    
+        }
+        main_field_description.subFieldsFormats->push_back(JsonSchema::FieldDescription());
+        main_field_description.subFieldsFormats->at(main_field_description.subFieldsFormats->size() - 1).name = sub_field_name;
+        main_field_description.subFieldsFormats->at(main_field_description.subFieldsFormats->size() - 1).type = sub_field_type;
+        main_field_description.subFieldsFormats->at(main_field_description.subFieldsFormats->size() - 1).is_required = is_required;
+    } 
 }
