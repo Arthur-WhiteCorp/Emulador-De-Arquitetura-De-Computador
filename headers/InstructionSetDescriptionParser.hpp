@@ -20,18 +20,22 @@ private:
     nlohmann::json machine_description_json; // JSON de descricao da maquina
     JsonSchema::JsonSchema json_schema; // Descrição da sintaxe valida do JSON
     InstructionSetDescription instruction_set_description; // Struct de descricao das instrucoes da maquina
+    std::vector<std::string> missing_sub_fields;
+
 
     void initializeErrorFlags(); // inicializa as flags de erro
     void putMainFieldsInSchema(); // Coloca os campos principais do JSON na schema
-    void checkAndFindSubFields(const JsonSchema::FieldDescription& schema, const std::string& sub_field_name, const std::string& parent_field_name, const nlohmann::json& json); 
-    void checkAndFindField(const std::string& field_name); 
+    void checkSubFields(const JsonSchema::FieldDescription& schema, const std::string& sub_field_name, const std::string& parent_field_name, const nlohmann::json& json); 
+    void checkField(const std::string& field_name); 
     void initializeArithmeticLogicFieldSchema();
     void initializeJumperFieldSchema();
     void initializeConditionalJumperFieldSchema();
     void initializeDataFieldSchema();
     void initializeJsonSchema();
-    void checkIfFieldIsFound(const JsonSchema::FieldDescription& field_description, const std::string& parent_field_name = "none"); // Checa se o campo foi encontrado, "none" indica que é um campo principal
+    //void checkIfFieldIsFound(const JsonSchema::FieldDescription& field_description, const std::string& parent_field_name = "none", const nlohmann::json& json = nullptr);// Checa se o campo foi encontrado, "none" indica que é um campo principal
+    std::string getMissingSubFieldPath(const JsonSchema::FieldDescription& field_description);
+    void getMissingSubFields(const JsonSchema::FieldDescription& field_description, const nlohmann::json& json = nullptr);
     void parseInstructionSetDescription();
-   
+     
 };
 #endif

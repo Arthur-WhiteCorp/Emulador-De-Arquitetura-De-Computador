@@ -121,11 +121,11 @@ namespace ParserUtils {
     const std::vector <std::reference_wrapper<JsonSchema::FieldDescription>> getSubJsonSchema(const JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name){
         std::vector<std::reference_wrapper<JsonSchema::FieldDescription>> sub_fields_found;
         
-        if (main_field_description.subFieldsFormats == nullptr){
+        if (main_field_description.sub_fields_formats == nullptr){
             return sub_fields_found;
         }
 
-        for (auto sub_field = main_field_description.subFieldsFormats->begin(); sub_field != main_field_description.subFieldsFormats->end(); ++sub_field){
+        for (auto sub_field = main_field_description.sub_fields_formats->begin(); sub_field != main_field_description.sub_fields_formats->end(); ++sub_field){
             if (sub_field->name == sub_field_name || sub_field->name == "Any"){
                 sub_fields_found.push_back(*sub_field);
             }
@@ -134,12 +134,23 @@ namespace ParserUtils {
     }      
     
     void addSubFieldDescription(JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name, const JsonSchema::FieldType& sub_field_type, const bool& is_required){
-        if (main_field_description.subFieldsFormats == nullptr){
-            main_field_description.subFieldsFormats = std::make_unique<std::vector<JsonSchema::FieldDescription>>();    
+        if (main_field_description.sub_fields_formats == nullptr){
+            main_field_description.sub_fields_formats = std::make_shared<std::vector<JsonSchema::FieldDescription>>();    
         }
-        main_field_description.subFieldsFormats->push_back(JsonSchema::FieldDescription());
-        main_field_description.subFieldsFormats->at(main_field_description.subFieldsFormats->size() - 1).name = sub_field_name;
-        main_field_description.subFieldsFormats->at(main_field_description.subFieldsFormats->size() - 1).type = sub_field_type;
-        main_field_description.subFieldsFormats->at(main_field_description.subFieldsFormats->size() - 1).is_required = is_required;
+        main_field_description.sub_fields_formats->push_back(JsonSchema::FieldDescription());
+        main_field_description.sub_fields_formats->at(main_field_description.sub_fields_formats->size() - 1).parent_field = std::make_shared<JsonSchema::FieldDescription>(main_field_description);
+        main_field_description.sub_fields_formats->at(main_field_description.sub_fields_formats->size() - 1).name = sub_field_name;
+        main_field_description.sub_fields_formats->at(main_field_description.sub_fields_formats->size() - 1).type = sub_field_type;
+        main_field_description.sub_fields_formats->at(main_field_description.sub_fields_formats->size() - 1).is_required = is_required;
     } 
+    std::string getFieldPath(const JsonSchema::FieldDescription& field_description, std::string sub_path){
+        std::string path;
+        if (areDescriptionsEqual(field_description, JsonSchema::null_description)){ 
+            return "";
+        } 
+        if (field_description.parent_field == nullptr){
+            return field_description.name;
+        }
+        return getFieldPath(*field_description.parent_field) + "::" + field_description.name;
+    }
 }

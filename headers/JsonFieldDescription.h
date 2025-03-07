@@ -34,14 +34,13 @@ namespace JsonSchema{
     };
 
     struct FieldDescription {
+        std::shared_ptr<FieldDescription> parent_field;
         std::string name;
         FieldType type;
         bool is_required;
-        bool is_found = false; // para o parsing checa se a descricao foi encontrada no json
-        std::unique_ptr<std::vector<FieldDescription>> subFieldsFormats; // descreve os formatos dos campos aninhados
-        FieldDescription() = default;
-        FieldDescription(std::string name, FieldType type, bool is_required )
-            : name(name), type(type), is_required(is_required), subFieldsFormats() {}
+        std::shared_ptr<std::vector<FieldDescription>> sub_fields_formats; // descreve os formatos dos campos aninhados
+        FieldDescription(): parent_field(nullptr), name(""), type(FieldType::NULL_), is_required(false), sub_fields_formats(nullptr) {};  
+        FieldDescription(std::string name, FieldType type, bool is_required ): name(name), type(type), is_required(is_required), sub_fields_formats() {}
     };
 
     const FieldDescription null_description = FieldDescription("null", FieldType::NULL_, false);
