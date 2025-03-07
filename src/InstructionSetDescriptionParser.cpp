@@ -150,6 +150,11 @@ void InstructionSetDescriptionParser::checkSubFields(const JsonSchema::FieldDesc
     for (const auto& sub_field_schema : sub_fields_schemas){
         if (ParserUtils::isEqualToDescription(json, sub_field_name,  sub_field_schema.get())){
             ++num_of_matches;
+            if (num_of_matches == 1){
+                sub_field_schema.get().field_data.emplace_back(JsonSchema::FieldData(sub_field_name, std::make_shared<const nlohmann::json>(json)));
+                recognized_fields.insert({sub_field_name, std::cref(sub_field_schema)});
+                int index = sub_field_schema.get().field_data.size() - 1;
+            }
             if (json.is_object()){
                 for (auto sub_field = json.begin(); sub_field != json.end(); ++sub_field){
                     checkSubFields(sub_field_schema.get(), sub_field.key(),sub_field_name, sub_field.value());
@@ -157,12 +162,11 @@ void InstructionSetDescriptionParser::checkSubFields(const JsonSchema::FieldDesc
             }
         }
     }
-    
     if (num_of_matches == 1){
         return;
     }else if (num_of_matches > 1){
         success_parsing = false;
-        std::cerr << "Sub Field " << "'"<< sub_field_name << "'" << " not unique" << std::endl;
+        std::cerr << "Sub Field " << "'"<< sub_field_name << "'" << " in " << "'" << parent_field_name << "'" << " matches more than one description" << std::endl;
     }else{
         success_parsing = false;
         for (const auto& sub_field_schema : sub_fields_schemas){
@@ -177,6 +181,7 @@ void InstructionSetDescriptionParser::checkField(const std::string& field_name) 
         std::cerr << "Main Field '" << field_name << "' not recognized" << std::endl;
     }else{
         if (machine_description_json[field_name].is_object()){
+            json_schema[field_name].field_data.emplace_back(JsonSchema::FieldData(field_name, std::make_shared<const nlohmann::json>(machine_description_json[field_name])));
             for (auto sub_field = machine_description_json[field_name].begin(); sub_field != machine_description_json[field_name].end(); ++sub_field){
                 checkSubFields(json_schema[field_name], sub_field.key(), field_name, sub_field.value());
             }
@@ -188,52 +193,34 @@ void InstructionSetDescriptionParser::checkField(const std::string& field_name) 
     } 
 }
 
-
-std::string InstructionSetDescriptionParser::getMissingSubFieldPath(const JsonSchema::FieldDescription& field_description) {
-    
-    
-
-
-}
-/*
-void InstructionSetDescriptionParser::checkIfFieldIsFound(const JsonSchema::FieldDescription& field_description, const std::string& parent_field_name, const nlohmann::json& json ) {
-    if (!field_description.is_found && field_description.is_required){
-        if (parent_field_name != "none"){
-            std::cerr << "Required Sub Field '" << field_description.name << "' in '" << parent_field_name << "' not found" << std::endl;
-            success_parsing = false;
-        }else{
-            std::string path = getMissingSubFieldPath(field_description);
-            std::cerr << "Required Main Field '" << field_description.name << "' " << "not found" << std::endl;
-
-            success_parsing = false;
+void InstructionSetDescriptionParser::checkForMissingSubFields(const JsonSchema::FieldDescription& field_description) {
+    bool is_any;
+    for (const auto& field : field_description.field_data){
+        if (field_description.sub_fields_formats == nullptr){
+            continue;
         }
-    }else if (field_description.type == JsonSchema::FieldType::OBJECT && field_description.is_found){
-        for (const auto& sub_field : *field_description.sub_fields_formats){
-            if (json == nullptr){
-                const nlohmann::json& main_json = machine_description_json;
-                if (main_json.contains(field_description.name)){
-                    const nlohmann::json& parent_json = machine_description_json[field_description.name];
-                    checkIfFieldIsFound(sub_field, field_description.name, parent_json);
-                }
-            }else{
-                checkIfFieldIsFound(sub_field, field_description.name, json[field_description.name]);
+        for (const auto& sub_field_description : *field_description.sub_fields_formats){
+            is_any = (sub_field_description.name == JsonSchema::ANY) ? true : false;
+            if ((field.field_value->find(sub_field_description.name) == field.field_value->end() && sub_field_description.is_required) && !is_any){
+                success_parsing = false;
+                std::cerr << "Sub Field '" << sub_field_description.name << "'" << " in " << "'" << field.field_name << "'" << " not found" << std::endl;                
+            }else if (field.field_value->is_object()){
+                checkForMissingSubFields(sub_field_description);
             }
-        }
+        } 
     }
-
 }
-*/
 
-void InstructionSetDescriptionParser::getMissingSubFields(const JsonSchema::FieldDescription& field_description, const nlohmann::json& json) {
-    if (json == nullptr){
-        const nlohmann::json& main_json = machine_description_json;
-        if (main_json.contains(field_description.name)){
-            const nlohmann::json& parent_json = machine_description_json[field_description.name];
-            missing_sub_fields.push_back("::"+field_description.name);
-            if (field_description.parent_field == nullptr){
-                std::cout << ParserUtils::getFieldPath(field_description) << std::endl;
-                    std::cout << ParserUtils::getFieldPath(field_description.sub_fields_formats->at(0)) << std::endl;
-            } 
+
+
+
+void InstructionSetDescriptionParser::checkForMissingFields() {
+    for (const auto& field_description : json_schema){
+        if (machine_description_json.find(field_description.first) == machine_description_json.end()){
+            success_parsing = false;
+            std::cerr << "Main Field '" << field_description.first << "' not found" << std::endl;
+        }else{
+            checkForMissingSubFields(field_description.second);
         }
     }
 }
@@ -242,10 +229,9 @@ void InstructionSetDescriptionParser::parseInstructionSetDescription() {
     for (auto field  = machine_description_json.begin(); field != machine_description_json.end(); ++field) {
         checkField(field.key());
     }
+    
+    checkForMissingFields();
 
-    for (const auto& field_schema : json_schema){
-        getMissingSubFields(field_schema.second);
-    }
 
     if (success_parsing){
         std::cout << "Instruction set description parsed successfully!" << std::endl;

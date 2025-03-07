@@ -143,14 +143,26 @@ namespace ParserUtils {
         main_field_description.sub_fields_formats->at(main_field_description.sub_fields_formats->size() - 1).type = sub_field_type;
         main_field_description.sub_fields_formats->at(main_field_description.sub_fields_formats->size() - 1).is_required = is_required;
     } 
+
+    bool isInDescription(const JsonSchema::FieldDescription& field_description, const std::string& field_name){
+        for (const auto& data: field_description.field_data){
+            if (data.field_name == field_name){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+
     std::string getFieldPath(const JsonSchema::FieldDescription& field_description, std::string sub_path){
-        std::string path;
-        if (areDescriptionsEqual(field_description, JsonSchema::null_description)){ 
-            return "";
+        if (areDescriptionsEqual(field_description, JsonSchema::null_description)){
+            std::cerr << "null description" << std::endl;
+            assert(false);
         } 
         if (field_description.parent_field == nullptr){
             return field_description.name;
         }
         return getFieldPath(*field_description.parent_field) + "::" + field_description.name;
     }
+
 }

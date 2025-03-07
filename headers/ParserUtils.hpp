@@ -9,6 +9,9 @@
 #include <functional>
 
 namespace ParserUtils {
+
+    const std::string BROKEN_PATH = "@$%!@";
+
     bool isEqualToDescription(const nlohmann::json& json, const std::string& field_name, const JsonSchema::FieldDescription& description);
     bool isConstraintNull(const JsonSchema::FieldConstraints& constraints, const JsonSchema::FieldConstraintsType& constraint_type);
     bool areConstraintsEqual(const JsonSchema::FieldConstraints &constraints_a, const JsonSchema::FieldConstraints &constraints_b, const JsonSchema::FieldConstraintsType &constraint_type);
@@ -19,7 +22,7 @@ namespace ParserUtils {
     const std::vector<std::reference_wrapper<JsonSchema::FieldDescription>> getSubJsonSchema(const JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name);
     void addSubFieldDescription(JsonSchema::FieldDescription& main_field_description, const std::string& sub_field_name, const JsonSchema::FieldType& sub_field_type, const bool& is_required);
     std::string getFieldPath(const JsonSchema::FieldDescription& field_description, std::string sub_path = "");
-
+    bool isInDescription(const JsonSchema::FieldDescription& field_description, const std::string& field_name);
 };
 
 #endif

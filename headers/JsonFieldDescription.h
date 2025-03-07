@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <nlohmann/json.hpp>
 
 namespace JsonSchema{
 
@@ -33,11 +34,19 @@ namespace JsonSchema{
         FieldConstraints(): minLength(nullptr), maxLength(nullptr), minValue(nullptr), maxValue(nullptr) {}
     };
 
+    struct FieldData{
+        std::string field_name; // nome do campo no json
+        std::shared_ptr<const nlohmann::json> field_value; // valor do campo no json
+        FieldData(): field_name(""), field_value(nullptr) {};
+        FieldData(std::string field_name, std::shared_ptr<const nlohmann::json> field_value): field_name(field_name), field_value(field_value) {};
+    };
+
     struct FieldDescription {
         std::shared_ptr<FieldDescription> parent_field;
         std::string name;
         FieldType type;
         bool is_required;
+        std::vector<FieldData> field_data; // campos que são iguais a descrição (schema) 
         std::shared_ptr<std::vector<FieldDescription>> sub_fields_formats; // descreve os formatos dos campos aninhados
         FieldDescription(): parent_field(nullptr), name(""), type(FieldType::NULL_), is_required(false), sub_fields_formats(nullptr) {};  
         FieldDescription(std::string name, FieldType type, bool is_required ): name(name), type(type), is_required(is_required), sub_fields_formats() {}

@@ -21,7 +21,7 @@ private:
     JsonSchema::JsonSchema json_schema; // Descrição da sintaxe valida do JSON
     InstructionSetDescription instruction_set_description; // Struct de descricao das instrucoes da maquina
     std::vector<std::string> missing_sub_fields;
-
+    std::unordered_map<std::string, std::reference_wrapper<const JsonSchema::FieldDescription>> recognized_fields;
 
     void initializeErrorFlags(); // inicializa as flags de erro
     void putMainFieldsInSchema(); // Coloca os campos principais do JSON na schema
@@ -32,9 +32,8 @@ private:
     void initializeConditionalJumperFieldSchema();
     void initializeDataFieldSchema();
     void initializeJsonSchema();
-    //void checkIfFieldIsFound(const JsonSchema::FieldDescription& field_description, const std::string& parent_field_name = "none", const nlohmann::json& json = nullptr);// Checa se o campo foi encontrado, "none" indica que é um campo principal
-    std::string getMissingSubFieldPath(const JsonSchema::FieldDescription& field_description);
-    void getMissingSubFields(const JsonSchema::FieldDescription& field_description, const nlohmann::json& json = nullptr);
+    void checkForMissingFields();
+    void checkForMissingSubFields(const JsonSchema::FieldDescription& field_description);
     void parseInstructionSetDescription();
      
 };
