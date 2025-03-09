@@ -1,11 +1,12 @@
 #include <Machine.hpp>
 #include <MachineDescription.h>
+#include <InstructionSetDescription.h>
 #include <iostream>
 #include <BinaryUtils.hpp>
 #include <bitset>
 
-Machine::Machine(MachineDescription machine_description):
-    machine_description(machine_description),machine_description_validator(machine_description){
+Machine::Machine(const MachineDescription& machine_description,const InstructionSetDescription::InstructionSetDescription& instruction_set_description):
+    machine_description(machine_description),machine_description_validator(machine_description), instruction_set_description(instruction_set_description){
     initializeErrorFlags();
     if (isMachineDescriptionValid(machine_description)){
         initializeMachine();

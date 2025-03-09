@@ -26,11 +26,20 @@ int main(int argc, char* argv[]) {
     std::unique_ptr<InstructionSetDescriptionParser> instruction_set_description_parser;
     instruction_set_description_parser = std::make_unique<InstructionSetDescriptionParser>(instruction_set_description_file_path);
 
+    InstructionSetDescription::InstructionSetDescription instruction_set_description;
+    MachineDescription machine_description;
+
+    if (instruction_set_description_parser->isSuccessful()){
+        instruction_set_description = instruction_set_description_parser->getInstructionSetDescription();
+    }
     
     if (machine_description_parser->isSuccessful()){
-        MachineDescription machine_description = machine_description_parser->getMachineDescription();
+        machine_description = machine_description_parser->getMachineDescription();
+    }
+    if (machine_description_parser->isSuccessful() && instruction_set_description_parser->isSuccessful()){
         std::unique_ptr<Machine> machine;
-        machine = std::make_unique<Machine>(machine_description);
+        machine = std::make_unique<Machine>(machine_description, instruction_set_description);
+
     }
     return 0;
 }

@@ -6,6 +6,7 @@
 #include <vector>
 #include <MachineDescription.h>
 #include <MachineDescriptionValidator.hpp>
+#include <InstructionSetDescription.h>
 #include <memory>
 #include <unordered_map>
 #include <BinaryUtils.hpp>
@@ -51,10 +52,11 @@ using RegisterIdToBinaryMap = std::unordered_map<std::string, Binary>;
 using GeneralRegistersMap = std::unordered_map<Binary, GeneralRegister, BinaryHash, BinaryEqual>;
 // falta testar meu map
 public:
-    Machine(MachineDescription machine_description);
+    Machine(const MachineDescription& machine_description, const InstructionSetDescription::InstructionSetDescription& instruction_set_description);
     ~Machine();
 private:
-    const MachineDescription machine_description; // descricao da maquina
+    const MachineDescription& machine_description; // descricao da maquina
+    const InstructionSetDescription::InstructionSetDescription& instruction_set_description;
     MachineDescriptionValidator machine_description_validator; // validador da descricao da maquina
     //std::unique_ptr<InstructionSetValidator> instruction_set_validator; // validador do conjunto de instrucoes
     ProgramCounter program_counter; // registro que guarda o endereço da próxima instrução
