@@ -7,6 +7,7 @@
 #include <MachineDescription.h>
 #include <MachineDescriptionValidator.hpp>
 #include <InstructionSetDescription.h>
+#include <InstructionSetDescriptionValidator.hpp>
 #include <memory>
 #include <unordered_map>
 #include <BinaryUtils.hpp>
@@ -58,7 +59,7 @@ private:
     const MachineDescription& machine_description; // descricao da maquina
     const InstructionSetDescription::InstructionSetDescription& instruction_set_description;
     MachineDescriptionValidator machine_description_validator; // validador da descricao da maquina
-    //std::unique_ptr<InstructionSetValidator> instruction_set_validator; // validador do conjunto de instrucoes
+    InstructionSetDescriptionValidator instruction_set_description_validator; // validador da descricao do conjunto de instrucoes
     ProgramCounter program_counter; // registro que guarda o endereço da próxima instrução
     FlagsRegister flags_register; // registro que guarda as flags
     RegisterIdToBinaryMap id_to_binary; // map de identificador para binario

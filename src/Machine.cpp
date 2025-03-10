@@ -1,17 +1,23 @@
 #include <Machine.hpp>
 #include <MachineDescription.h>
 #include <InstructionSetDescription.h>
+#include <InstructionSetDescriptionValidator.hpp>
 #include <iostream>
 #include <BinaryUtils.hpp>
 #include <bitset>
 
 Machine::Machine(const MachineDescription& machine_description,const InstructionSetDescription::InstructionSetDescription& instruction_set_description):
-    machine_description(machine_description),machine_description_validator(machine_description), instruction_set_description(instruction_set_description){
+    machine_description(machine_description),machine_description_validator(machine_description), instruction_set_description(instruction_set_description),
+    instruction_set_description_validator(instruction_set_description, machine_description){
     initializeErrorFlags();
-    if (isMachineDescriptionValid(machine_description)){
+    if (machine_description_validator.isValid()){
         initializeMachine();
     };
-    
+   // if (instruction_set_description_validator.isValid()){
+   //     //loadInstructionSet();
+   // };
+        
+     
     loadInstructionSet();
 }
 

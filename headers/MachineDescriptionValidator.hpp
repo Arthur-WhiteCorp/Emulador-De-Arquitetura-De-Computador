@@ -15,7 +15,6 @@ private:
 
 
     void initializeErrorFlags(); // inicializa os flags de erro
-    void loadMachineDescription(MachineDescription machine_description_struct); // carrega a descricao da maquina
     void checkWordSize(); // checa o tamanho da palavra
     void checkGeneralRegistersSize(); // checa o tamanho dos registos gerais
     void checkProgramCounterSize(); // checa o tamanho do Program Counter
