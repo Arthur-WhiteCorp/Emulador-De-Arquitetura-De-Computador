@@ -13,9 +13,9 @@ Machine::Machine(const MachineDescription& machine_description,const Instruction
     if (machine_description_validator.isValid()){
         initializeMachine();
     };
-   // if (instruction_set_description_validator.isValid()){
-   //     //loadInstructionSet();
-   // };
+    if (instruction_set_description_validator.isValid()){
+        //loadInstructionSet();
+    };
         
      
     loadInstructionSet();
