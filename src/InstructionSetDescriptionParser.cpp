@@ -29,7 +29,12 @@ bool InstructionSetDescriptionParser::isSuccessful() {
 
 void InstructionSetDescriptionParser::fillFieldFillers() {
      field_fillers["Arithmetic_Logic"] = [&](const nlohmann::json& json, const std::string& instruction_name) {
-        instruction_set_description.al_instructions.emplace_back(instruction_name, json["syntax"].get<std::string>(), json["behavior"].get<std::string>(), json["number_of_args"].get<unsigned>(), json["flags_modification"].get<std::string>());
+        if (json.find("behavior") != json.end()){
+            instruction_set_description.al_instructions.emplace_back(instruction_name, json["syntax"].get<std::string>(), json["behavior"].get<std::string>(), json["number_of_args"].get<unsigned>(), json["flags_modification"].get<std::string>());
+        }else{ 
+            instruction_set_description.al_instructions.emplace_back(instruction_name, json["syntax"].get<std::string>(),"", json["number_of_args"].get<unsigned>(), json["flags_modification"].get<std::string>());
+
+        }
     };
 
     field_fillers["Jumper"] = [&](const nlohmann::json& json, const std::string& instruction_name) {
@@ -75,7 +80,7 @@ void InstructionSetDescriptionParser::initializeArithmeticLogicFieldSchema() {
     ParserUtils::addSubFieldDescription(any_field, "syntax", JsonSchema::FieldType::STRING, true);
 
     // Campo behavior
-    ParserUtils::addSubFieldDescription(any_field, "behavior", JsonSchema::FieldType::STRING, true); 
+    ParserUtils::addSubFieldDescription(any_field, "behavior", JsonSchema::FieldType::STRING, false); 
      
     // Campo number_of_args
     ParserUtils::addSubFieldDescription(any_field, "number_of_args", JsonSchema::FieldType::UNSIGNED, true);

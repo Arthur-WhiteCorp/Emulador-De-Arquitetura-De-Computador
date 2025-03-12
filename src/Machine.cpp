@@ -13,12 +13,11 @@ Machine::Machine(const MachineDescription& machine_description,const Instruction
     if (machine_description_validator.isValid()){
         initializeMachine();
     };
-    if (instruction_set_description_validator.isValid()){
+    if (instruction_set_description_validator.isValid() && machine_description_validator.isValid()){
         //loadInstructionSet();
     };
         
      
-    loadInstructionSet();
 }
 
 Machine::~Machine(){

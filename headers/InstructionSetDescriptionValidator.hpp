@@ -7,24 +7,28 @@
 
 class InstructionSetDescriptionValidator {
     
-   public:
-    InstructionSetDescriptionValidator(const InstructionSetDescription::InstructionSetDescription& instruction_set_description, const MachineDescription& machine_description);
-    ~InstructionSetDescriptionValidator();
-    bool isValid();
+public:
+   InstructionSetDescriptionValidator(const InstructionSetDescription::InstructionSetDescription& instruction_set_description, const MachineDescription& machine_description);
+   ~InstructionSetDescriptionValidator();
+   bool isValid();
 
 private:  
-    bool is_valid;
-    InstructionPattern::InstructionsPatterns instructions_patterns;
+   bool is_valid;
+   InstructionPattern::InstructionsPatterns instructions_patterns;
     
-    void fillInstructionsPatterns();
-    void validateALInstructions();
-    void validateDataInstructions();
-    void validateJumperInstructions();
-    void validateConditionalJumperInstructions();
-    void validateInputOutputInstructions();
-    void validate();
-    const MachineDescription& machine_description;
-    const InstructionSetDescription::InstructionSetDescription& instruction_set_description;
+   void fillInstructionsPatterns();
+
+   void matchField(const std::string& input, const std::regex& regex ); // checa a o formato do campo e printa formatos errados
+
+   void validadeALInstructionSemantic(); // validação semantica de uma instrução
+   void validateALInstructions();
+   void validateDataInstructions();
+   void validateJumperInstructions();
+   void validateConditionalJumperInstructions();
+   void validateInputOutputInstructions();
+   void validate();
+   const MachineDescription& machine_description;
+   const InstructionSetDescription::InstructionSetDescription& instruction_set_description;
 
 };
 #endif
