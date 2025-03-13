@@ -18,9 +18,22 @@ bool InstructionSetDescriptionValidator::isValid(){
 }
 
 void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
+    const std::string instruction_name = R"(\w+)";
+    const std::string register_id = R"(\w+)";
+    const std::string number = R"(-?\d+)";
+    const std::string register_id_or_number = "(" + register_id + "|" + number + ")";
+    const std::string my_operator =  R"((\+|\-|\*|\/|^|<<|>>|&&|!|==|!=|<=|>=|<|>))";
+
+
+
+    const std::string syntax = instruction_name + "(\\s+" + register_id +  ")*"; 
+    const std::string behavior = register_id + "\\s+=\\s+" + register_id_or_number + "(\\s+" + my_operator + "\\s+" + register_id_or_number + ")*"; ;
+
+    std::cout << behavior << std::endl;
+
     instructions_patterns["AL"] = InstructionPattern::InstructionPattern(
-        R"((\w+)(\s(\w+))*)", 
-        R"((\w+)\s=\s((-)?\w+)(\s(\+|\-)\s(\w+))*)"
+        syntax, 
+        behavior 
     );
     
     instructions_patterns["AL"].flags_modification = std::make_unique<std::regex>(R"((\()(\w+)(\))(\?))");
@@ -46,7 +59,7 @@ void InstructionSetDescriptionValidator::matchField(const std::string& input, co
         std::smatch match = *it;
 
         if (match.prefix().length() > 0) {
-            std::cerr << "Unexpected text: " << match.prefix() << std::endl;
+            std::cerr << "Unexpected text before last valid match: " << match.prefix() << std::endl;
             is_valid = false;
         }
 
@@ -54,7 +67,7 @@ void InstructionSetDescriptionValidator::matchField(const std::string& input, co
     }
 
     if (last_end != input.end()) {
-        std::cout << "Unexpected text: " << std::string(last_end, input.end()) << std::endl;
+        std::cout << "Unexpected text after last valid match: " << std::string(last_end, input.end()) << std::endl;
         is_valid = false;
     }
 
@@ -71,7 +84,7 @@ void InstructionSetDescriptionValidator::validateALInstructions(){
         if (instruction.description.behavior != ""){
             matchField(instruction.description.behavior, behavior);
         } 
-        matchField(instruction.flags_modification,flags_modification);
+        matchField(instruction.description.syntax,syntax);
 
         return;
         
