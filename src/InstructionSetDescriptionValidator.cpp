@@ -24,10 +24,9 @@ void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
     const std::string register_id_or_number = "(" + register_id + "|" + number + ")";
     const std::string my_operator =  R"((\+|\-|\*|\/|^|<<|>>|&&|!|==|!=|<=|>=|<|>))";
 
-
-
     const std::string syntax = instruction_name + "(\\s+" + register_id +  ")*"; 
-    const std::string behavior = register_id + "\\s+=\\s+" + register_id_or_number + "(\\s+" + my_operator + "\\s+" + register_id_or_number + ")*"; ;
+    const std::string behavior = register_id + "\\s*=\\s*" + register_id_or_number + "(\\s*" + my_operator + "\\s*" + register_id_or_number + ")*"; ;
+
 
     std::cout << behavior << std::endl;
 
