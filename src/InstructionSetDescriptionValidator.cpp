@@ -2,6 +2,7 @@
 #include <InstructionPattern.h>
 #include <regex.h>
 #include <iostream>
+#include <Tokens.hpp>
 
 InstructionSetDescriptionValidator::InstructionSetDescriptionValidator(const InstructionSetDescription::InstructionSetDescription& instruction_set_description, const MachineDescription& machine_description): instruction_set_description(instruction_set_description), machine_description(machine_description){
     fillInstructionsPatterns();    
@@ -18,26 +19,29 @@ bool InstructionSetDescriptionValidator::isValid(){
 }
 
 void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
-    const std::string instruction_name = R"(\w+)";
-    const std::string register_id = R"(\w+)";
-    const std::string number = R"(-?\d+)";
-    const std::string register_id_or_number = "(" + register_id + "|" + number + ")";
-    const std::string my_operator =  R"((\+|\-|\*|\/|^|<<|>>|&&|!|==|!=|<=|>=|<|>))";
+    const std::string& instruction_name = Tokens::token_patterns.at(Tokens::TokenType::INSTRUCTION_NAME);
+    const std::string& register_id = Tokens::token_patterns.at(Tokens::TokenType::REGISTER_ID);
+    const std::string& unsigned_num = Tokens::token_patterns.at(Tokens::TokenType::UNSIGNED_NUM); 
+    const std::string& number = Tokens::token_patterns.at(Tokens::TokenType::NUMBER); 
+    const std::string& register_id_or_number = Tokens::token_patterns.at(Tokens::TokenType::REGISTER_ID_OR_NUMBER);
+    const std::string& my_operator =  Tokens::token_patterns.at(Tokens::TokenType::OPERATOR);
+    const std::string& flags_register_pos = Tokens::token_patterns.at(Tokens::TokenType::FLAGS_REGISTER_POS); 
+
 
     const std::string syntax = instruction_name + "(\\s+" + register_id +  ")*"; 
-    const std::string behavior = register_id + "\\s*=\\s*" + register_id_or_number + "(\\s*" + my_operator + "\\s*" + register_id_or_number + ")*"; ;
-
-
-    std::cout << behavior << std::endl;
-
+    const std::string behavior = register_id + "\\s*=\\s*" + register_id_or_number + "(\\s*" + my_operator + "\\s*" + register_id_or_number + ")*"; 
+  
     instructions_patterns["AL"] = InstructionPattern::InstructionPattern(
         syntax, 
         behavior 
     );
+
+    //std::string flags_modification = 
     
     instructions_patterns["AL"].flags_modification = std::make_unique<std::regex>(R"((\()(\w+)(\))(\?))");
     instructions_patterns["AL"].reserved_words["MAX"] = "MAX";
     instructions_patterns["AL"].reserved_words["MIN"] = "MIN";
+    instructions_patterns["AL"].reserved_words["flags_register"] = "flags_register[n]";
 
     instructions_patterns["Data"];
     instructions_patterns["Condional_Jumper"];
