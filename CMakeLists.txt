@@ -7,7 +7,7 @@ message(STATUS "Project source directory: ${CMAKE_SOURCE_DIR}")
 
 set(ANTLR_JAR_PATH "${CMAKE_SOURCE_DIR}/third-party/antlr-tool/antlr.jar")
 set(GRAMMAR_DIR "${CMAKE_SOURCE_DIR}/grammar")
-set(GENERATED_DIR "${CMAKE_SOURCE_DIR}/src/antlr-src")
+set(GENERATED_DIR "${CMAKE_SOURCE_DIR}/src/antlr-generated")
 
 
 
@@ -54,6 +54,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree
   ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/support
   ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/demo/generated
+  ${PROJECT_SOURCE_DIR}/headers/antlr-generated
 )
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/nlohmann-json)
