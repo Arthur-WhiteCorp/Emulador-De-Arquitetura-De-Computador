@@ -3,6 +3,7 @@
 #include <regex.h>
 #include <iostream>
 #include <Tokens.hpp>
+#include <unordered_map>
 
 InstructionSetDescriptionValidator::InstructionSetDescriptionValidator(const InstructionSetDescription::InstructionSetDescription& instruction_set_description, const MachineDescription& machine_description): instruction_set_description(instruction_set_description), machine_description(machine_description){
     fillInstructionsPatterns();    
@@ -24,12 +25,14 @@ void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
     const std::string& unsigned_num = Tokens::token_patterns.at(Tokens::TokenType::UNSIGNED_NUM); 
     const std::string& number = Tokens::token_patterns.at(Tokens::TokenType::NUMBER); 
     const std::string& register_id_or_number = Tokens::token_patterns.at(Tokens::TokenType::REGISTER_ID_OR_NUMBER);
-    const std::string& my_operator =  Tokens::token_patterns.at(Tokens::TokenType::OPERATOR);
+    const std::string& binary_operator =  Tokens::token_patterns.at(Tokens::TokenType::BINARY_OPERATOR);
     const std::string& flags_register_pos = Tokens::token_patterns.at(Tokens::TokenType::FLAGS_REGISTER_POS); 
-
+    const std::string& negation = Tokens::token_patterns.at(Tokens::TokenType::NEGATION);
+    const std::string& conditional_operator = Tokens::token_patterns.at(Tokens::TokenType::CONDITIONAL_OPERATOR);
 
     const std::string syntax = instruction_name + "(\\s+" + register_id +  ")*"; 
-    const std::string behavior = register_id + "\\s*=\\s*" + register_id_or_number + "(\\s*" + my_operator + "\\s*" + register_id_or_number + ")*"; 
+    const std::string behavior = register_id + "\\s*=\\s*" + register_id_or_number + "(\\s*" + negation + "?" + binary_operator + "\\s*" + register_id_or_number + ")*"; 
+    std::cout << behavior << std::endl;
   
     instructions_patterns["AL"] = InstructionPattern::InstructionPattern(
         syntax, 
