@@ -42,3 +42,4 @@ objects
 .vscode
 .cache
 teste.sh
+dist

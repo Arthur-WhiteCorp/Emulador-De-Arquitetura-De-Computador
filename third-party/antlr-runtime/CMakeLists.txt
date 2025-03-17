@@ -10,28 +10,28 @@ endif()
 set(libantlrcpp_INCLUDE_INSTALL_DIR "include/antlr4-runtime")
 
 set(libantlrcpp_INCLUDE_DIRS
-  ${PROJECT_SOURCE_DIR}/runtime/src
-  ${PROJECT_SOURCE_DIR}/runtime/src/atn
-  ${PROJECT_SOURCE_DIR}/runtime/src/dfa
-  ${PROJECT_SOURCE_DIR}/runtime/src/internal
-  ${PROJECT_SOURCE_DIR}/runtime/src/misc
-  ${PROJECT_SOURCE_DIR}/runtime/src/support
-  ${PROJECT_SOURCE_DIR}/runtime/src/tree
-  ${PROJECT_SOURCE_DIR}/runtime/src/tree/pattern
-  ${PROJECT_SOURCE_DIR}/runtime/src/tree/xpath
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/atn
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/dfa
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/internal
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/misc
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/support
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree/pattern
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree/xpath
 )
 
 
 file(GLOB libantlrcpp_SRC
-  "${PROJECT_SOURCE_DIR}/runtime/src/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/atn/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/dfa/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/internal/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/misc/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/support/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/tree/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/tree/pattern/*.cpp"
-  "${PROJECT_SOURCE_DIR}/runtime/src/tree/xpath/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/atn/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/dfa/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/internal/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/misc/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/support/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree/pattern/*.cpp"
+  "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree/xpath/*.cpp"
 )
 
 if (ANTLR_BUILD_SHARED)
@@ -80,7 +80,7 @@ if (ANTLR_BUILD_CPP_TESTS)
   FetchContent_MakeAvailable(googletest)
 
   file(GLOB libantlrcpp_TESTS
-    "${PROJECT_SOURCE_DIR}/runtime/tests/*.cpp"
+    "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/tests/*.cpp"
   )
 
   add_executable(
@@ -192,7 +192,7 @@ if (TARGET antlr4_static)
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
-install(DIRECTORY "${PROJECT_SOURCE_DIR}/runtime/src/"
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/"
         DESTINATION "${libantlrcpp_INCLUDE_INSTALL_DIR}"
         COMPONENT dev
         FILES_MATCHING PATTERN "*.h"

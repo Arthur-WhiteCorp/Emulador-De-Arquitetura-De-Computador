@@ -4,6 +4,14 @@ project(Emulador-De-Arquitetura-De-Computador)
 message(STATUS "CMake source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "Project source directory: ${CMAKE_SOURCE_DIR}")
 
+
+set(ANTLR_JAR_PATH "${CMAKE_SOURCE_DIR}/third-party/antlr-tool/antlr.jar")
+set(GRAMMAR_DIR "${CMAKE_SOURCE_DIR}/grammar")
+set(GENERATED_DIR "${CMAKE_SOURCE_DIR}/src/antlr-src")
+
+
+
+
 if(NOT UNIX)
   message(WARNING "Unsupported operating system")
 endif()
@@ -26,6 +34,12 @@ find_package(OpenGL REQUIRED)
 if (NOT OpenGL_FOUND)
     message(FATAL_ERROR "OpenGL not found! Please install it using:\n  sudo apt install libgl1-mesa-dev")
 endif()
+
+# Collect all generated .cpp files
+file(GLOB GENERATED_CPP_FILES "${GENERATED_DIR}/*.cpp")
+
+# Add the generated files to a library
+add_library(antlr_generated ${GENERATED_CPP_FILES})
 
 
 
