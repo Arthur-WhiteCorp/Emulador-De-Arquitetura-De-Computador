@@ -10,6 +10,13 @@ endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(ANTLR_BUILD_STATIC TRUE)  
+
+find_package(Java REQUIRED)
+if (NOT Java_FOUND)
+    message(FATAL_ERROR "Java not found! Please install it using:\n sudo apt install openjdk-21-jdk")
+endif()
+
 find_package(glfw3 REQUIRED)
 if (NOT glfw3_FOUND)
     message(FATAL_ERROR "GLFW not found! Please install it using:\n  sudo apt install libglfw3-dev")
@@ -26,9 +33,17 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/headers
   ${PROJECT_SOURCE_DIR}/third-party/nlohmann-json/include/nlohmann
   ${PROJECT_SOURCE_DIR}/third-party/imgui/headers
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/misc
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/atn
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/dfa
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/tree
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/src/support
+  ${PROJECT_SOURCE_DIR}/third-party/antlr-runtime/demo/generated
 )
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/nlohmann-json)
+add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/antlr-runtime)
 
 file(GLOB project_SRC "${PROJECT_SOURCE_DIR}/src/*.cpp")
 # Collect .cpp files from the second folder and append them to project_SRC
@@ -63,6 +78,7 @@ target_link_libraries(project PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(project PRIVATE glfw ${OPENGL_LIBRARIES})
 target_link_libraries(project PRIVATE OpenGL::GL)
 
-
+# Link antlr-runtime
+target_link_libraries(project PRIVATE antlr4_static)
 
 
