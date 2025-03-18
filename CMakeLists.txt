@@ -35,31 +35,7 @@ if (NOT OpenGL_FOUND)
     message(FATAL_ERROR "OpenGL not found! Please install it using:\n  sudo apt install libgl1-mesa-dev")
 endif()
 
-foreach(GRAMMAR_FILE ${GRAMMAR_FILES})
-    # Get the base name of the grammar file (without extension)
-    get_filename_component(GRAMMAR_NAME ${GRAMMAR_FILE} NAME_WE)
-
-    # Define the output files
-    set(LEXER_CPP "${GENERATED_DIR}/${GRAMMAR_NAME}Lexer.cpp")
-    set(PARSER_CPP "${GENERATED_DIR}/${GRAMMAR_NAME}Parser.cpp")
-    set(VISITOR_CPP "${GENERATED_DIR}/${GRAMMAR_NAME}Visitor.cpp")
-    set(BASE_VISITOR_CPP "${GENERATED_DIR}/${GRAMMAR_NAME}BaseVisitor.cpp")
-
-    # Add a custom command to generate C++ files
-    add_custom_command(
-        OUTPUT ${LEXER_CPP} ${PARSER_CPP} ${BASE_VISITOR_CPP} ${VISITOR_CPP}
-        COMMAND java -jar ${ANTLR_JAR_PATH} -Dlanguage=Cpp ${GRAMMAR_FILE}
-        COMMAND mv *.cpp ${GENERATED_DIR}
-        COMMAND mv *.h ${CMAKE_SOURCE_DIR}/headers/antlr-generated
-        COMMAND mv * ${GENERATED_DIR}
-        DEPENDS ${GRAMMAR_FILE}
-    )
-
-endforeach()
-file(GLOB GENERATED_CPP_FILES "${GENERATED_DIR}/*.cpp")
 add_library(antlr_generated ${GENERATED_CPP_FILES})
-
-
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/headers

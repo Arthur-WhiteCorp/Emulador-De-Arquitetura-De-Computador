@@ -1,6 +1,6 @@
 grammar Behavior;
 
-root : expr EOF;
+root : expr;
 
 expr : expr (PLUS | SUB) expr 
      | NUM ;
@@ -8,5 +8,8 @@ expr : expr (PLUS | SUB) expr
 NUM : [0-9]+;
 PLUS : '+';
 SUB : '-'; 
+TEST : '*';
+SUP : 'another one';
+TL: 'asdsd';
 WS : [ \n]+ -> skip;
 
