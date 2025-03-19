@@ -12,7 +12,8 @@
 class  BehaviorParser : public antlr4::Parser {
 public:
   enum {
-    NUM = 1, PLUS = 2, SUB = 3, TEST = 4, SUP = 5, TL = 6, WS = 7
+    NUM = 1, REGISTER = 2, PLUS = 3, SUB = 4, TEST = 5, SUP = 6, TL = 7, 
+    WS = 8
   };
 
   enum {

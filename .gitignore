@@ -38,8 +38,13 @@ build
 objects
 
 #vscode
-
 .vscode
 .cache
 teste.sh
 dist
+
+#python
+venv
+__pycache__
+
+

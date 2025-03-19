@@ -6,6 +6,7 @@ expr : expr (PLUS | SUB) expr
      | NUM ;
 
 NUM : [0-9]+;
+REGISTER : 'R[0-9]+';
 PLUS : '+';
 SUB : '-'; 
 TEST : '*';
