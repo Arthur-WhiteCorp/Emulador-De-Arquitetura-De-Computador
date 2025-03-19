@@ -1,0 +1,12 @@
+NUM=1
+PLUS=2
+SUB=3
+TEST=4
+SUP=5
+TL=6
+WS=7
+'+'=2
+'-'=3
+'*'=4
+'another one'=5
+'asdsd'=6

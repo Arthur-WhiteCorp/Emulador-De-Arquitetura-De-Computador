@@ -35,6 +35,8 @@ if (NOT OpenGL_FOUND)
     message(FATAL_ERROR "OpenGL not found! Please install it using:\n  sudo apt install libgl1-mesa-dev")
 endif()
 
+file(GLOB GENERATED_CPP_FILES "${GENERATED_DIR}/*.cpp")
+
 add_library(antlr_generated ${GENERATED_CPP_FILES})
 
 include_directories(
