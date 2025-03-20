@@ -12,12 +12,13 @@
 class  BehaviorParser : public antlr4::Parser {
 public:
   enum {
-    NUM = 1, REGISTER = 2, PLUS = 3, SUB = 4, TEST = 5, SUP = 6, TL = 7, 
-    WS = 8
+    NUM = 1, REGISTER_PREFIX = 2, PLUS = 3, SUB = 4, MULT = 5, DIV = 6, 
+    EXP = 7, SHIFT_LEFT = 8, SHIFT_RIGHT = 9, AND = 10, OR = 11, XOR = 12, 
+    WS = 13
   };
 
   enum {
-    RuleRoot = 0, RuleExpr = 1
+    RuleRoot = 0, RuleExpr = 1, RuleBinary_op = 2
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -38,7 +39,8 @@ public:
 
 
   class RootContext;
-  class ExprContext; 
+  class ExprContext;
+  class Binary_opContext; 
 
   class  RootContext : public antlr4::ParserRuleContext {
   public:
@@ -60,8 +62,7 @@ public:
     antlr4::tree::TerminalNode *NUM();
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *PLUS();
-    antlr4::tree::TerminalNode *SUB();
+    Binary_opContext *binary_op();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -70,6 +71,111 @@ public:
 
   ExprContext* expr();
   ExprContext* expr(int precedence);
+  class  Binary_opContext : public antlr4::ParserRuleContext {
+  public:
+    Binary_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    Binary_opContext() = default;
+    void copyFrom(Binary_opContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
+
+    virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  AND_BIT_WISEContext : public Binary_opContext {
+  public:
+    AND_BIT_WISEContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *AND();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  MULTIPLICATIONContext : public Binary_opContext {
+  public:
+    MULTIPLICATIONContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *MULT();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  XOR_BIT_WISEContext : public Binary_opContext {
+  public:
+    XOR_BIT_WISEContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *XOR();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  EXPONENTIATIONContext : public Binary_opContext {
+  public:
+    EXPONENTIATIONContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *EXP();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  ADDITIONContext : public Binary_opContext {
+  public:
+    ADDITIONContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *PLUS();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  SUBTRACTIONContext : public Binary_opContext {
+  public:
+    SUBTRACTIONContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *SUB();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  SHLContext : public Binary_opContext {
+  public:
+    SHLContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *SHIFT_LEFT();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  SHRContext : public Binary_opContext {
+  public:
+    SHRContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *SHIFT_RIGHT();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  DIVISIONContext : public Binary_opContext {
+  public:
+    DIVISIONContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *DIV();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  OR_BIT_WISEContext : public Binary_opContext {
+  public:
+    OR_BIT_WISEContext(Binary_opContext *ctx);
+
+    antlr4::tree::TerminalNode *OR();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  Binary_opContext* binary_op();
+
 
   bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
 

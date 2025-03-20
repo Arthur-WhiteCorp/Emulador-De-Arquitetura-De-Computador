@@ -23,6 +23,26 @@ public:
 
     virtual std::any visitExpr(BehaviorParser::ExprContext *context) = 0;
 
+    virtual std::any visitEXPONENTIATION(BehaviorParser::EXPONENTIATIONContext *context) = 0;
+
+    virtual std::any visitMULTIPLICATION(BehaviorParser::MULTIPLICATIONContext *context) = 0;
+
+    virtual std::any visitDIVISION(BehaviorParser::DIVISIONContext *context) = 0;
+
+    virtual std::any visitADDITION(BehaviorParser::ADDITIONContext *context) = 0;
+
+    virtual std::any visitSUBTRACTION(BehaviorParser::SUBTRACTIONContext *context) = 0;
+
+    virtual std::any visitSHL(BehaviorParser::SHLContext *context) = 0;
+
+    virtual std::any visitSHR(BehaviorParser::SHRContext *context) = 0;
+
+    virtual std::any visitAND_BIT_WISE(BehaviorParser::AND_BIT_WISEContext *context) = 0;
+
+    virtual std::any visitXOR_BIT_WISE(BehaviorParser::XOR_BIT_WISEContext *context) = 0;
+
+    virtual std::any visitOR_BIT_WISE(BehaviorParser::OR_BIT_WISEContext *context) = 0;
+
 
 };
 

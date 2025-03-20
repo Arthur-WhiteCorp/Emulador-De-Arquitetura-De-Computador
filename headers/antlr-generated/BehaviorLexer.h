@@ -12,8 +12,9 @@
 class  BehaviorLexer : public antlr4::Lexer {
 public:
   enum {
-    NUM = 1, REGISTER = 2, PLUS = 3, SUB = 4, TEST = 5, SUP = 6, TL = 7, 
-    WS = 8
+    NUM = 1, REGISTER_PREFIX = 2, PLUS = 3, SUB = 4, MULT = 5, DIV = 6, 
+    EXP = 7, SHIFT_LEFT = 8, SHIFT_RIGHT = 9, AND = 10, OR = 11, XOR = 12, 
+    WS = 13
   };
 
   explicit BehaviorLexer(antlr4::CharStream *input);

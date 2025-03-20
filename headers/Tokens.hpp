@@ -24,8 +24,8 @@ namespace Tokens {
     static const std::string number = R"((-?\d+))";
     static const std::string register_id_or_number = "(" + register_id + "|" + number + ")";
     static const std::string negation = R"((not))";
-    static const std::string binary_operator = R"((\+|\-|\*|\/|^|<<|>>|and|or|xor))";
-    static const std::string conditional_operator = R"((==|!=|<=|>=|<|>|!))";
+    static const std::string binary_operator = R"((\+|\-|\*|\/|^|<<|>>|and|or|xor|not))";
+    static const std::string conditional_operator = R"((==|!=|<=|>=|<|>))";
     static const std::string flags_register_pos = "(flags_register)(\\[" + unsigned_num + "\\])";
 
     static const std::unordered_map<TokenType, std::string> token_patterns = {
