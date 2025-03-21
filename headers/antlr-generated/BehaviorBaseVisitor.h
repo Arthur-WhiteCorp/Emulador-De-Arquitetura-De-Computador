@@ -19,47 +19,35 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitOr(BehaviorParser::OrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitXor(BehaviorParser::XorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAnd(BehaviorParser::AndContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitShift(BehaviorParser::ShiftContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitExpr(BehaviorParser::ExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEXPONENTIATION(BehaviorParser::EXPONENTIATIONContext *ctx) override {
+  virtual std::any visitTerm(BehaviorParser::TermContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitMULTIPLICATION(BehaviorParser::MULTIPLICATIONContext *ctx) override {
+  virtual std::any visitFactor(BehaviorParser::FactorContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDIVISION(BehaviorParser::DIVISIONContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitADDITION(BehaviorParser::ADDITIONContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitSUBTRACTION(BehaviorParser::SUBTRACTIONContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitSHL(BehaviorParser::SHLContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitSHR(BehaviorParser::SHRContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitAND_BIT_WISE(BehaviorParser::AND_BIT_WISEContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitXOR_BIT_WISE(BehaviorParser::XOR_BIT_WISEContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitOR_BIT_WISE(BehaviorParser::OR_BIT_WISEContext *ctx) override {
+  virtual std::any visitPrimary(BehaviorParser::PrimaryContext *ctx) override {
     return visitChildren(ctx);
   }
 

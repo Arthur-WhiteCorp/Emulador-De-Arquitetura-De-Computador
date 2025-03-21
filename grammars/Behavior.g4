@@ -1,21 +1,30 @@
 grammar Behavior;
 
-root : expr;
+root : REGISTER_PREFIX NUM '=' or;
 
-expr : expr (binary_op) expr 
-     | NUM ;
+or :	xor | 
+	or (OR) xor;
 
-binary_op : EXP    # EXPONENTIATION
-	   | MULT   # MULTIPLICATION
-	   | DIV    # DIVISION
-           | PLUS   # ADDITION
-           | SUB    # SUBTRACTION
-           | SHIFT_LEFT  # SHL
-           | SHIFT_RIGHT  # SHR
-           | AND  # AND_BIT_WISE
-           | XOR  # XOR_BIT_WISE
-           | OR  # OR_BIT_WISE
-	   ;
+xor :   and | 
+	xor XOR and;
+
+and :   expr | 
+	and AND expr;
+
+shift : expr | 
+	shift (SHIFT_LEFT|SHIFT_RIGHT) expr;
+
+expr :  term |
+	expr (PLUS|SUB) term;
+
+term :  factor | 
+	term (MULT|DIV) factor;
+
+factor :primary | 
+	factor (EXP) primary;
+
+primary : (REGISTER_PREFIX NUM) | NUM;
+
 NUM : [0-9]+;
 REGISTER_PREFIX : 'R';
 PLUS : '+';

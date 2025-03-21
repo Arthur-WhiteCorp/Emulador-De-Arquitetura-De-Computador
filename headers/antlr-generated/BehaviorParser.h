@@ -12,13 +12,14 @@
 class  BehaviorParser : public antlr4::Parser {
 public:
   enum {
-    NUM = 1, REGISTER_PREFIX = 2, PLUS = 3, SUB = 4, MULT = 5, DIV = 6, 
-    EXP = 7, SHIFT_LEFT = 8, SHIFT_RIGHT = 9, AND = 10, OR = 11, XOR = 12, 
-    WS = 13
+    T__0 = 1, NUM = 2, REGISTER_PREFIX = 3, PLUS = 4, SUB = 5, MULT = 6, 
+    DIV = 7, EXP = 8, SHIFT_LEFT = 9, SHIFT_RIGHT = 10, AND = 11, OR = 12, 
+    XOR = 13, WS = 14
   };
 
   enum {
-    RuleRoot = 0, RuleExpr = 1, RuleBinary_op = 2
+    RuleRoot = 0, RuleOr = 1, RuleXor = 2, RuleAnd = 3, RuleShift = 4, RuleExpr = 5, 
+    RuleTerm = 6, RuleFactor = 7, RulePrimary = 8
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -39,14 +40,22 @@ public:
 
 
   class RootContext;
+  class OrContext;
+  class XorContext;
+  class AndContext;
+  class ShiftContext;
   class ExprContext;
-  class Binary_opContext; 
+  class TermContext;
+  class FactorContext;
+  class PrimaryContext; 
 
   class  RootContext : public antlr4::ParserRuleContext {
   public:
     RootContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    ExprContext *expr();
+    antlr4::tree::TerminalNode *REGISTER_PREFIX();
+    antlr4::tree::TerminalNode *NUM();
+    OrContext *or_();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -55,14 +64,75 @@ public:
 
   RootContext* root();
 
+  class  OrContext : public antlr4::ParserRuleContext {
+  public:
+    OrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    XorContext *xor_();
+    OrContext *or_();
+    antlr4::tree::TerminalNode *OR();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  OrContext* or_();
+  OrContext* or_(int precedence);
+  class  XorContext : public antlr4::ParserRuleContext {
+  public:
+    XorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    AndContext *and_();
+    XorContext *xor_();
+    antlr4::tree::TerminalNode *XOR();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  XorContext* xor_();
+  XorContext* xor_(int precedence);
+  class  AndContext : public antlr4::ParserRuleContext {
+  public:
+    AndContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExprContext *expr();
+    AndContext *and_();
+    antlr4::tree::TerminalNode *AND();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AndContext* and_();
+  AndContext* and_(int precedence);
+  class  ShiftContext : public antlr4::ParserRuleContext {
+  public:
+    ShiftContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExprContext *expr();
+    ShiftContext *shift();
+    antlr4::tree::TerminalNode *SHIFT_LEFT();
+    antlr4::tree::TerminalNode *SHIFT_RIGHT();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ShiftContext* shift();
+  ShiftContext* shift(int precedence);
   class  ExprContext : public antlr4::ParserRuleContext {
   public:
     ExprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NUM();
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-    Binary_opContext *binary_op();
+    TermContext *term();
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *PLUS();
+    antlr4::tree::TerminalNode *SUB();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -71,115 +141,61 @@ public:
 
   ExprContext* expr();
   ExprContext* expr(int precedence);
-  class  Binary_opContext : public antlr4::ParserRuleContext {
+  class  TermContext : public antlr4::ParserRuleContext {
   public:
-    Binary_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-   
-    Binary_opContext() = default;
-    void copyFrom(Binary_opContext *context);
-    using antlr4::ParserRuleContext::copyFrom;
-
+    TermContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-
-   
-  };
-
-  class  AND_BIT_WISEContext : public Binary_opContext {
-  public:
-    AND_BIT_WISEContext(Binary_opContext *ctx);
-
-    antlr4::tree::TerminalNode *AND();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  MULTIPLICATIONContext : public Binary_opContext {
-  public:
-    MULTIPLICATIONContext(Binary_opContext *ctx);
-
+    FactorContext *factor();
+    TermContext *term();
     antlr4::tree::TerminalNode *MULT();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  XOR_BIT_WISEContext : public Binary_opContext {
-  public:
-    XOR_BIT_WISEContext(Binary_opContext *ctx);
-
-    antlr4::tree::TerminalNode *XOR();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  EXPONENTIATIONContext : public Binary_opContext {
-  public:
-    EXPONENTIATIONContext(Binary_opContext *ctx);
-
-    antlr4::tree::TerminalNode *EXP();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  ADDITIONContext : public Binary_opContext {
-  public:
-    ADDITIONContext(Binary_opContext *ctx);
-
-    antlr4::tree::TerminalNode *PLUS();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  SUBTRACTIONContext : public Binary_opContext {
-  public:
-    SUBTRACTIONContext(Binary_opContext *ctx);
-
-    antlr4::tree::TerminalNode *SUB();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  SHLContext : public Binary_opContext {
-  public:
-    SHLContext(Binary_opContext *ctx);
-
-    antlr4::tree::TerminalNode *SHIFT_LEFT();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  SHRContext : public Binary_opContext {
-  public:
-    SHRContext(Binary_opContext *ctx);
-
-    antlr4::tree::TerminalNode *SHIFT_RIGHT();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  DIVISIONContext : public Binary_opContext {
-  public:
-    DIVISIONContext(Binary_opContext *ctx);
-
     antlr4::tree::TerminalNode *DIV();
 
+
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
   };
 
-  class  OR_BIT_WISEContext : public Binary_opContext {
+  TermContext* term();
+  TermContext* term(int precedence);
+  class  FactorContext : public antlr4::ParserRuleContext {
   public:
-    OR_BIT_WISEContext(Binary_opContext *ctx);
+    FactorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    PrimaryContext *primary();
+    FactorContext *factor();
+    antlr4::tree::TerminalNode *EXP();
 
-    antlr4::tree::TerminalNode *OR();
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
   };
 
-  Binary_opContext* binary_op();
+  FactorContext* factor();
+  FactorContext* factor(int precedence);
+  class  PrimaryContext : public antlr4::ParserRuleContext {
+  public:
+    PrimaryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *REGISTER_PREFIX();
+    antlr4::tree::TerminalNode *NUM();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  PrimaryContext* primary();
 
 
   bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
 
+  bool orSempred(OrContext *_localctx, size_t predicateIndex);
+  bool xorSempred(XorContext *_localctx, size_t predicateIndex);
+  bool andSempred(AndContext *_localctx, size_t predicateIndex);
+  bool shiftSempred(ShiftContext *_localctx, size_t predicateIndex);
   bool exprSempred(ExprContext *_localctx, size_t predicateIndex);
+  bool termSempred(TermContext *_localctx, size_t predicateIndex);
+  bool factorSempred(FactorContext *_localctx, size_t predicateIndex);
 
   // By default the static state used to implement the parser is lazily initialized during the first
   // call to the constructor. You can call this function if you wish to initialize the static state

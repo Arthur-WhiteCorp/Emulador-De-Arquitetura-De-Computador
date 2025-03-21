@@ -33,7 +33,8 @@ INIT_RULE=$2
 if [ -z "$3" ]; then
     :
 else
-    INPUT_FILE="$SCRIPT_DIR/grammars/$3"
+    INPUT_FILE="$SCRIPT_DIR/testes/$3"
+    
     if [ -e "$INPUT_FILE" ]; then
         :
     else
