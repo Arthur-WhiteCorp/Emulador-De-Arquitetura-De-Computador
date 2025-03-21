@@ -64,36 +64,35 @@ void behaviorParserInitialize() {
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,14,106,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,14,102,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,5,1,30,8,1,
   	10,1,12,1,33,9,1,1,2,1,2,1,2,1,2,1,2,1,2,5,2,41,8,2,10,2,12,2,44,9,2,
   	1,3,1,3,1,3,1,3,1,3,1,3,5,3,52,8,3,10,3,12,3,55,9,3,1,4,1,4,1,4,1,4,1,
   	4,1,4,5,4,63,8,4,10,4,12,4,66,9,4,1,5,1,5,1,5,1,5,1,5,1,5,5,5,74,8,5,
   	10,5,12,5,77,9,5,1,6,1,6,1,6,1,6,1,6,1,6,5,6,85,8,6,10,6,12,6,88,9,6,
-  	1,7,1,7,1,7,1,7,1,7,1,7,5,7,96,8,7,10,7,12,7,99,9,7,1,8,1,8,1,8,3,8,104,
-  	8,8,1,8,0,7,2,4,6,8,10,12,14,9,0,2,4,6,8,10,12,14,16,0,3,1,0,9,10,1,0,
-  	4,5,1,0,6,7,104,0,18,1,0,0,0,2,23,1,0,0,0,4,34,1,0,0,0,6,45,1,0,0,0,8,
-  	56,1,0,0,0,10,67,1,0,0,0,12,78,1,0,0,0,14,89,1,0,0,0,16,103,1,0,0,0,18,
-  	19,5,3,0,0,19,20,5,2,0,0,20,21,5,1,0,0,21,22,3,2,1,0,22,1,1,0,0,0,23,
-  	24,6,1,-1,0,24,25,3,4,2,0,25,31,1,0,0,0,26,27,10,1,0,0,27,28,5,12,0,0,
-  	28,30,3,4,2,0,29,26,1,0,0,0,30,33,1,0,0,0,31,29,1,0,0,0,31,32,1,0,0,0,
-  	32,3,1,0,0,0,33,31,1,0,0,0,34,35,6,2,-1,0,35,36,3,6,3,0,36,42,1,0,0,0,
-  	37,38,10,1,0,0,38,39,5,13,0,0,39,41,3,6,3,0,40,37,1,0,0,0,41,44,1,0,0,
-  	0,42,40,1,0,0,0,42,43,1,0,0,0,43,5,1,0,0,0,44,42,1,0,0,0,45,46,6,3,-1,
-  	0,46,47,3,10,5,0,47,53,1,0,0,0,48,49,10,1,0,0,49,50,5,11,0,0,50,52,3,
-  	10,5,0,51,48,1,0,0,0,52,55,1,0,0,0,53,51,1,0,0,0,53,54,1,0,0,0,54,7,1,
-  	0,0,0,55,53,1,0,0,0,56,57,6,4,-1,0,57,58,3,10,5,0,58,64,1,0,0,0,59,60,
-  	10,1,0,0,60,61,7,0,0,0,61,63,3,10,5,0,62,59,1,0,0,0,63,66,1,0,0,0,64,
-  	62,1,0,0,0,64,65,1,0,0,0,65,9,1,0,0,0,66,64,1,0,0,0,67,68,6,5,-1,0,68,
-  	69,3,12,6,0,69,75,1,0,0,0,70,71,10,1,0,0,71,72,7,1,0,0,72,74,3,12,6,0,
-  	73,70,1,0,0,0,74,77,1,0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,11,1,0,0,0,
-  	77,75,1,0,0,0,78,79,6,6,-1,0,79,80,3,14,7,0,80,86,1,0,0,0,81,82,10,1,
-  	0,0,82,83,7,2,0,0,83,85,3,14,7,0,84,81,1,0,0,0,85,88,1,0,0,0,86,84,1,
-  	0,0,0,86,87,1,0,0,0,87,13,1,0,0,0,88,86,1,0,0,0,89,90,6,7,-1,0,90,91,
-  	3,16,8,0,91,97,1,0,0,0,92,93,10,1,0,0,93,94,5,8,0,0,94,96,3,16,8,0,95,
-  	92,1,0,0,0,96,99,1,0,0,0,97,95,1,0,0,0,97,98,1,0,0,0,98,15,1,0,0,0,99,
-  	97,1,0,0,0,100,101,5,3,0,0,101,104,5,2,0,0,102,104,5,2,0,0,103,100,1,
-  	0,0,0,103,102,1,0,0,0,104,17,1,0,0,0,8,31,42,53,64,75,86,97,103
+  	1,7,1,7,1,7,1,7,1,7,3,7,95,8,7,1,8,1,8,1,8,3,8,100,8,8,1,8,0,6,2,4,6,
+  	8,10,12,9,0,2,4,6,8,10,12,14,16,0,3,1,0,9,10,1,0,4,5,1,0,6,7,100,0,18,
+  	1,0,0,0,2,23,1,0,0,0,4,34,1,0,0,0,6,45,1,0,0,0,8,56,1,0,0,0,10,67,1,0,
+  	0,0,12,78,1,0,0,0,14,94,1,0,0,0,16,99,1,0,0,0,18,19,5,3,0,0,19,20,5,2,
+  	0,0,20,21,5,1,0,0,21,22,3,2,1,0,22,1,1,0,0,0,23,24,6,1,-1,0,24,25,3,4,
+  	2,0,25,31,1,0,0,0,26,27,10,1,0,0,27,28,5,12,0,0,28,30,3,4,2,0,29,26,1,
+  	0,0,0,30,33,1,0,0,0,31,29,1,0,0,0,31,32,1,0,0,0,32,3,1,0,0,0,33,31,1,
+  	0,0,0,34,35,6,2,-1,0,35,36,3,6,3,0,36,42,1,0,0,0,37,38,10,1,0,0,38,39,
+  	5,13,0,0,39,41,3,6,3,0,40,37,1,0,0,0,41,44,1,0,0,0,42,40,1,0,0,0,42,43,
+  	1,0,0,0,43,5,1,0,0,0,44,42,1,0,0,0,45,46,6,3,-1,0,46,47,3,8,4,0,47,53,
+  	1,0,0,0,48,49,10,1,0,0,49,50,5,11,0,0,50,52,3,10,5,0,51,48,1,0,0,0,52,
+  	55,1,0,0,0,53,51,1,0,0,0,53,54,1,0,0,0,54,7,1,0,0,0,55,53,1,0,0,0,56,
+  	57,6,4,-1,0,57,58,3,10,5,0,58,64,1,0,0,0,59,60,10,1,0,0,60,61,7,0,0,0,
+  	61,63,3,10,5,0,62,59,1,0,0,0,63,66,1,0,0,0,64,62,1,0,0,0,64,65,1,0,0,
+  	0,65,9,1,0,0,0,66,64,1,0,0,0,67,68,6,5,-1,0,68,69,3,12,6,0,69,75,1,0,
+  	0,0,70,71,10,1,0,0,71,72,7,1,0,0,72,74,3,12,6,0,73,70,1,0,0,0,74,77,1,
+  	0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,11,1,0,0,0,77,75,1,0,0,0,78,79,6,
+  	6,-1,0,79,80,3,14,7,0,80,86,1,0,0,0,81,82,10,1,0,0,82,83,7,2,0,0,83,85,
+  	3,14,7,0,84,81,1,0,0,0,85,88,1,0,0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,13,
+  	1,0,0,0,88,86,1,0,0,0,89,95,3,16,8,0,90,91,3,16,8,0,91,92,5,8,0,0,92,
+  	93,3,14,7,0,93,95,1,0,0,0,94,89,1,0,0,0,94,90,1,0,0,0,95,15,1,0,0,0,96,
+  	97,5,3,0,0,97,100,5,2,0,0,98,100,5,2,0,0,99,96,1,0,0,0,99,98,1,0,0,0,
+  	100,17,1,0,0,0,8,31,42,53,64,75,86,94,99
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -370,6 +369,7 @@ BehaviorParser::XorContext* BehaviorParser::xor_(int precedence) {
         setState(37);
 
         if (!(precpred(_ctx, 1))) throw FailedPredicateException(this, "precpred(_ctx, 1)");
+
         setState(38);
         match(BehaviorParser::XOR);
         setState(39);
@@ -394,12 +394,16 @@ BehaviorParser::AndContext::AndContext(ParserRuleContext *parent, size_t invokin
   : ParserRuleContext(parent, invokingState) {
 }
 
-BehaviorParser::ExprContext* BehaviorParser::AndContext::expr() {
-  return getRuleContext<BehaviorParser::ExprContext>(0);
+BehaviorParser::ShiftContext* BehaviorParser::AndContext::shift() {
+  return getRuleContext<BehaviorParser::ShiftContext>(0);
 }
 
 BehaviorParser::AndContext* BehaviorParser::AndContext::and_() {
   return getRuleContext<BehaviorParser::AndContext>(0);
+}
+
+BehaviorParser::ExprContext* BehaviorParser::AndContext::expr() {
+  return getRuleContext<BehaviorParser::ExprContext>(0);
 }
 
 tree::TerminalNode* BehaviorParser::AndContext::AND() {
@@ -446,7 +450,7 @@ BehaviorParser::AndContext* BehaviorParser::and_(int precedence) {
     size_t alt;
     enterOuterAlt(_localctx, 1);
     setState(46);
-    expr(0);
+    shift(0);
     _ctx->stop = _input->LT(-1);
     setState(53);
     _errHandler->sync(this);
@@ -461,6 +465,7 @@ BehaviorParser::AndContext* BehaviorParser::and_(int precedence) {
         setState(48);
 
         if (!(precpred(_ctx, 1))) throw FailedPredicateException(this, "precpred(_ctx, 1)");
+
         setState(49);
         match(BehaviorParser::AND);
         setState(50);
@@ -749,7 +754,7 @@ BehaviorParser::TermContext* BehaviorParser::term(int precedence) {
     size_t alt;
     enterOuterAlt(_localctx, 1);
     setState(79);
-    factor(0);
+    factor();
     _ctx->stop = _input->LT(-1);
     setState(86);
     _errHandler->sync(this);
@@ -776,7 +781,7 @@ BehaviorParser::TermContext* BehaviorParser::term(int precedence) {
           consume();
         }
         setState(83);
-        factor(0); 
+        factor(); 
       }
       setState(88);
       _errHandler->sync(this);
@@ -822,64 +827,51 @@ std::any BehaviorParser::FactorContext::accept(tree::ParseTreeVisitor *visitor) 
     return visitor->visitChildren(this);
 }
 
-
 BehaviorParser::FactorContext* BehaviorParser::factor() {
-   return factor(0);
-}
-
-BehaviorParser::FactorContext* BehaviorParser::factor(int precedence) {
-  ParserRuleContext *parentContext = _ctx;
-  size_t parentState = getState();
-  BehaviorParser::FactorContext *_localctx = _tracker.createInstance<FactorContext>(_ctx, parentState);
-  BehaviorParser::FactorContext *previousContext = _localctx;
-  (void)previousContext; // Silence compiler, in case the context is not used by generated code.
-  size_t startState = 14;
-  enterRecursionRule(_localctx, 14, BehaviorParser::RuleFactor, precedence);
-
-    
+  FactorContext *_localctx = _tracker.createInstance<FactorContext>(_ctx, getState());
+  enterRule(_localctx, 14, BehaviorParser::RuleFactor);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
 #else
   auto onExit = finally([=] {
 #endif
-    unrollRecursionContexts(parentContext);
+    exitRule();
   });
   try {
-    size_t alt;
-    enterOuterAlt(_localctx, 1);
-    setState(90);
-    primary();
-    _ctx->stop = _input->LT(-1);
-    setState(97);
+    setState(94);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx);
-    while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
-      if (alt == 1) {
-        if (!_parseListeners.empty())
-          triggerExitRuleEvent();
-        previousContext = _localctx;
-        _localctx = _tracker.createInstance<FactorContext>(parentContext, parentState);
-        pushNewRecursionContext(_localctx, startState, RuleFactor);
-        setState(92);
-
-        if (!(precpred(_ctx, 1))) throw FailedPredicateException(this, "precpred(_ctx, 1)");
-
-        setState(93);
-        match(BehaviorParser::EXP);
-        setState(94);
-        primary(); 
-      }
-      setState(99);
-      _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx);
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(89);
+      primary();
+      break;
     }
+
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(90);
+      primary();
+
+      setState(91);
+      match(BehaviorParser::EXP);
+      setState(92);
+      factor();
+      break;
+    }
+
+    default:
+      break;
+    }
+   
   }
   catch (RecognitionException &e) {
     _errHandler->reportError(this, e);
     _localctx->exception = std::current_exception();
     _errHandler->recover(this, _localctx->exception);
   }
+
   return _localctx;
 }
 
@@ -922,21 +914,21 @@ BehaviorParser::PrimaryContext* BehaviorParser::primary() {
     exitRule();
   });
   try {
-    setState(103);
+    setState(99);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BehaviorParser::REGISTER_PREFIX: {
         enterOuterAlt(_localctx, 1);
-        setState(100);
+        setState(96);
         match(BehaviorParser::REGISTER_PREFIX);
-        setState(101);
+        setState(97);
         match(BehaviorParser::NUM);
         break;
       }
 
       case BehaviorParser::NUM: {
         enterOuterAlt(_localctx, 2);
-        setState(102);
+        setState(98);
         match(BehaviorParser::NUM);
         break;
       }
@@ -963,7 +955,6 @@ bool BehaviorParser::sempred(RuleContext *context, size_t ruleIndex, size_t pred
     case 4: return shiftSempred(antlrcpp::downCast<ShiftContext *>(context), predicateIndex);
     case 5: return exprSempred(antlrcpp::downCast<ExprContext *>(context), predicateIndex);
     case 6: return termSempred(antlrcpp::downCast<TermContext *>(context), predicateIndex);
-    case 7: return factorSempred(antlrcpp::downCast<FactorContext *>(context), predicateIndex);
 
   default:
     break;
@@ -1024,16 +1015,6 @@ bool BehaviorParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) 
 bool BehaviorParser::termSempred(TermContext *_localctx, size_t predicateIndex) {
   switch (predicateIndex) {
     case 5: return precpred(_ctx, 1);
-
-  default:
-    break;
-  }
-  return true;
-}
-
-bool BehaviorParser::factorSempred(FactorContext *_localctx, size_t predicateIndex) {
-  switch (predicateIndex) {
-    case 6: return precpred(_ctx, 1);
 
   default:
     break;

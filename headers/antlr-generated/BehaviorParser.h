@@ -98,8 +98,9 @@ public:
   public:
     AndContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    ExprContext *expr();
+    ShiftContext *shift();
     AndContext *and_();
+    ExprContext *expr();
     antlr4::tree::TerminalNode *AND();
 
 
@@ -171,7 +172,7 @@ public:
   };
 
   FactorContext* factor();
-  FactorContext* factor(int precedence);
+
   class  PrimaryContext : public antlr4::ParserRuleContext {
   public:
     PrimaryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -195,7 +196,6 @@ public:
   bool shiftSempred(ShiftContext *_localctx, size_t predicateIndex);
   bool exprSempred(ExprContext *_localctx, size_t predicateIndex);
   bool termSempred(TermContext *_localctx, size_t predicateIndex);
-  bool factorSempred(FactorContext *_localctx, size_t predicateIndex);
 
   // By default the static state used to implement the parser is lazily initialized during the first
   // call to the constructor. You can call this function if you wish to initialize the static state

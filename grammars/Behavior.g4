@@ -6,10 +6,10 @@ or :	xor |
 	or (OR) xor;
 
 xor :   and | 
-	xor XOR and;
+	xor (XOR) and;
 
-and :   expr | 
-	and AND expr;
+and :   shift | 
+	and (AND) expr;
 
 shift : expr | 
 	shift (SHIFT_LEFT|SHIFT_RIGHT) expr;
@@ -21,7 +21,7 @@ term :  factor |
 	term (MULT|DIV) factor;
 
 factor :primary | 
-	factor (EXP) primary;
+	primary (EXP) factor;
 
 primary : (REGISTER_PREFIX NUM) | NUM;
 
