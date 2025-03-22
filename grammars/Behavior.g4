@@ -23,7 +23,9 @@ term :  factor |
 factor :primary | 
 	primary (EXP) factor;
 
-primary : (REGISTER_PREFIX NUM) | NUM;
+primary : (REGISTER_PREFIX NUM) | NUM | parentheses;
+
+parentheses : O_PAREN or C_PAREN;
 
 NUM : [0-9]+;
 REGISTER_PREFIX : 'R';
@@ -37,6 +39,8 @@ SHIFT_RIGHT : '>>';
 AND : 'and';
 OR : 'or';
 XOR : 'xor';
+O_PAREN : '(';
+C_PAREN : ')';
 
 WS : [ \n]+ -> skip;
 
