@@ -51,6 +51,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitParentheses(BehaviorParser::ParenthesesContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
 
 };
 

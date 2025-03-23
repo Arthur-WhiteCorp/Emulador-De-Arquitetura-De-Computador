@@ -37,7 +37,6 @@ endif()
 
 file(GLOB GENERATED_CPP_FILES "${GENERATED_DIR}/*.cpp")
 
-add_library(antlr_generated ${GENERATED_CPP_FILES})
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/headers
@@ -60,7 +59,7 @@ file(GLOB project_SRC "${PROJECT_SOURCE_DIR}/src/*.cpp")
 # Collect .cpp files from the second folder and append them to project_SRC
 file(GLOB another_folder_SRC "${PROJECT_SOURCE_DIR}/third-party/imgui/src/*.cpp")
 list(APPEND project_SRC ${another_folder_SRC})
-
+list(APPEND project_SRC ${GENERATED_CPP_FILES})
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   set (flags_1 "-Wno-overloaded-virtual")
@@ -92,5 +91,5 @@ target_link_libraries(project PRIVATE OpenGL::GL)
 # Link antlr-runtime
 target_link_libraries(project PRIVATE antlr4_static)
 
-# Link antlr-generated
-target_link_libraries(project PRIVATE antlr_generated)
+
+

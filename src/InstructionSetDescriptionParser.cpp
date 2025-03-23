@@ -32,7 +32,7 @@ void InstructionSetDescriptionParser::fillFieldFillers() {
         if (json.find("behavior") != json.end()){
             instruction_set_description.al_instructions.emplace_back(instruction_name, json["syntax"].get<std::string>(), json["behavior"].get<std::string>(), json["number_of_args"].get<unsigned>(), json["flags_modification"].get<std::string>());
         }else{ 
-            instruction_set_description.al_instructions.emplace_back(instruction_name, json["syntax"].get<std::string>(),"", json["number_of_args"].get<unsigned>(), json["flags_modification"].get<std::string>());
+            instruction_set_description.al_instructions.emplace_back(instruction_name, json["syntax"].get<std::string>(),InstructionSetDescription::EMPTY_STRING, json["number_of_args"].get<unsigned>(), json["flags_modification"].get<std::string>());
 
         }
     };

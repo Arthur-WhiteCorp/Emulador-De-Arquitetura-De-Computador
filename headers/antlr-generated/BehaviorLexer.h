@@ -14,7 +14,7 @@ public:
   enum {
     T__0 = 1, NUM = 2, REGISTER_PREFIX = 3, PLUS = 4, SUB = 5, MULT = 6, 
     DIV = 7, EXP = 8, SHIFT_LEFT = 9, SHIFT_RIGHT = 10, AND = 11, OR = 12, 
-    XOR = 13, WS = 14
+    XOR = 13, O_PAREN = 14, C_PAREN = 15, WS = 16
   };
 
   explicit BehaviorLexer(antlr4::CharStream *input);

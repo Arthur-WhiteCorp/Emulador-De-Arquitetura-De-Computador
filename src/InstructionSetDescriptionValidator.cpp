@@ -1,13 +1,19 @@
+#include "ANTLRInputStream.h"
+#include "CommonTokenStream.h"
 #include <InstructionSetDescriptionValidator.hpp>
+#include <InstructionSetDescription.h>
 #include <InstructionPattern.h>
 #include <regex.h>
 #include <iostream>
-#include <Tokens.hpp>
+#include <RegexPatterns.hpp>
 #include <unordered_map>
+#include <BehaviorLexer.h>
+#include <BehaviorParser.h>
 
 InstructionSetDescriptionValidator::InstructionSetDescriptionValidator(const InstructionSetDescription::InstructionSetDescription& instruction_set_description, const MachineDescription& machine_description): instruction_set_description(instruction_set_description), machine_description(machine_description){
-    fillInstructionsPatterns();    
-    validate();
+    fillInstructionsPatterns();       
+    validateRegexFields();
+    validateGrammarFields();
 }
 
 InstructionSetDescriptionValidator::~InstructionSetDescriptionValidator(){
@@ -20,24 +26,19 @@ bool InstructionSetDescriptionValidator::isValid(){
 }
 
 void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
-    const std::string& instruction_name = Tokens::token_patterns.at(Tokens::TokenType::INSTRUCTION_NAME);
-    const std::string& register_id = Tokens::token_patterns.at(Tokens::TokenType::REGISTER_ID);
-    const std::string& unsigned_num = Tokens::token_patterns.at(Tokens::TokenType::UNSIGNED_NUM); 
-    const std::string& number = Tokens::token_patterns.at(Tokens::TokenType::NUMBER); 
-    const std::string& register_id_or_number = Tokens::token_patterns.at(Tokens::TokenType::REGISTER_ID_OR_NUMBER);
-    const std::string& binary_operator =  Tokens::token_patterns.at(Tokens::TokenType::BINARY_OPERATOR);
-    const std::string& flags_register_pos = Tokens::token_patterns.at(Tokens::TokenType::FLAGS_REGISTER_POS); 
-    const std::string& negation = Tokens::token_patterns.at(Tokens::TokenType::NEGATION);
-    const std::string& conditional_operator = Tokens::token_patterns.at(Tokens::TokenType::CONDITIONAL_OPERATOR);
+    const std::string& instruction_name = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::INSTRUCTION_NAME);
+    const std::string& register_id = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::REGISTER_ID);
+    const std::string& unsigned_num = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::UNSIGNED_NUM); 
+    const std::string& number = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::NUMBER); 
+    const std::string& register_id_or_number = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::REGISTER_ID_OR_NUMBER);
+    const std::string& binary_operator =  RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::BINARY_OPERATOR);
+    const std::string& flags_register_pos = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::FLAGS_REGISTER_POS); 
+    const std::string& negation = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::NEGATION);
+    const std::string& conditional_operator = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::CONDITIONAL_OPERATOR);
 
     const std::string syntax = instruction_name + "(\\s+" + register_id +  ")*"; 
-    const std::string behavior = register_id + "\\s*=\\s*" + register_id_or_number + "(\\s*" + negation + "?" + binary_operator + "\\s*" + register_id_or_number + ")*"; 
-    std::cout << behavior << std::endl;
-  
-    instructions_patterns["AL"] = InstructionPattern::InstructionPattern(
-        syntax, 
-        behavior 
-    );
+     
+    instructions_patterns["AL"] = InstructionPattern::InstructionPattern(syntax);
 
     //std::string flags_modification = 
     
@@ -80,16 +81,12 @@ void InstructionSetDescriptionValidator::matchField(const std::string& input, co
 
 }
 
-void InstructionSetDescriptionValidator::validateALInstructions(){
+void InstructionSetDescriptionValidator::validateRegexALInstructions(){
     const std::regex& syntax = instructions_patterns["AL"].syntax;
-    const std::regex& behavior = instructions_patterns["AL"].behavior;
     const std::regex& flags_modification = *instructions_patterns["AL"].flags_modification;
     std::smatch match;
     bool is_matched;
     for (const auto& instruction : instruction_set_description.al_instructions){
-        if (instruction.description.behavior != ""){
-            matchField(instruction.description.behavior, behavior);
-        } 
         matchField(instruction.description.syntax,syntax);
 
         return;
@@ -97,21 +94,38 @@ void InstructionSetDescriptionValidator::validateALInstructions(){
     } 
 }
 
-void InstructionSetDescriptionValidator::validateJumperInstructions(){
+void InstructionSetDescriptionValidator::validateRegexJumperInstructions(){
     
 }
 
-void InstructionSetDescriptionValidator::validateDataInstructions(){
+void InstructionSetDescriptionValidator::validateRegexDataInstructions(){
     
 }
 
-void InstructionSetDescriptionValidator::validateConditionalJumperInstructions(){
+void InstructionSetDescriptionValidator::validateRegexConditionalJumperInstructions(){
     
 }
 
-void InstructionSetDescriptionValidator::validate(){
-    std::cout << "começando validação" << std::endl;
-    validateALInstructions(); 
+void InstructionSetDescriptionValidator::validateRegexFields(){
+    std::cout << "começando validação Regex" << std::endl;
+    validateRegexALInstructions(); 
 }
 
+void InstructionSetDescriptionValidator::validateGrammarALInstructions(){
+    for (const auto& instruction : instruction_set_description.al_instructions){
+        if (instruction.description.behavior != InstructionSetDescription::EMPTY_STRING){
+            antlr4::ANTLRInputStream input(instruction.description.behavior);
+            BehaviorLexer lexer(&input);
+            antlr4::CommonTokenStream tokens(&lexer);
+            tokens.fill();
+            BehaviorParser parser(&tokens);
+            antlr4::tree::ParseTree* tree = parser.root();
+            std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
+        }
+    }  
+}
 
+void InstructionSetDescriptionValidator::validateGrammarFields(){
+    std::cout << "começando validação gramatical" << std::endl;
+    validateGrammarALInstructions();
+}

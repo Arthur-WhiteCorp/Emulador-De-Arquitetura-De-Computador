@@ -1,12 +1,12 @@
-#ifndef TOKENS_HPP
-#define TOKENS_HPP
-#include <regex>
+#ifndef REGEX_PATTERNS_HPP 
+#define REGEX_PATTERNS_HPP
+
 #include <string>
 #include <unordered_map>
 
-namespace Tokens {
+namespace RegexPatterns {
 
-    enum class TokenType {
+    enum class PatternType {
         INSTRUCTION_NAME,
         REGISTER_ID,
         UNSIGNED_NUM,
@@ -28,16 +28,16 @@ namespace Tokens {
     static const std::string conditional_operator = R"((==|!=|<=|>=|<|>))";
     static const std::string flags_register_pos = "(flags_register)(\\[" + unsigned_num + "\\])";
 
-    static const std::unordered_map<TokenType, std::string> token_patterns = {
-        {TokenType::INSTRUCTION_NAME, instruction_name},
-        {TokenType::FLAGS_REGISTER_POS, flags_register_pos},
-        {TokenType::REGISTER_ID, register_id },
-        {TokenType::REGISTER_ID_OR_NUMBER, register_id_or_number},
-        {TokenType::UNSIGNED_NUM, unsigned_num},
-        {TokenType::NUMBER, number},
-        {TokenType::BINARY_OPERATOR, binary_operator},
-        {TokenType::CONDITIONAL_OPERATOR, conditional_operator},
-        {TokenType::NEGATION, negation}
+    static const std::unordered_map<PatternType, std::string> regex_patterns = {
+        {PatternType::INSTRUCTION_NAME, instruction_name},
+        {PatternType::FLAGS_REGISTER_POS, flags_register_pos},
+        {PatternType::REGISTER_ID, register_id },
+        {PatternType::REGISTER_ID_OR_NUMBER, register_id_or_number},
+        {PatternType::UNSIGNED_NUM, unsigned_num},
+        {PatternType::NUMBER, number},
+        {PatternType::BINARY_OPERATOR, binary_operator},
+        {PatternType::CONDITIONAL_OPERATOR, conditional_operator},
+        {PatternType::NEGATION, negation}
     };
 }
 

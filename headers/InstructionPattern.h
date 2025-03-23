@@ -10,7 +10,7 @@ namespace InstructionPattern {
 
     struct InstructionPattern {
         std::regex syntax;
-        std::regex behavior;
+        std::unique_ptr<std::regex> behavior; // opcional para AL 
         
         std::unique_ptr<std::regex> activation; // para Conditional_Jumper
         std::unique_ptr<std::regex> flags; // para Conditional_Jumper
@@ -19,7 +19,7 @@ namespace InstructionPattern {
         std::unordered_map<std::string, std::string> reserved_words; // palavras reservadas
         
         InstructionPattern() = default;
-        InstructionPattern(std::string syntax, std::string behavior) : syntax(syntax), behavior(behavior) {};
+        InstructionPattern(std::string syntax ) : syntax(syntax) {};
     };
 
 

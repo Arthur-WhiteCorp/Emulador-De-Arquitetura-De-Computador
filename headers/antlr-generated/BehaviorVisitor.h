@@ -37,6 +37,8 @@ public:
 
     virtual std::any visitPrimary(BehaviorParser::PrimaryContext *context) = 0;
 
+    virtual std::any visitParentheses(BehaviorParser::ParenthesesContext *context) = 0;
+
 
 };
 

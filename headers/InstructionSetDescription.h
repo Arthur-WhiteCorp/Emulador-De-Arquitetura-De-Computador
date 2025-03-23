@@ -6,7 +6,10 @@
 
 
 namespace InstructionSetDescription {
-        
+    const std::string EMPTY_STRING = "";
+    const std::uint8_t EMPTY_NUMBER = 0;
+    
+
     struct InstructionDescription {
         std::string name;
         uint8_t number_of_arguments;

@@ -14,12 +14,12 @@ public:
   enum {
     T__0 = 1, NUM = 2, REGISTER_PREFIX = 3, PLUS = 4, SUB = 5, MULT = 6, 
     DIV = 7, EXP = 8, SHIFT_LEFT = 9, SHIFT_RIGHT = 10, AND = 11, OR = 12, 
-    XOR = 13, WS = 14
+    XOR = 13, O_PAREN = 14, C_PAREN = 15, WS = 16
   };
 
   enum {
     RuleRoot = 0, RuleOr = 1, RuleXor = 2, RuleAnd = 3, RuleShift = 4, RuleExpr = 5, 
-    RuleTerm = 6, RuleFactor = 7, RulePrimary = 8
+    RuleTerm = 6, RuleFactor = 7, RulePrimary = 8, RuleParentheses = 9
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -47,7 +47,8 @@ public:
   class ExprContext;
   class TermContext;
   class FactorContext;
-  class PrimaryContext; 
+  class PrimaryContext;
+  class ParenthesesContext; 
 
   class  RootContext : public antlr4::ParserRuleContext {
   public:
@@ -179,6 +180,7 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *REGISTER_PREFIX();
     antlr4::tree::TerminalNode *NUM();
+    ParenthesesContext *parentheses();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -186,6 +188,21 @@ public:
   };
 
   PrimaryContext* primary();
+
+  class  ParenthesesContext : public antlr4::ParserRuleContext {
+  public:
+    ParenthesesContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *O_PAREN();
+    OrContext *or_();
+    antlr4::tree::TerminalNode *C_PAREN();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ParenthesesContext* parentheses();
 
 
   bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;

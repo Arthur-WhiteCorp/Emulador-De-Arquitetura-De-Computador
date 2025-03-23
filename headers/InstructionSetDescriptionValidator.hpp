@@ -20,13 +20,15 @@ private:
 
    void matchField(const std::string& input, const std::regex& regex ); // checa a o formato do campo e printa formatos errados
 
-   void validadeALInstructionSemantic(); // validação semantica de uma instrução
-   void validateALInstructions();
-   void validateDataInstructions();
-   void validateJumperInstructions();
-   void validateConditionalJumperInstructions();
-   void validateInputOutputInstructions();
-   void validate();
+   void validateALInstructionSemantic(); // validação semantica de uma instrução
+   void validateRegexALInstructions();
+   void validateRegexDataInstructions();
+   void validateRegexJumperInstructions();
+   void validateRegexConditionalJumperInstructions();
+   void validateRegexInputOutputInstructions();
+   void validateRegexFields(); // valida os campos que podem ser expressos em regex chamando as funçoes acima
+   void validateGrammarALInstructions();
+   void validateGrammarFields();
    const MachineDescription& machine_description;
    const InstructionSetDescription::InstructionSetDescription& instruction_set_description;
 
