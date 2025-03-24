@@ -13,6 +13,8 @@ InstructionSetDescriptionParser::InstructionSetDescriptionParser(std::string fil
         putMainFieldsInSchema();
         fillFieldFillers(); // kkkkkk
         parseInstructionSetDescription();
+    }else{
+        success_parsing = false;
     }
 }
 InstructionSetDescriptionParser::~InstructionSetDescriptionParser() {
@@ -237,7 +239,7 @@ void InstructionSetDescriptionParser::checkForMissingSubFields(const JsonSchema:
         for (const auto& sub_field_description : *field_description.sub_fields_formats){
             is_any = (sub_field_description.name == JsonSchema::ANY) ? true : false;
             is_required = (sub_field_description.is_required) ? true : false;
-            if ((field.field_value->find(sub_field_description.name) == field.field_value->end() && sub_field_description.is_required) && !is_any && !is_required) {
+            if ((field.field_value->find(sub_field_description.name) == field.field_value->end()  && sub_field_description.is_required) && !is_any) {
                 success_parsing = false;
                 std::cerr << "Sub Field '" << sub_field_description.name << "'" << " in " << "'" << field.field_name << "'" << " not found" << std::endl;                
             }else if (field.field_value->is_object()){

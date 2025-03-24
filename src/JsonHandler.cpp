@@ -45,7 +45,7 @@ void JsonHandler::turnFileToJson() {
         success_converting = true;
         return;
     } catch (const nlohmann::json::parse_error& e) {
-        std::cerr << "Failed to convert file to JSON: " << e.what() << std::endl;
+        std::cerr << "Failed to convert file" << file_path << " to JSON: " << e.what() << std::endl;
         success_converting = false;
         return;
     }
