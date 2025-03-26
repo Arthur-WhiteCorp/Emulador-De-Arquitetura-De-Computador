@@ -9,7 +9,7 @@
     "SUB": {
         "syntax": "SUB R0 R1",
         "number_of_args": 2,
-        "behavior": "R0 = R0 - R1 * 4 / 2 + R7",
+        "behavior": "R0 = R0 - R1 + 4 / 2 +",
         "flags_modification": "(R0)?"
         }
 },

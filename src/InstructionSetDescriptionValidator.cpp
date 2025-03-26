@@ -1,5 +1,3 @@
-#include "ANTLRInputStream.h"
-#include "CommonTokenStream.h"
 #include <InstructionSetDescriptionValidator.hpp>
 #include <InstructionSetDescription.h>
 #include <InstructionPattern.h>
@@ -9,11 +7,17 @@
 #include <unordered_map>
 #include <BehaviorLexer.h>
 #include <BehaviorParser.h>
+#include <antlr4-runtime.h>
+#include <BehaviorErrorListener.hpp>
 
 InstructionSetDescriptionValidator::InstructionSetDescriptionValidator(const InstructionSetDescription::InstructionSetDescription& instruction_set_description, const MachineDescription& machine_description): instruction_set_description(instruction_set_description), machine_description(machine_description){
+    is_valid = true;
     fillInstructionsPatterns();       
     validateRegexFields();
     validateGrammarFields();
+    if (!is_valid){
+        std::cerr << "Erro na validação das instruções" << std::endl;
+    }
 }
 
 InstructionSetDescriptionValidator::~InstructionSetDescriptionValidator(){
@@ -23,6 +27,7 @@ InstructionSetDescriptionValidator::~InstructionSetDescriptionValidator(){
 
 bool InstructionSetDescriptionValidator::isValid(){
     return is_valid; 
+     
 }
 
 void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
@@ -119,8 +124,15 @@ void InstructionSetDescriptionValidator::validateGrammarALInstructions(){
             antlr4::CommonTokenStream tokens(&lexer);
             tokens.fill();
             BehaviorParser parser(&tokens);
+            parser.removeErrorListeners();
+            BehaviorErrorListener error_listener(instruction.description.name, instruction.description.behavior, tokens);
+            parser.addErrorListener(&error_listener);
+
             antlr4::tree::ParseTree* tree = parser.root();
-            std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
+
+            if (parser.getNumberOfSyntaxErrors() > 0) {
+                is_valid = false;
+            }
         }
     }  
 }
