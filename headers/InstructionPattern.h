@@ -15,6 +15,7 @@ namespace InstructionPattern {
         std::unique_ptr<std::regex> activation; // para Conditional_Jumper
         std::unique_ptr<std::regex> flags; // para Conditional_Jumper
         std::unique_ptr<std::regex> flags_modification; // para Arithmetic_Logic
+        std::vector<std::smatch> matches; // match da instrução
         
         std::unordered_map<std::string, std::string> reserved_words; // palavras reservadas
         

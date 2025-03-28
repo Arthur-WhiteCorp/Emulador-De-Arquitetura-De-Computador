@@ -19,7 +19,7 @@ namespace RegexPatterns {
     };
 
     static const std::string instruction_name = R"((\w+))";
-    static const std::string register_id = R"((\w+))";
+    static const std::string register_id = R"(R(\d+))";
     static const std::string unsigned_num = R"((\d+))";
     static const std::string number = R"((-?\d+))";
     static const std::string register_id_or_number = "(" + register_id + "|" + number + ")";

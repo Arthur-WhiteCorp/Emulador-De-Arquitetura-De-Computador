@@ -18,7 +18,7 @@ private:
     
    void fillInstructionsPatterns();
 
-   void matchField(const std::string& input, const std::regex& regex ); // checa a o formato do campo e printa formatos errados
+   void matchField(const std::string& input, const std::regex& regex, const std::string& instruction_name, const std::string& field_name ); // checa a o formato do campo e printa formatos errados
 
    void validateALInstructionSemantic(); // validação semantica de uma instrução
    void validateRegexALInstructions();

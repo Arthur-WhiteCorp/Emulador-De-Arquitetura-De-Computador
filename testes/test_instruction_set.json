@@ -1,7 +1,7 @@
 {
 "Arithmetic_Logic":{
     "ADD": {
-        "syntax": "ADD R0 R1",
+        "syntax": "ADD R1 R",
         "number_of_args": 2,
         "behavior": "R0 = R0 + R1 * 4 / 2 + R7",
         "flags_modification": "(R0)?"
@@ -9,7 +9,7 @@
     "SUB": {
         "syntax": "SUB R0 R1",
         "number_of_args": 2,
-        "behavior": "R0 = R0 - R1 + 4 / 2 +",
+        "behavior": "R0 = R0 - R1 + 4 / 2 + ",
         "flags_modification": "(R0)?"
         }
 },

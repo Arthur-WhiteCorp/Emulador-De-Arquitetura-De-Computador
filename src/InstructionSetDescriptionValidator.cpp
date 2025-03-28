@@ -1,9 +1,11 @@
 #include <InstructionSetDescriptionValidator.hpp>
 #include <InstructionSetDescription.h>
 #include <InstructionPattern.h>
+#include <ostream>
 #include <regex.h>
 #include <iostream>
 #include <RegexPatterns.hpp>
+#include <regex>
 #include <unordered_map>
 #include <BehaviorLexer.h>
 #include <BehaviorParser.h>
@@ -59,29 +61,61 @@ void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
 }
 
 
-void InstructionSetDescriptionValidator::matchField(const std::string& input, const std::regex& regex){
-    std::regex_iterator<std::string::const_iterator> it(input.begin(), input.end(), regex);
-    std::regex_iterator<std::string::const_iterator> end_it;
+void InstructionSetDescriptionValidator::matchField(const std::string& input, const std::regex& regex, const std::string& name, const std::string& field_name){
+    std::smatch full_match;
+    
 
-    std::string::const_iterator last_end = input.begin();
 
-    std::cout << "avaliando: " << std::endl;
-    std::cout << input << std::endl;
-    for (; it != end_it; ++it) {
-        std::smatch match = *it;
+    // First try full match
+    if (std::regex_match(input, full_match, regex)) {
+        instructions_patterns["AL"].matches.push_back(full_match);
+        return;
+    }
+        
 
-        if (match.prefix().length() > 0) {
-            std::cerr << "Unexpected text before last valid match: " << match.prefix() << std::endl;
-            is_valid = false;
+    is_valid = false;
+    
+    std::cout << "Syntax Error in  Arithmetic_Logic::" << name << "::" << field_name << "::" << input << std::endl; 
+
+    std::istringstream iss(input);
+    std::vector<std::string> tokens{std::istream_iterator<std::string>{iss},
+                                   std::istream_iterator<std::string>{}};
+
+    // Check we have at least an instruction
+    if (tokens.empty()) {
+        std::cerr << "Empty instruction\n";
+        return;
+    }
+
+    // Validate instruction name
+    const std::string& instruction_pattern = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::INSTRUCTION_NAME);
+    if (!std::regex_match(tokens[0], std::regex(instruction_pattern))) {
+        std::cerr << " Invalid instruction '" << tokens[0] << std::endl;
+        return;
+    }
+
+    // Validate parameters
+    const std::string& register_pattern = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::REGISTER_ID);
+    std::regex register_regex(register_pattern);
+    
+    for (size_t i = 1; i < tokens.size(); i++) {
+        if (!std::regex_match(tokens[i], register_regex)) {
+            std::cerr << "Syntax Error: after '" << tokens[0] 
+                     << "' expected REGISTER as parameter but found '" 
+                     << tokens[i] << "'" << std::endl;
+            return;
         }
-
-        last_end = match.suffix().first;
     }
 
-    if (last_end != input.end()) {
-        std::cout << "Unexpected text after last valid match: " << std::string(last_end, input.end()) << std::endl;
-        is_valid = false;
+    // If we get here, structure is wrong (wrong number of parameters)
+    if (tokens.size() == 1) {
+        std::cerr << "Syntax Error: '" << tokens[0] 
+            << "' requires at least one register" << std::endl;
+    } else {
+        std::cerr << "Syntax Error: Invalid number of parameters for '" 
+            << tokens[0] << std::endl;
     }
+
 
 
 }
@@ -92,10 +126,7 @@ void InstructionSetDescriptionValidator::validateRegexALInstructions(){
     std::smatch match;
     bool is_matched;
     for (const auto& instruction : instruction_set_description.al_instructions){
-        matchField(instruction.description.syntax,syntax);
-
-        return;
-        
+        matchField(instruction.description.syntax,syntax,instruction.description.name, "syntax");
     } 
 }
 

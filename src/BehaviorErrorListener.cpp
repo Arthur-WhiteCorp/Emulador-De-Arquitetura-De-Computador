@@ -21,21 +21,21 @@ void BehaviorErrorListener::syntaxError(antlr4::Recognizer* recognizer, antlr4::
     size_t previous_token_location = last_valid_token->getCharPositionInLine(); 
    
     if (msg == target_msg) {
-        std::cerr << "Syntax error in: " << "Arithmetic_Logic::" << instruction_name << "::behavior::" << instruction_behavior << std::endl;
+        std::cerr << "Syntax Error in: " << "Arithmetic_Logic::" << instruction_name << "::behavior::" << instruction_behavior << std::endl;
         std::cerr << "operator: " << tokens.get(previos_token_index)->getText() << " in position: " << previous_token_location;
-        std::cerr << " expects NUMBER, REGISTER or '('" << std::endl;
+        std::cerr << " expects NUMBER, REGISTER or Parenthesis Expression " <<  std::endl;
 
     }
     
 
     if (token_index > 0 && msg != target_msg) {
 
-        std::cerr << "Syntax error in: " << "Arithmetic_Logic::" << instruction_name << "::behavior::" << instruction_behavior << std::endl;
+        std::cerr << "Syntax Error in: " << "Arithmetic_Logic::" << instruction_name << "::behavior::" << instruction_behavior << std::endl;
         std::cerr << "in position: " << previous_token_location << std::endl;
         std::cerr << msg << std::endl;
 
     }else if (msg != target_msg){
-        std::cerr << "Syntax error in: " << "Arithmetic_Logic::" << instruction_name << "::behavior::" << instruction_behavior << std::endl;
+        std::cerr << "Syntax Error in: " << "Arithmetic_Logic::" << instruction_name << "::behavior::" << instruction_behavior << std::endl;
         std::cerr << "in position: " << previous_token_location << std::endl;
         std::cerr << msg << std::endl;
     }
