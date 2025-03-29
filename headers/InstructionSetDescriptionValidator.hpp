@@ -18,7 +18,7 @@ private:
     
    void fillInstructionsPatterns();
 
-   void matchField(const std::string& input, const std::regex& regex, const std::string& instruction_name, const std::string& field_name ); // checa a o formato do campo e printa formatos errados
+   void matchField(const std::string& input, const std::regex& regex, const std::string& instruction_name, const std::string& field_name, const std::string& instruction_type ); // checa a o formato do campo e printa formatos errados
 
    void validateALInstructionSemantic(); // validação semantica de uma instrução
    void validateRegexALInstructions();
@@ -26,6 +26,8 @@ private:
    void validateRegexJumperInstructions();
    void validateRegexConditionalJumperInstructions();
    void validateRegexInputOutputInstructions();
+   void syntaxRegexError(const std::regex& regex, const std::string& input);
+   void showRegexError(const std::string& instruction_type, const std::regex& regex, const std::string& input);
    void validateRegexFields(); // valida os campos que podem ser expressos em regex chamando as funçoes acima
    void validateGrammarALInstructions();
    void validateGrammarFields();

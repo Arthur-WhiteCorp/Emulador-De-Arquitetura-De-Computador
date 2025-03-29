@@ -2,7 +2,6 @@
 #include <InstructionSetDescription.h>
 #include <InstructionPattern.h>
 #include <ostream>
-#include <regex.h>
 #include <iostream>
 #include <RegexPatterns.hpp>
 #include <regex>
@@ -42,8 +41,9 @@ void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
     const std::string& flags_register_pos = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::FLAGS_REGISTER_POS); 
     const std::string& negation = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::NEGATION);
     const std::string& conditional_operator = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::CONDITIONAL_OPERATOR);
+    const std::string& register_id_or_addr = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::REGISTER_ID_OR_ADDR);
 
-    const std::string syntax = instruction_name + "(\\s+" + register_id +  ")*"; 
+    const std::string syntax = instruction_name + "(\\s+" + register_id_or_addr +  ")*"; 
      
     instructions_patterns["AL"] = InstructionPattern::InstructionPattern(syntax);
 
@@ -61,11 +61,9 @@ void InstructionSetDescriptionValidator::fillInstructionsPatterns(){
 }
 
 
-void InstructionSetDescriptionValidator::matchField(const std::string& input, const std::regex& regex, const std::string& name, const std::string& field_name){
+void InstructionSetDescriptionValidator::matchField(const std::string& input, const std::regex& regex, const std::string& name, const std::string& field_name, const std::string& instruction_type){
     std::smatch full_match;
     
-
-
     // First try full match
     if (std::regex_match(input, full_match, regex)) {
         instructions_patterns["AL"].matches.push_back(full_match);
@@ -75,48 +73,45 @@ void InstructionSetDescriptionValidator::matchField(const std::string& input, co
 
     is_valid = false;
     
-    std::cout << "Syntax Error in  Arithmetic_Logic::" << name << "::" << field_name << "::" << input << std::endl; 
+    std::cout << "Syntax Error in " << instruction_type << "::" << name << "::" << field_name << "::" << input << std::endl; 
 
+    showRegexError(instruction_type,regex,input); 
+}
+
+void InstructionSetDescriptionValidator::showRegexError(const std::string& instruction_type, const std::regex& regex, const std::string& input){
+    if (instruction_type == "Arithmetic_Logic") {
+        syntaxRegexError(regex, input);
+    }
+
+}
+
+void InstructionSetDescriptionValidator::syntaxRegexError(const std::regex& regex, const std::string& input){
+const std::string& instruction_pattern = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::INSTRUCTION_NAME);
+    
     std::istringstream iss(input);
     std::vector<std::string> tokens{std::istream_iterator<std::string>{iss},
                                    std::istream_iterator<std::string>{}};
 
-    // Check we have at least an instruction
-    if (tokens.empty()) {
-        std::cerr << "Empty instruction\n";
-        return;
-    }
 
-    // Validate instruction name
-    const std::string& instruction_pattern = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::INSTRUCTION_NAME);
     if (!std::regex_match(tokens[0], std::regex(instruction_pattern))) {
-        std::cerr << " Invalid instruction '" << tokens[0] << std::endl;
+        
+        std::cerr << "Syntax Error: Invalid instruction '" << tokens[0] << "'\n";
         return;
     }
 
     // Validate parameters
-    const std::string& register_pattern = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::REGISTER_ID);
-    std::regex register_regex(register_pattern);
+    const std::string& parameter_pattern = RegexPatterns::regex_patterns.at(RegexPatterns::PatternType::REGISTER_ID_OR_ADDR);
+    std::regex register_regex(parameter_pattern);
     
     for (size_t i = 1; i < tokens.size(); i++) {
         if (!std::regex_match(tokens[i], register_regex)) {
-            std::cerr << "Syntax Error: after '" << tokens[0] 
-                     << "' expected REGISTER as parameter but found '" 
-                     << tokens[i] << "'" << std::endl;
+            std::cerr << "After '" << tokens[0] 
+                     << "' expected REGISTER or ADDRESS as parameters but found '" 
+                     << tokens[i] << "'\n";
             return;
         }
     }
-
-    // If we get here, structure is wrong (wrong number of parameters)
-    if (tokens.size() == 1) {
-        std::cerr << "Syntax Error: '" << tokens[0] 
-            << "' requires at least one register" << std::endl;
-    } else {
-        std::cerr << "Syntax Error: Invalid number of parameters for '" 
-            << tokens[0] << std::endl;
-    }
-
-
+  
 
 }
 
@@ -126,7 +121,7 @@ void InstructionSetDescriptionValidator::validateRegexALInstructions(){
     std::smatch match;
     bool is_matched;
     for (const auto& instruction : instruction_set_description.al_instructions){
-        matchField(instruction.description.syntax,syntax,instruction.description.name, "syntax");
+        matchField(instruction.description.syntax,syntax,instruction.description.name, "syntax","Arithmetic_Logic");
     } 
 }
 
