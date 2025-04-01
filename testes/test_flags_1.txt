@@ -1,0 +1,1 @@
+(R0>MAX)? flags_register[0] = 1 : flags_register[0] = 0
